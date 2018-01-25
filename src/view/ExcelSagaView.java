@@ -10,6 +10,8 @@ import javax.swing.AbstractListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 /**
  *
@@ -23,30 +25,11 @@ public class ExcelSagaView extends javax.swing.JFrame {
     
     private int xx;
     private int yy;
+    private boolean functionViewToggled = false;
     
     public ExcelSagaView() {
         initComponents();
-        
-        ListModel lm = new AbstractListModel() {
-            String headers[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-
-            public int getSize() {
-              return headers.length;
-            }
-
-            public Object getElementAt(int index) {
-              return headers[index];
-            }
-          };
-        
-        JList rowHeader = new JList(lm);
-        rowHeader.setFixedCellWidth(50);
-        rowHeader.setFixedCellHeight(table.getRowHeight());
-        rowHeader.setCellRenderer(new RowHeaderRenderer(table));
-        rowHeader.setBackground(new Color(255, 255, 255));
-        rowHeader.setOpaque(true);
-        tableScrollPane.setRowHeaderView(rowHeader);
-        
+        createRowHeader();
     }
 
     /**
@@ -64,10 +47,11 @@ public class ExcelSagaView extends javax.swing.JFrame {
         exitButton = new javax.swing.JLabel();
         sheetButton = new javax.swing.JLabel();
         optionsButton = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        redoButton = new javax.swing.JLabel();
+        undoButton = new javax.swing.JLabel();
+        functionViewButton = new javax.swing.JLabel();
+        recordMacroButton = new javax.swing.JLabel();
+        playMacroButton = new javax.swing.JLabel();
         homePanel = new javax.swing.JPanel();
         sheetPanel = new javax.swing.JPanel();
         tableScrollPane = new javax.swing.JScrollPane();
@@ -95,11 +79,13 @@ public class ExcelSagaView extends javax.swing.JFrame {
         subtitleLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         subtitleLabel.setForeground(new java.awt.Color(255, 255, 255));
         subtitleLabel.setText("ExcelSaga");
+        subtitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         headerPanel.add(subtitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 22, -1, -1));
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setText("The most powerful app out there");
+        titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         headerPanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 77, -1, -1));
 
         exitButton.setBackground(new java.awt.Color(1, 198, 83));
@@ -126,6 +112,7 @@ public class ExcelSagaView extends javax.swing.JFrame {
         sheetButton.setForeground(new java.awt.Color(255, 255, 255));
         sheetButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sheetButton.setText("Sheet");
+        sheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         sheetButton.setMaximumSize(new java.awt.Dimension(49, 20));
         sheetButton.setMinimumSize(new java.awt.Dimension(49, 20));
         sheetButton.setOpaque(true);
@@ -142,6 +129,7 @@ public class ExcelSagaView extends javax.swing.JFrame {
         optionsButton.setForeground(new java.awt.Color(255, 255, 255));
         optionsButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         optionsButton.setText("Options");
+        optionsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         optionsButton.setOpaque(true);
         optionsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -150,25 +138,40 @@ public class ExcelSagaView extends javax.swing.JFrame {
         });
         headerPanel.add(optionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 140, 30));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Redo_30px.png")); // NOI18N
-        headerPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 150, 30, 30));
+        redoButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        redoButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        redoButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Redo_30px.png")); // NOI18N
+        redoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        headerPanel.add(redoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 150, 30, 30));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Circled_Play_30px.png")); // NOI18N
-        headerPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, 30, 30));
+        undoButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        undoButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        undoButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Undo_30px_1.png")); // NOI18N
+        undoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        headerPanel.add(undoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 150, 30, 30));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Undo_30px_1.png")); // NOI18N
-        headerPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 150, 30, 30));
+        functionViewButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        functionViewButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        functionViewButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Eye_30px.png")); // NOI18N
+        functionViewButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        functionViewButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                functionViewButtonMouseClicked(evt);
+            }
+        });
+        headerPanel.add(functionViewButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 150, 30, 30));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Record_36px.png")); // NOI18N
-        headerPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 150, 30, 30));
+        recordMacroButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        recordMacroButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        recordMacroButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Record_36px.png")); // NOI18N
+        recordMacroButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        headerPanel.add(recordMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 150, 30, 30));
+
+        playMacroButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        playMacroButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        playMacroButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Play_36px_1.png")); // NOI18N
+        playMacroButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        headerPanel.add(playMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 150, 30, 30));
 
         homePanel.setBackground(new java.awt.Color(255, 255, 255));
         homePanel.setLayout(new java.awt.CardLayout());
@@ -282,12 +285,52 @@ public class ExcelSagaView extends javax.swing.JFrame {
         exitButton.setBackground(new Color(1, 198, 83));
     }//GEN-LAST:event_onExitRelease
 
-    public void setLabelColor(JLabel label){
+    private void functionViewButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_functionViewButtonMouseClicked
+        setFunctionViewToggle();
+    }//GEN-LAST:event_functionViewButtonMouseClicked
+
+    private void setLabelColor(JLabel label){
         label.setBackground(new Color(0, 150, 62));
     }
     
-    public void resetLabelColor(JLabel label){
+    private void resetLabelColor(JLabel label){
         label.setBackground(new Color(1, 198, 83));
+    }
+    
+    private void setFunctionViewToggle(){
+        
+        functionViewToggled = !functionViewToggled;
+        
+        if(functionViewToggled){
+            functionViewButton.setBorder(new EtchedBorder());
+        }else{
+            functionViewButton.setBorder(new EmptyBorder(0, 0, 0, 0));
+        }
+        
+    }
+    
+    private void createRowHeader(){
+        
+        ListModel lm = new AbstractListModel() {
+            String headers[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+
+            public int getSize() {
+              return headers.length;
+            }
+
+            public Object getElementAt(int index) {
+              return headers[index];
+            }
+          };
+        
+        JList rowHeader = new JList(lm);
+        rowHeader.setFixedCellWidth(50);
+        rowHeader.setFixedCellHeight(table.getRowHeight());
+        rowHeader.setCellRenderer(new RowHeaderRenderer(table));
+        rowHeader.setBackground(new Color(255, 255, 255));
+        rowHeader.setOpaque(true);
+        tableScrollPane.setRowHeaderView(rowHeader);
+        
     }
     
     /**
@@ -327,19 +370,20 @@ public class ExcelSagaView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel exitButton;
+    private javax.swing.JLabel functionViewButton;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JPanel homePanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel optionsButton;
     private javax.swing.JPanel optionsPanel;
+    private javax.swing.JLabel playMacroButton;
+    private javax.swing.JLabel recordMacroButton;
+    private javax.swing.JLabel redoButton;
     private javax.swing.JLabel sheetButton;
     private javax.swing.JPanel sheetPanel;
     private javax.swing.JLabel subtitleLabel;
     private javax.swing.JTable table;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel undoButton;
     // End of variables declaration//GEN-END:variables
 }
