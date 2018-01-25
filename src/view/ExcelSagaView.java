@@ -60,18 +60,19 @@ public class ExcelSagaView extends javax.swing.JFrame {
         headerPanel = new javax.swing.JPanel();
         subtitleLabel = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
-        exitLabel = new javax.swing.JLabel();
-        fileLabel = new javax.swing.JLabel();
-        aboutLabel = new javax.swing.JLabel();
-        tablePanel = new javax.swing.JPanel();
+        exitButton = new javax.swing.JLabel();
+        sheetButton = new javax.swing.JLabel();
+        optionsButton = new javax.swing.JLabel();
+        homePanel = new javax.swing.JPanel();
+        sheetPanel = new javax.swing.JPanel();
         tableScrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        optionsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocationByPlatform(true);
         setUndecorated(true);
-        setResizable(false);
 
         headerPanel.setBackground(new java.awt.Color(1, 198, 83));
         headerPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -93,13 +94,13 @@ public class ExcelSagaView extends javax.swing.JFrame {
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setText("The most powerful app out there");
 
-        exitLabel.setBackground(new java.awt.Color(1, 198, 83));
-        exitLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        exitLabel.setForeground(new java.awt.Color(255, 255, 255));
-        exitLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        exitLabel.setText("X");
-        exitLabel.setOpaque(true);
-        exitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        exitButton.setBackground(new java.awt.Color(1, 198, 83));
+        exitButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        exitButton.setForeground(new java.awt.Color(255, 255, 255));
+        exitButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exitButton.setText("X");
+        exitButton.setOpaque(true);
+        exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onExitClicked(evt);
             }
@@ -111,64 +112,69 @@ public class ExcelSagaView extends javax.swing.JFrame {
             }
         });
 
-        fileLabel.setBackground(new java.awt.Color(0, 150, 62));
-        fileLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        fileLabel.setForeground(new java.awt.Color(255, 255, 255));
-        fileLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        fileLabel.setText("File");
-        fileLabel.setOpaque(true);
-        fileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        sheetButton.setBackground(new java.awt.Color(0, 150, 62));
+        sheetButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        sheetButton.setForeground(new java.awt.Color(255, 255, 255));
+        sheetButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sheetButton.setText("Sheet");
+        sheetButton.setMaximumSize(new java.awt.Dimension(49, 20));
+        sheetButton.setMinimumSize(new java.awt.Dimension(49, 20));
+        sheetButton.setOpaque(true);
+        sheetButton.setPreferredSize(new java.awt.Dimension(49, 20));
+        sheetButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                onFileClicked(evt);
+                onSheetClicked(evt);
             }
         });
 
-        aboutLabel.setBackground(new java.awt.Color(1, 198, 83));
-        aboutLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        aboutLabel.setForeground(new java.awt.Color(255, 255, 255));
-        aboutLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        aboutLabel.setText("About");
-        aboutLabel.setOpaque(true);
-        aboutLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        optionsButton.setBackground(new java.awt.Color(1, 198, 83));
+        optionsButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        optionsButton.setForeground(new java.awt.Color(255, 255, 255));
+        optionsButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        optionsButton.setText("Options");
+        optionsButton.setOpaque(true);
+        optionsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                onAboutClicked(evt);
+                onOptionsClicked(evt);
             }
         });
 
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
-            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(titleLabel)
-                    .addComponent(subtitleLabel))
+            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, headerPanelLayout.createSequentialGroup()
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(headerPanelLayout.createSequentialGroup()
+                        .addComponent(sheetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(optionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(titleLabel)
+                        .addComponent(subtitleLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(exitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(headerPanelLayout.createSequentialGroup()
-                .addComponent(fileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(aboutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerPanelLayout.createSequentialGroup()
-                .addComponent(exitLabel)
+                .addComponent(exitButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aboutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(sheetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(optionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(headerPanelLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(subtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(titleLabel)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
-        tablePanel.setBackground(new java.awt.Color(255, 255, 255));
+        homePanel.setBackground(new java.awt.Color(255, 255, 255));
+        homePanel.setLayout(new java.awt.CardLayout());
+
+        sheetPanel.setLayout(new javax.swing.BoxLayout(sheetPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         table.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         table.setForeground(new java.awt.Color(51, 51, 51));
@@ -204,31 +210,37 @@ public class ExcelSagaView extends javax.swing.JFrame {
         table.getTableHeader().setReorderingAllowed(false);
         tableScrollPane.setViewportView(table);
 
-        javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
-        tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tableScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 825, Short.MAX_VALUE)
+        sheetPanel.add(tableScrollPane);
+
+        homePanel.add(sheetPanel, "card2");
+
+        javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
+        optionsPanel.setLayout(optionsPanelLayout);
+        optionsPanelLayout.setHorizontalGroup(
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+        optionsPanelLayout.setVerticalGroup(
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        homePanel.add(optionsPanel, "card3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(homePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 872, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1))
+                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(homePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -238,15 +250,19 @@ public class ExcelSagaView extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_onExitClicked
 
-    private void onFileClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onFileClicked
-        setLabelColor(fileLabel);
-        resetLabelColor(aboutLabel);
-    }//GEN-LAST:event_onFileClicked
+    private void onSheetClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onSheetClicked
+        setLabelColor(sheetButton);
+        resetLabelColor(optionsButton);
+        sheetPanel.setVisible(true);
+        optionsPanel.setVisible(false);
+    }//GEN-LAST:event_onSheetClicked
 
-    private void onAboutClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onAboutClicked
-        setLabelColor(aboutLabel);
-        resetLabelColor(fileLabel);
-    }//GEN-LAST:event_onAboutClicked
+    private void onOptionsClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOptionsClicked
+        setLabelColor(optionsButton);
+        resetLabelColor(sheetButton);
+        sheetPanel.setVisible(false);
+        optionsPanel.setVisible(true);
+    }//GEN-LAST:event_onOptionsClicked
 
     private void onHeaderPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onHeaderPressed
         xx = evt.getX();
@@ -260,11 +276,11 @@ public class ExcelSagaView extends javax.swing.JFrame {
     }//GEN-LAST:event_onHeaderDragged
 
     private void onExitPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExitPressed
-        exitLabel.setBackground(new Color(0, 150, 62));
+        exitButton.setBackground(new Color(0, 150, 62));
     }//GEN-LAST:event_onExitPressed
 
     private void onExitRelease(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExitRelease
-        exitLabel.setBackground(new Color(1, 198, 83));
+        exitButton.setBackground(new Color(1, 198, 83));
     }//GEN-LAST:event_onExitRelease
 
     public void setLabelColor(JLabel label){
@@ -311,13 +327,15 @@ public class ExcelSagaView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel aboutLabel;
-    private javax.swing.JLabel exitLabel;
-    private javax.swing.JLabel fileLabel;
+    private javax.swing.JLabel exitButton;
     private javax.swing.JPanel headerPanel;
+    private javax.swing.JPanel homePanel;
+    private javax.swing.JLabel optionsButton;
+    private javax.swing.JPanel optionsPanel;
+    private javax.swing.JLabel sheetButton;
+    private javax.swing.JPanel sheetPanel;
     private javax.swing.JLabel subtitleLabel;
     private javax.swing.JTable table;
-    private javax.swing.JPanel tablePanel;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
