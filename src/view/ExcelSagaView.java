@@ -12,12 +12,15 @@ import javax.swing.JList;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.table.TableModel;
+import presenter.ExcelSagaTableModel;
+import presenter.IPresenter;
 
 /**
  *
  * @author Luis
  */
-public class ExcelSagaView extends javax.swing.JFrame {
+public class ExcelSagaView extends javax.swing.JFrame implements IView {
 
     /**
      * Creates new form MainFrame
@@ -26,10 +29,13 @@ public class ExcelSagaView extends javax.swing.JFrame {
     private int xx;
     private int yy;
     private boolean functionViewToggled = false;
+    private IPresenter presenter;
     
     public ExcelSagaView() {
         initComponents();
         createRowHeader();
+        presenter = new ExcelSagaTableModel(this);
+        table.setModel((TableModel) presenter);
     }
 
     /**
@@ -180,31 +186,6 @@ public class ExcelSagaView extends javax.swing.JFrame {
 
         table.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         table.setForeground(new java.awt.Color(51, 51, 51));
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "A", "B", "C", "D", "E", "F", "G", "H"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         table.setCellSelectionEnabled(true);
         table.setName(""); // NOI18N
         table.setRowHeight(28);
@@ -361,10 +342,8 @@ public class ExcelSagaView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ExcelSagaView().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ExcelSagaView().setVisible(true);
         });
     }
 

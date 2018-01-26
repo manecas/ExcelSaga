@@ -5,18 +5,10 @@
  */
 package model;
 
-import presenter.IPresenter;
-
 /**
  *
  * @author Luis
  */
-public class ExcelSagaModel implements IModel {
-
-    private IPresenter presenter;
-    
-    public ExcelSagaModel(IPresenter presenter) {
-        this.presenter = presenter;
-    }
+public interface IModel {
     
 }
