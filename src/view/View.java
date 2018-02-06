@@ -13,14 +13,14 @@ import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableModel;
-import presenter.ExcelSagaTableModel;
+import presenter.Presenter;
 import presenter.IPresenter;
 
 /**
  *
  * @author Luis
  */
-public class ExcelSagaView extends javax.swing.JFrame implements IView {
+public class View extends javax.swing.JFrame implements IView {
 
     /**
      * Creates new form MainFrame
@@ -31,10 +31,10 @@ public class ExcelSagaView extends javax.swing.JFrame implements IView {
     private boolean functionViewToggled = false;
     private IPresenter presenter;
     
-    public ExcelSagaView() {
+    public View() {
         initComponents();
         createRowHeader();
-        presenter = new ExcelSagaTableModel(this);
+        presenter = new Presenter(this);
         table.setModel((TableModel) presenter);
     }
 
@@ -108,7 +108,7 @@ public class ExcelSagaView extends javax.swing.JFrame implements IView {
                 onExitPressed(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                onExitRelease(evt);
+                onExitReleased(evt);
             }
         });
         headerPanel.add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 0, 37, -1));
@@ -144,42 +144,69 @@ public class ExcelSagaView extends javax.swing.JFrame implements IView {
         });
         headerPanel.add(optionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 140, 30));
 
+        redoButton.setBackground(new java.awt.Color(1, 198, 83));
         redoButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         redoButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        redoButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Redo_30px.png")); // NOI18N
+        redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Redo_32px.png"))); // NOI18N
         redoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        headerPanel.add(redoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 150, 30, 30));
+        redoButton.setOpaque(true);
+        redoButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                onRedoPressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                onRedoReleased(evt);
+            }
+        });
+        headerPanel.add(redoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 150, 30, 30));
 
+        undoButton.setBackground(new java.awt.Color(1, 198, 83));
         undoButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         undoButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        undoButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Undo_30px_1.png")); // NOI18N
+        undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Undo_32px.png"))); // NOI18N
         undoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        headerPanel.add(undoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 150, 30, 30));
+        undoButton.setOpaque(true);
+        undoButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                undoPressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                undoReleased(evt);
+            }
+        });
+        headerPanel.add(undoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 150, 30, 30));
 
+        functionViewButton.setBackground(new java.awt.Color(1, 198, 83));
         functionViewButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         functionViewButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        functionViewButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Eye_30px.png")); // NOI18N
+        functionViewButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Eye_32px.png"))); // NOI18N
         functionViewButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        functionViewButton.setOpaque(true);
         functionViewButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 functionViewButtonMouseClicked(evt);
             }
         });
-        headerPanel.add(functionViewButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 150, 30, 30));
+        headerPanel.add(functionViewButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 150, 30, 30));
 
+        recordMacroButton.setBackground(new java.awt.Color(1, 198, 83));
         recordMacroButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         recordMacroButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        recordMacroButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Record_36px.png")); // NOI18N
+        recordMacroButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Record_32px.png"))); // NOI18N
         recordMacroButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        headerPanel.add(recordMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 150, 30, 30));
+        recordMacroButton.setOpaque(true);
+        headerPanel.add(recordMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 150, 30, 30));
 
+        playMacroButton.setBackground(new java.awt.Color(1, 198, 83));
         playMacroButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         playMacroButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        playMacroButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Luis\\AppData\\Local\\Temp\\icons8_Play_36px_1.png")); // NOI18N
+        playMacroButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Circled Play_32px.png"))); // NOI18N
         playMacroButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        headerPanel.add(playMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 150, 30, 30));
+        playMacroButton.setOpaque(true);
+        headerPanel.add(playMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 150, 30, 30));
 
         homePanel.setBackground(new java.awt.Color(255, 255, 255));
+        homePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(1, 198, 83), 2));
         homePanel.setLayout(new java.awt.CardLayout());
 
         sheetPanel.setLayout(new javax.swing.BoxLayout(sheetPanel, javax.swing.BoxLayout.LINE_AXIS));
@@ -262,13 +289,29 @@ public class ExcelSagaView extends javax.swing.JFrame implements IView {
         exitButton.setBackground(new Color(0, 150, 62));
     }//GEN-LAST:event_onExitPressed
 
-    private void onExitRelease(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExitRelease
+    private void onExitReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExitReleased
         exitButton.setBackground(new Color(1, 198, 83));
-    }//GEN-LAST:event_onExitRelease
+    }//GEN-LAST:event_onExitReleased
 
     private void functionViewButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_functionViewButtonMouseClicked
         setFunctionViewToggle();
     }//GEN-LAST:event_functionViewButtonMouseClicked
+
+    private void onRedoPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onRedoPressed
+        redoButton.setBackground(new Color(0, 150, 62));
+    }//GEN-LAST:event_onRedoPressed
+
+    private void onRedoReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onRedoReleased
+        redoButton.setBackground(new Color(1, 198, 83));
+    }//GEN-LAST:event_onRedoReleased
+
+    private void undoPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_undoPressed
+        undoButton.setBackground(new Color(0, 150, 62));
+    }//GEN-LAST:event_undoPressed
+
+    private void undoReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_undoReleased
+        undoButton.setBackground(new Color(1, 198, 83));
+    }//GEN-LAST:event_undoReleased
 
     private void setLabelColor(JLabel label){
         label.setBackground(new Color(0, 150, 62));
@@ -299,6 +342,7 @@ public class ExcelSagaView extends javax.swing.JFrame implements IView {
               return headers.length;
             }
 
+            @Override
             public Object getElementAt(int index) {
               return headers[index];
             }
@@ -331,19 +375,20 @@ public class ExcelSagaView extends javax.swing.JFrame implements IView {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ExcelSagaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ExcelSagaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ExcelSagaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ExcelSagaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ExcelSagaView().setVisible(true);
+            new View().setVisible(true);
         });
     }
 

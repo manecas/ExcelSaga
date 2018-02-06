@@ -3,20 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
-
-import presenter.IPresenter;
+package utils;
 
 /**
  *
  * @author Luis
  */
-public class ExcelSagaModel implements IModel {
+public final class Constants {
 
-    private IPresenter presenter;
-    
-    public ExcelSagaModel(IPresenter presenter) {
-        this.presenter = presenter;
+    private Constants() {
+        
     }
+    
+    public final static int TABLE_ROWS = 10;
+    public final static int TABLE_COLUMNS = 8;
     
 }
