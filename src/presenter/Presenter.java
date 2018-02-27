@@ -6,7 +6,6 @@
 package presenter;
 
 import javax.swing.table.AbstractTableModel;
-import model.Cell;
 import model.Model;
 import model.IModel;
 import utils.Constants;
