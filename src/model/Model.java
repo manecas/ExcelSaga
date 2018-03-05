@@ -5,17 +5,19 @@
  */
 package model;
 
+import javax.swing.table.AbstractTableModel;
 import presenter.IPresenter;
-import utils.Constants;
 
 /**
  *
  * @author Luis
  */
-public class Model implements IModel {
+public class Model extends AbstractTableModel implements IModel {
+    
+    public final static int TABLE_ROWS = 10;
+    public final static int TABLE_COLUMNS = 8;
     
     private IPresenter presenter;
-    
     private Cell[][] table;
     //View
     
@@ -26,10 +28,10 @@ public class Model implements IModel {
     
     private void initTable(){
         
-        table = new Cell[Constants.TABLE_ROWS][Constants.TABLE_COLUMNS];
+        table = new Cell[TABLE_ROWS][TABLE_COLUMNS];
         
-        for (int i = 0; i < Constants.TABLE_ROWS; i++) {
-            for (int j = 0; j < Constants.TABLE_COLUMNS; j++) {
+        for (int i = 0; i < TABLE_ROWS; i++) {
+            for (int j = 0; j < TABLE_COLUMNS; j++) {
                 table[i][j] = new Cell();
             }
         }
@@ -37,21 +39,47 @@ public class Model implements IModel {
     }
 
     @Override
-    public Cell getValueAt(int rowIndex, int columnIndex) {
-        return table[rowIndex][columnIndex];
+    public int getRowCount() {
+        return TABLE_ROWS;                                                                  
     }
 
     @Override
-    public void setValueAt(String value, int rowIndex, int columnIndex) {
+    public int getColumnCount() {
+        return TABLE_COLUMNS;
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        return (String) table[rowIndex][columnIndex].getValue();
+    }
+
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
         
         Cell c = table[rowIndex][columnIndex];
         
         try{
-            c.setValue(value);
+            c.setValue((String) value);
         }catch(NullPointerException e){
             System.out.println("Model: setValueAt:\n" + e.toString());
         }
         
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        return super.getColumnName(column); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return true;
+    }
+
+    @Override
+    public void updateCells() {
+        fireTableDataChanged();
     }
     
 }

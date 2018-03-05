@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package model.viewmode;
+
+import model.Cell;
 
 /**
  *
  * @author Luis
  */
-public final class Constants {
+public class FunctionalViewMode implements IViewModeStrategy {
 
-    private Constants() {
-        
+    @Override
+    public String getCellModeValue(Cell c) {
+        return c.getValue() + " - Functional";
     }
-    
-    
     
 }

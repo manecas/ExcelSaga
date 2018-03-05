@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package model.viewmode;
+
+import model.Cell;
 
 /**
  *
  * @author Luis
  */
-public final class Constants {
-
-    private Constants() {
-        
-    }
+public interface IViewModeStrategy {
     
-    
+    public String getCellModeValue(Cell c);
     
 }

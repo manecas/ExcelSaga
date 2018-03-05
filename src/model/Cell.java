@@ -5,25 +5,37 @@
  */
 package model;
 
+import model.viewmode.IViewModeStrategy;
+import utils.ViewModeUtils;
+
 /**
  *
  * @author Luis
  */
 public class Cell {
     
-    //Estratégia
+    private IViewModeStrategy viewMode;
     private String value;
 
     public Cell() {
+        viewMode = ViewModeUtils.getDefaultViewModeStrategy();
         value = "";
     }
-
+    
     public String getValue() {
         return value;
     }
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public IViewModeStrategy getViewMode() {
+        return viewMode;
+    }
+
+    public void setViewMode(IViewModeStrategy viewMode) {
+        this.viewMode = viewMode;
     }
     
 }

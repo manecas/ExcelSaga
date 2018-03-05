@@ -11,8 +11,6 @@ package model;
  */
 public interface IModel {
     
-    public Cell getValueAt(int rowIndex, int columnIndex);
-
-    public void setValueAt(String value, int rowIndex, int columnIndex);
+    void updateCells();
     
 }

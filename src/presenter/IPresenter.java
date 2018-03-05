@@ -11,14 +11,26 @@ package presenter;
  */
 public interface IPresenter {
     
-//    public int getRowCount();
-//
-//    public int getColumnCount();
-//
-//    public Object getValueAt(int rowIndex, int columnIndex);
-//
-//    public void setValueAt(Object aValue, int rowIndex, int columnIndex);
-//
-//    public String getColumnName(int column);
+    void setTableModel();
     
+    void onViewModeClicked(String viewMode);
+    
+    void onExitClicked();
+    void onExitPressed();
+    void onExitReleased();
+    
+    void onRedoClicked();
+    void onRedoPressed();
+    void onRedoReleased();
+    
+    void onUndoClicked();
+    void onUndoPressed();
+    void onUndoReleased();
+    
+    void onSheetClicked();
+    
+    void onOptionsClicked();
+    
+    void onHeaderPressed(int x, int y);
+    void onHeaderDragged(int x, int y);
 }

@@ -5,14 +5,14 @@
  */
 package presenter;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import model.Model;
 import model.IModel;
-import utils.Constants;
+import utils.ViewModeUtils;
 import view.IView;
 
 //PRESENTER
-public class Presenter extends AbstractTableModel implements IPresenter {
+public class Presenter implements IPresenter {
 
     private IView view;
     private IModel model;
@@ -21,36 +21,152 @@ public class Presenter extends AbstractTableModel implements IPresenter {
         this.view = view;
         this.model = new Model(this);
     }
-    
+
     @Override
-    public int getRowCount() {
-        return Constants.TABLE_ROWS;                                                                  
+    public void setTableModel() {
+        try{
+            view.setTableModel((TableModel) model);
+        }catch(NullPointerException ex){
+            throw ex;
+        }
     }
 
     @Override
-    public int getColumnCount() {
-        return Constants.TABLE_COLUMNS;
+    public void onViewModeClicked(String viewMode) {
+
+        try{
+            if(viewMode.endsWith(ViewModeUtils.VIEW_MODE_FUNCTIONAL)){
+                view.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
+                view.setViewModeColor();
+                //TODO: Mudar o viewmode nas células
+            }else{
+                view.setViewMode(ViewModeUtils.VIEW_MODE_FUNCTIONAL);
+                view.resetViewModeColor();
+                //TODO: Mudar o viewmode nas células
+            }
+            model.updateCells();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+        
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        return (String)model.getValueAt(rowIndex, columnIndex).getValue();
+    public void onExitClicked() {
+        try{
+            view.exitSystem();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
     }
 
     @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        model.setValueAt((String)value, rowIndex, columnIndex);
-        fireTableCellUpdated(rowIndex, columnIndex);
+    public void onExitPressed() {
+        try{
+            view.setExitColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
     }
 
     @Override
-    public String getColumnName(int column) {
-        return super.getColumnName(column); //To change body of generated methods, choose Tools | Templates.
+    public void onExitReleased() {
+        try{
+            view.resetExitColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
     }
 
     @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+    public void onRedoClicked() {
+        
+    }
+
+    @Override
+    public void onRedoPressed() {
+        try{
+            view.setRedoColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onRedoReleased() {
+        try{
+            view.resetRedoColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onUndoClicked() {
+        
+    }
+
+    @Override
+    public void onUndoPressed() {
+        try{
+            view.setUndoColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onUndoReleased() {
+        try{
+            view.resetUndoColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onSheetClicked() {
+        try{
+            view.setSheetColor();
+            view.resetOptionsColor();
+            view.hideOptionsPanel();
+            view.ShowSheetPanel();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onOptionsClicked() {
+        try{
+            view.setOptionsColor();
+            view.resetSheetColor();
+            view.hideSheetPanel();
+           view.ShowOptionsPanel();   
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onHeaderPressed(int x, int y) {
+        try{
+            view.setWindowPressedCoordinates(x, y);
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onHeaderDragged(int x, int y) {
+        try{
+            view.setWindowDraggedCoordinates(x, y);
+            int xx = view.getXX();
+            int yy = view.getYY();
+            view.setWindowLocation(x - xx, y - yy);
+        }catch(NullPointerException ex){
+            throw ex;
+        }
     }
     
 }
