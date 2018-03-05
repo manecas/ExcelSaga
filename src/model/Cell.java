@@ -15,6 +15,7 @@ import utils.ViewModeUtils;
 public class Cell {
     
     private IViewModeStrategy viewMode;
+    
     private String value;
 
     public Cell() {
@@ -24,6 +25,15 @@ public class Cell {
     
     public String getValue() {
         return value;
+    }
+    
+    public String getViewModeValue(){
+        return viewMode.getCellModeValue(this);
+    }
+    
+    public String getOperationValue(){
+        //Retornar resultado com a operação correspondente
+        return null;
     }
 
     public void setValue(String value) {

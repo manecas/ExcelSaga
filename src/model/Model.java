@@ -6,6 +6,7 @@
 package model;
 
 import javax.swing.table.AbstractTableModel;
+import model.viewmode.IViewModeStrategy;
 import presenter.IPresenter;
 
 /**
@@ -19,7 +20,6 @@ public class Model extends AbstractTableModel implements IModel {
     
     private IPresenter presenter;
     private Cell[][] table;
-    //View
     
     public Model(IPresenter presenter) {
         this.presenter = presenter;
@@ -27,7 +27,6 @@ public class Model extends AbstractTableModel implements IModel {
     }
     
     private void initTable(){
-        
         table = new Cell[TABLE_ROWS][TABLE_COLUMNS];
         
         for (int i = 0; i < TABLE_ROWS; i++) {
@@ -35,7 +34,6 @@ public class Model extends AbstractTableModel implements IModel {
                 table[i][j] = new Cell();
             }
         }
-        
     }
 
     @Override
@@ -50,12 +48,11 @@ public class Model extends AbstractTableModel implements IModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return (String) table[rowIndex][columnIndex].getValue();
+        return (String) table[rowIndex][columnIndex].getViewModeValue();
     }
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        
         Cell c = table[rowIndex][columnIndex];
         
         try{
@@ -80,6 +77,15 @@ public class Model extends AbstractTableModel implements IModel {
     @Override
     public void updateCells() {
         fireTableDataChanged();
+    }
+
+    @Override
+    public void setCellsViewMode(IViewModeStrategy viewMode) {
+        for (int i = 0; i < TABLE_ROWS; i++) {
+            for (int j = 0; j < TABLE_COLUMNS; j++) {
+                table[i][j].setViewMode(viewMode);
+            }
+        }
     }
     
 }

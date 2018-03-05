@@ -5,6 +5,8 @@
  */
 package model;
 
+import model.viewmode.IViewModeStrategy;
+
 /**
  *
  * @author Luis
@@ -12,5 +14,7 @@ package model;
 public interface IModel {
     
     void updateCells();
+    
+    void setCellsViewMode(IViewModeStrategy viewMode);
     
 }

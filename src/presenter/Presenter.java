@@ -8,6 +8,8 @@ package presenter;
 import javax.swing.table.TableModel;
 import model.Model;
 import model.IModel;
+import model.viewmode.FunctionalViewMode;
+import model.viewmode.NormalViewMode;
 import utils.ViewModeUtils;
 import view.IView;
 
@@ -21,7 +23,7 @@ public class Presenter implements IPresenter {
         this.view = view;
         this.model = new Model(this);
     }
-
+    
     @Override
     public void setTableModel() {
         try{
@@ -34,15 +36,16 @@ public class Presenter implements IPresenter {
     @Override
     public void onViewModeClicked(String viewMode) {
 
+        //Switch view mode between NormaL and Functional
         try{
-            if(viewMode.endsWith(ViewModeUtils.VIEW_MODE_FUNCTIONAL)){
-                view.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
+            if(viewMode.equals(ViewModeUtils.VIEW_MODE_NORMAL)){ //Set Functional mode
                 view.setViewModeColor();
-                //TODO: Mudar o viewmode nas células
-            }else{
                 view.setViewMode(ViewModeUtils.VIEW_MODE_FUNCTIONAL);
+                model.setCellsViewMode(new FunctionalViewMode());
+            }else{ //Set Normal mode
                 view.resetViewModeColor();
-                //TODO: Mudar o viewmode nas células
+                view.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
+                model.setCellsViewMode(new NormalViewMode());
             }
             model.updateCells();
         }catch(NullPointerException ex){

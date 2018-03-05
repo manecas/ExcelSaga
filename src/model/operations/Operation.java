@@ -3,20 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.viewmode;
-
-import model.Cell;
+package model.operations;
 
 /**
  *
  * @author Luis
  */
-public class FunctionalViewMode implements IViewModeStrategy {
-
-    @Override
-    public String getCellModeValue(Cell c) {
-        return c.getValue();
-
-    }
+public class Operation {
     
 }

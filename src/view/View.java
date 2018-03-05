@@ -7,7 +7,6 @@ package view;
 
 import java.awt.Color;
 import javax.swing.AbstractListModel;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListModel;
 import javax.swing.table.TableModel;
@@ -447,7 +446,6 @@ public class View extends javax.swing.JFrame implements IView {
 
     @Override
     public void setWindowLocation(int x, int y) {
-        
         this.setLocation(x, y);
     }
     
