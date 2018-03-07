@@ -11,16 +11,11 @@ import model.Cell;
  *
  * @author Luis
  */
+public class CopyOperationFactory extends AbstractOperationFactory {
 
-//Template
-public abstract class Operation {
-
-    private Cell myCell;
-    
-    public Operation(Cell myCell, String operation) {
-        this.myCell = myCell;
+    @Override
+    Operation getOperation(Cell myCell, String operation) {
+        return new CopyOperation(myCell, operation);
     }
-    
-    abstract void getFinalResult();
     
 }

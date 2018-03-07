@@ -5,6 +5,8 @@
  */
 package model.operations;
 
+import model.Cell;
+
 /**
  *
  * @author Luis
@@ -16,7 +18,8 @@ public abstract class AbstractOperationFactory {
     public final static String OPERATION_NUMBER = "=NUMBER";
     public final static String OPERATION_UPPER = "=UPPER";
     
-    public AbstractOperationFactory getOperationFactory(String type){
+    public static AbstractOperationFactory getOperationFactory(String operation){
+        String type = operation.split(" ")[0];
         
         switch(type){
             case OPERATION_SUM:
@@ -30,7 +33,8 @@ public abstract class AbstractOperationFactory {
         }
         
         return null;
-        
     }
+    
+    abstract Operation getOperation(Cell myCell, String operation);
     
 }
