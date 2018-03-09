@@ -23,8 +23,11 @@ public class SumOperation extends Operation {
     @Override
     void performOperation(String value) {
         try{
-            this.value += Double.parseDouble(value);    
-        }catch(NullPointerException ex){
+            if(!"".equals(value)){
+               this.value += Double.parseDouble(value);    
+            }
+            
+        }catch(NullPointerException | NumberFormatException ex){
             System.out.println("It's not a float value, but it's ok. "
                     + "Nothing happens then");
         }
