@@ -15,7 +15,7 @@ public class NormalViewMode implements IViewModeStrategy {
 
     @Override
     public String getCellModeValue(Cell c) {
-        return "".equals(c.getValue()) ? c.getValue() : c.getValue()  + " - Normal";
+        return c.getOperationValue();
     }
     
 }

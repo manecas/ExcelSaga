@@ -6,6 +6,7 @@
 package model.operations;
 
 import model.Cell;
+import model.IModel;
 
 /**
  *
@@ -14,8 +15,8 @@ import model.Cell;
 public class CopyOperationFactory extends AbstractOperationFactory {
 
     @Override
-    Operation getOperation(Cell myCell, String operation) {
-        return new CopyOperation(myCell, operation);
+    public Operation getOperation(Cell myCell, IModel model) {
+        return new CopyOperation(myCell, model);
     }
     
 }

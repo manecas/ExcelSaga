@@ -39,11 +39,11 @@ public class Presenter implements IPresenter {
         //Switch view mode between NormaL and Functional
         try{
             if(viewMode.equals(ViewModeUtils.VIEW_MODE_NORMAL)){ //Set Functional mode
-                view.setViewModeColor();
+                view.resetViewModeColor();
                 view.setViewMode(ViewModeUtils.VIEW_MODE_FUNCTIONAL);
                 model.setCellsViewMode(new FunctionalViewMode());
             }else{ //Set Normal mode
-                view.resetViewModeColor();
+                view.setViewModeColor();
                 view.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
                 model.setCellsViewMode(new NormalViewMode());
             }

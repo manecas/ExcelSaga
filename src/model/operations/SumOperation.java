@@ -6,6 +6,7 @@
 package model.operations;
 
 import model.Cell;
+import model.IModel;
 
 /**
  *
@@ -13,13 +14,25 @@ import model.Cell;
  */
 public class SumOperation extends Operation {
 
-    public SumOperation(Cell myCell, String operation) {
-        super(myCell, operation);
+    private double value;
+    
+    public SumOperation(Cell myCell, IModel model) {
+        super(myCell, model);
     }
 
     @Override
-    void getFinalResult() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    void performOperation(String value) {
+        try{
+            this.value += Double.parseDouble(value);    
+        }catch(NullPointerException ex){
+            System.out.println("It's not a float value, but it's ok. "
+                    + "Nothing happens then");
+        }
+    }
+
+    @Override
+    String getValue() {
+        return String.valueOf(value);
     }
     
 }

@@ -6,6 +6,7 @@
 package model.operations;
 
 import model.Cell;
+import model.IModel;
 
 /**
  *
@@ -14,8 +15,8 @@ import model.Cell;
 public class NumberOperationFactory extends AbstractOperationFactory {
 
     @Override
-    Operation getOperation(Cell myCell, String operation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Operation getOperation(Cell myCell, IModel model) {
+        return new NumberOperation(myCell, model);
     }
     
 }

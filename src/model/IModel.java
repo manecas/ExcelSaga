@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.util.List;
 import model.viewmode.IViewModeStrategy;
 
 /**
@@ -14,6 +15,12 @@ import model.viewmode.IViewModeStrategy;
 public interface IModel {
     
     void updateCells();
+    
+    Cell findCellById(String id);
+    
+    List<Cell> getRangeOfCells(int row1, int column1, int row2, int column2);
+    
+    List<Cell> getRanfeOfCells(String []cellIds);
     
     void setCellsViewMode(IViewModeStrategy viewMode);
     

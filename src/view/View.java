@@ -23,7 +23,6 @@ public class View extends javax.swing.JFrame implements IView {
     /**
      * Creates new form MainFrame
      */
-    
     private int xx;
     private int yy;
     private int x;

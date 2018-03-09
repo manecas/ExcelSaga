@@ -6,6 +6,7 @@
 package model.operations;
 
 import model.Cell;
+import model.IModel;
 
 /**
  *
@@ -13,28 +14,29 @@ import model.Cell;
  */
 public abstract class AbstractOperationFactory {
     
-    public final static String OPERATION_SUM = "=SOMA";
-    public final static String OPERATION_COPY = "=COPY";
-    public final static String OPERATION_NUMBER = "=NUMBER";
-    public final static String OPERATION_UPPER = "=UPPER";
+    private final static String OPERATION_SUM = "=SOMA";
+    private final static String OPERATION_COPY = "=COPY";
+    private final static String OPERATION_NUMBER = "=NUMBER";
+    private final static String OPERATION_UPPER = "=UPPER";
     
-    public static AbstractOperationFactory getOperationFactory(String operation){
-        String type = operation.split(" ")[0];
+    public static AbstractOperationFactory getOperationFactory(String arg){
+        
+        if(!arg.startsWith("=")){
+            return null;
+        }
+        
+        String type = arg.split(" ")[0];
         
         switch(type){
-            case OPERATION_SUM:
-                break;
-            case OPERATION_COPY:
-                break;
-            case OPERATION_NUMBER:
-                break;
-            case OPERATION_UPPER:
-                break;
+            case OPERATION_SUM: return new SumOperationFactory();
+            case OPERATION_COPY: return new CopyOperationFactory();
+            case OPERATION_NUMBER: return new NumberOperationFactory();
+            case OPERATION_UPPER: return new UpperOperationFactory();
         }
         
         return null;
     }
     
-    abstract Operation getOperation(Cell myCell, String operation);
+    public abstract Operation getOperation(Cell myCell, IModel model);
     
 }

@@ -6,6 +6,7 @@
 package model.operations;
 
 import model.Cell;
+import model.IModel;
 
 /**
  *
@@ -13,12 +14,17 @@ import model.Cell;
  */
 public class NumberOperation extends Operation {
 
-    public NumberOperation(Cell myCell, String operation) {
-        super(myCell, operation);
+    public NumberOperation(Cell myCell, IModel model) {
+        super(myCell, model);
     }
 
     @Override
-    void getFinalResult() {
+    void performOperation(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    String getValue() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
