@@ -98,5 +98,13 @@ public abstract class Operation {
         
         return array;
     }
+
+    public Cell getMyCell() {
+        return myCell;
+    }
+
+    public void setMyCell(Cell myCell) {
+        this.myCell = myCell;
+    }
     
 }

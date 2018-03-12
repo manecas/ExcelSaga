@@ -14,18 +14,20 @@ import model.IModel;
  */
 public class CopyOperation extends Operation {
 
+    private String value;
+    
     public CopyOperation(Cell myCell, IModel model){
         super(myCell, model);
     }
     
     @Override
     void performOperation(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.value = value;
     }
 
     @Override
     String getValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return value;
     }
     
 }

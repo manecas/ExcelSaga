@@ -14,7 +14,7 @@ import model.IModel;
  */
 public abstract class AbstractOperationFactory {
     
-    private final static String OPERATION_SUM = "=SOMA";
+    private final static String OPERATION_SUM = "=SUM";
     private final static String OPERATION_COPY = "=COPY";
     private final static String OPERATION_NUMBER = "=NUMBER";
     private final static String OPERATION_UPPER = "=UPPER";
