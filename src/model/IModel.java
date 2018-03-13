@@ -22,6 +22,14 @@ public interface IModel {
     
     List<Cell> getRanfeOfCells(String []cellIds);
     
+    Cell getLastModifiedCell();
+    
+    void setCell(Cell cell);
+    
+    void undo();
+    
+    void redo();
+    
     void setCellsViewMode(IViewModeStrategy viewMode);
     
 }

@@ -22,6 +22,15 @@ public class Cell {
     private Operation operation;
     private String value;
 
+    public Cell(Cell cell){
+        this.row = cell.row;
+        this.column = cell.column;
+        this.id = cell.id;
+        this.viewMode = cell.viewMode;
+        this.operation = cell.operation;
+        this.value = cell.value;
+    }
+    
     public Cell(String id, int row, int column) {
         this.id = id;
         this.row = row;

@@ -83,7 +83,12 @@ public class Presenter implements IPresenter {
 
     @Override
     public void onRedoClicked() {
-        
+        try{
+            model.redo();    
+            model.updateCells();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
     }
 
     @Override
@@ -106,7 +111,12 @@ public class Presenter implements IPresenter {
 
     @Override
     public void onUndoClicked() {
-        
+        try{
+            model.undo();    
+            model.updateCells();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
     }
 
     @Override

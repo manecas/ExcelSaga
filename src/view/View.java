@@ -329,11 +329,11 @@ public class View extends javax.swing.JFrame implements IView {
     }//GEN-LAST:event_onRecordMacroClicked
 
     private void onUndoClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onUndoClicked
-        // TODO add your handling code here:
+        presenter.onUndoClicked();
     }//GEN-LAST:event_onUndoClicked
 
     private void onRedoClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onRedoClicked
-        // TODO add your handling code here:
+        presenter.onRedoClicked();
     }//GEN-LAST:event_onRedoClicked
 
     @Override

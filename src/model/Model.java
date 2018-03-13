@@ -8,6 +8,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import model.doundo.CommandManager;
+import model.doundo.setSell;
 import model.operations.AbstractOperationFactory;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
@@ -22,21 +24,25 @@ public class Model extends AbstractTableModel implements IModel {
     public final static int TABLE_ROWS = 10;
     public final static int TABLE_COLUMNS = 8;
     
+    private CommandManager cmdManager;
     private IPresenter presenter;
-    private Cell[][] table;
+    private Cell[][] sheet;
+    private Cell lastModifiedCell;
     
     public Model(IPresenter presenter) {
+        cmdManager = new CommandManager(this);
         this.presenter = presenter;
-        initTable();
+        initSheet();
+        lastModifiedCell = null;
     }
     
-    private void initTable(){
-        table = new Cell[TABLE_ROWS][TABLE_COLUMNS];
+    private void initSheet(){
+        sheet = new Cell[TABLE_ROWS][TABLE_COLUMNS];
         
         for (int i = 0; i < TABLE_ROWS; i++) {
             for (int j = 0; j < TABLE_COLUMNS; j++) {
                 String cellId = getCellId(i, j);
-                table[i][j] = new Cell(cellId, i, j);
+                sheet[i][j] = new Cell(cellId, i, j);
                 System.out.print(cellId + " ");
             }
             System.out.println("");
@@ -59,13 +65,15 @@ public class Model extends AbstractTableModel implements IModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return (String) table[rowIndex][columnIndex].getViewModeValue();
+        return (String) sheet[rowIndex][columnIndex].getViewModeValue();
     }
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        Cell c = table[rowIndex][columnIndex];
+        Cell c = sheet[rowIndex][columnIndex];
 
+        lastModifiedCell = new Cell(c);
+        
         try{
             c.setValue((String) value);
         }catch(NullPointerException ex){
@@ -82,6 +90,8 @@ public class Model extends AbstractTableModel implements IModel {
         }
                 
         c.setOperation(operation);
+        
+        cmdManager.apply(new setSell(c));
         
         fireTableCellUpdated(rowIndex, columnIndex);
     }
@@ -105,8 +115,8 @@ public class Model extends AbstractTableModel implements IModel {
     public Cell findCellById(String id) {
         for (int i = 0; i < TABLE_ROWS; i++) {
             for (int j = 0; j < TABLE_COLUMNS; j++) {
-                if(table[i][j].getId().equals(id)){
-                    return table[i][j];
+                if(sheet[i][j].getId().equals(id)){
+                    return sheet[i][j];
                 }
             }
         }
@@ -120,7 +130,7 @@ public class Model extends AbstractTableModel implements IModel {
         
         for (int i = row1; i <= row2; i++) {
             for (int j = column1; j <= column2; j++) {
-                involvedCells.add(table[i][j]);
+                involvedCells.add(sheet[i][j]);
             }
         }
         
@@ -140,14 +150,32 @@ public class Model extends AbstractTableModel implements IModel {
     }
     
     @Override
+    public Cell getLastModifiedCell() {
+        return lastModifiedCell;
+    }
+
+    @Override
+    public void setCell(Cell cell) {
+        sheet[cell.getRow()][cell.getColumn()] = cell;
+    }
+    
+    @Override
+    public void undo() {
+        cmdManager.undo();
+    }
+
+    @Override
+    public void redo() {
+        cmdManager.redo();
+    }
+    
+    @Override
     public void setCellsViewMode(IViewModeStrategy viewMode) {
         for (int i = 0; i < TABLE_ROWS; i++) {
             for (int j = 0; j < TABLE_COLUMNS; j++) {
-                table[i][j].setViewMode(viewMode);
+                sheet[i][j].setViewMode(viewMode);
             }
         }
     }
-
-    
     
 }
