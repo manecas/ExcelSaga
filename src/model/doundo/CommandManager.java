@@ -37,6 +37,7 @@ public class CommandManager {
     public void undo(){
         
         if(undoList.isEmpty()){
+            System.out.println("Undo is empty...");
             return;
         }
         
@@ -51,6 +52,7 @@ public class CommandManager {
     public void redo(){
         
         if(redoList.isEmpty()){
+            System.out.println("Redo is empty...");
             return;
         }
         

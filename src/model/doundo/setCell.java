@@ -12,24 +12,26 @@ import model.Model;
  *
  * @author Luis
  */
-public class setSell implements ICommand {
+public class setCell implements ICommand {
 
     private Cell currentCell;
-    private Cell lastCell;
+    private Cell oldCell;
 
-    public setSell(Cell currentCell) {
+    public setCell(Cell currentCell, Cell oldCell) {
         this.currentCell = currentCell;
+        this.oldCell = oldCell;
     }
     
     @Override
     public void doIt(Model model) {
-        lastCell = model.getLastModifiedCell();
         model.setCell(currentCell);
+        System.out.println(currentCell.getValue());
     }
 
     @Override
     public void undoIt(Model model) {
-        model.setCell(lastCell);
+        model.setCell(oldCell);
+        System.out.println(oldCell.getValue());
     }
     
 }

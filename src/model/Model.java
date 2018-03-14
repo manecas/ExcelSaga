@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import model.doundo.CommandManager;
-import model.doundo.setSell;
+import model.doundo.setCell;
 import model.operations.AbstractOperationFactory;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
@@ -27,13 +27,11 @@ public class Model extends AbstractTableModel implements IModel {
     private CommandManager cmdManager;
     private IPresenter presenter;
     private Cell[][] sheet;
-    private Cell lastModifiedCell;
     
     public Model(IPresenter presenter) {
         cmdManager = new CommandManager(this);
         this.presenter = presenter;
         initSheet();
-        lastModifiedCell = null;
     }
     
     private void initSheet(){
@@ -70,12 +68,12 @@ public class Model extends AbstractTableModel implements IModel {
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        Cell c = sheet[rowIndex][columnIndex];
+        Cell currentCell = sheet[rowIndex][columnIndex];
 
-        lastModifiedCell = new Cell(c);
+        Cell oldCell = new Cell(currentCell);
         
         try{
-            c.setValue((String) value);
+            currentCell.setValue((String) value);
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -86,12 +84,12 @@ public class Model extends AbstractTableModel implements IModel {
         Operation operation = null;
         
         if(factory != null){
-            operation = factory.getOperation(c, this);
+            operation = factory.getOperation(currentCell, this);
         }
                 
-        c.setOperation(operation);
+        currentCell.setOperation(operation);
         
-        cmdManager.apply(new setSell(c));
+        cmdManager.apply(new setCell(new Cell(currentCell), oldCell));
         
         fireTableCellUpdated(rowIndex, columnIndex);
     }
@@ -148,15 +146,10 @@ public class Model extends AbstractTableModel implements IModel {
         
         return involvedCells;
     }
-    
-    @Override
-    public Cell getLastModifiedCell() {
-        return lastModifiedCell;
-    }
 
     @Override
     public void setCell(Cell cell) {
-        sheet[cell.getRow()][cell.getColumn()] = cell;
+        sheet[cell.getRow()][cell.getColumn()] = new Cell(cell);
     }
     
     @Override
