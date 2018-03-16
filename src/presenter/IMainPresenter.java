@@ -9,9 +9,13 @@ package presenter;
  *
  * @author Luis
  */
-public interface IPresenter {
+public interface IMainPresenter {
     
     void setTableModel();
+    
+    void onFilterClicked(int selectedRow, int selectedColumn);
+    void onFilterPressed();
+    void onFilterReleased();
     
     void onViewModeClicked(String viewMode);
     
@@ -33,4 +37,5 @@ public interface IPresenter {
     
     void onHeaderPressed(int x, int y);
     void onHeaderDragged(int x, int y);
+    
 }

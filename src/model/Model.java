@@ -13,7 +13,7 @@ import model.doundo.setCell;
 import model.operations.AbstractOperationFactory;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
-import presenter.IPresenter;
+import presenter.IMainPresenter;
 
 /**
  *
@@ -25,10 +25,12 @@ public class Model extends AbstractTableModel implements IModel {
     public final static int TABLE_COLUMNS = 8;
     
     private CommandManager cmdManager;
-    private IPresenter presenter;
+    private IMainPresenter presenter;
     private Cell[][] sheet;
+    private int selectedRow;
+    private int selectedColumn;
     
-    public Model(IPresenter presenter) {
+    public Model(IMainPresenter presenter) {
         cmdManager = new CommandManager(this);
         this.presenter = presenter;
         initSheet();
@@ -169,6 +171,17 @@ public class Model extends AbstractTableModel implements IModel {
                 sheet[i][j].setViewMode(viewMode);
             }
         }
+    }
+
+    @Override
+    public void setSelectedCellRowColumn(int selectedRow, int selectedColumn) {
+        this.selectedRow = selectedRow;
+        this.selectedColumn = selectedColumn;
+    }
+
+    @Override
+    public Cell getSelectedCell() {
+        return sheet[selectedRow][selectedColumn];
     }
     
 }

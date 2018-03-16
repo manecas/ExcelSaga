@@ -5,12 +5,21 @@
  */
 package model.filters;
 
+import model.Cell;
+
 /**
  *
  * @author Luis
  */
 public class UpperFilterDecotator extends Filter {
     
-    private Filter filter;
+    public UpperFilterDecotator(Cell nextCell) {
+        super(nextCell);
+    }
+
+    @Override
+    public String getFilteredValue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

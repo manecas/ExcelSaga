@@ -5,12 +5,22 @@
  */
 package model.filters;
 
+import model.Cell;
+
 /**
  *
  * @author Luis
  */
 public class PositiveFilterDecotator extends Filter {
+
+    public PositiveFilterDecotator(Cell nextCell) {
+        super(nextCell);
+    }
+
+    @Override
+    public String getFilteredValue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
-    private Filter filter;
     
 }

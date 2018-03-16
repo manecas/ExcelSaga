@@ -6,12 +6,14 @@
 package view;
 
 import javax.swing.table.TableModel;
+import presenter.IFilterPresenter;
+import presenter.IMainPresenter;
 
 /**
  *
  * @author Luis
  */
-public interface IView {
+public interface IMainView {
     
     void setTableModel(TableModel tableModel);
     
@@ -39,6 +41,10 @@ public interface IView {
     void setOptionsColor();
     void resetOptionsColor();
     
+    void showFilterWindow(IFilterView filterView);
+    void setFilterColor();
+    void resetFilterColor();
+    
     void setWindowPressedCoordinates(int x, int y);
     void setWindowDraggedCoordinates(int x, int y);
     void setWindowLocation(int x, int y);
@@ -46,4 +52,6 @@ public interface IView {
     int getYY();
     int getX();
     int getY();
+    
+    void showMessageDialog(String message);
 }

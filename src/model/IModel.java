@@ -30,4 +30,8 @@ public interface IModel {
     
     void setCellsViewMode(IViewModeStrategy viewMode);
     
+    void setSelectedCellRowColumn(int selectedRow, int selectedColumn);
+    
+    Cell getSelectedCell();
+    
 }

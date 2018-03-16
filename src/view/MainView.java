@@ -7,18 +7,21 @@ package view;
 
 import java.awt.Color;
 import javax.swing.AbstractListModel;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.table.TableModel;
-import presenter.Presenter;
-import presenter.IPresenter;
+import presenter.IFilterPresenter;
+import presenter.MainPresenter;
 import utils.ViewModeUtils;
+import presenter.IMainPresenter;
 
 /**
  *
  * @author Luis
  */
-public class View extends javax.swing.JFrame implements IView {
+public class MainView extends javax.swing.JFrame implements IMainView {
 
     /**
      * Creates new form MainFrame
@@ -28,14 +31,14 @@ public class View extends javax.swing.JFrame implements IView {
     private int x;
     private int y;
     private String viewMode;
-    private IPresenter presenter;
+    private IMainPresenter mainPresenter;
     
-    public View() {
+    public MainView() {
         viewMode = ViewModeUtils.getDefaultViewMode();
         initComponents();
         createRowHeader();
-        presenter = new Presenter(this);
-        presenter.setTableModel();
+        mainPresenter = new MainPresenter(this);
+        mainPresenter.setTableModel();
     }
 
     /**
@@ -50,14 +53,15 @@ public class View extends javax.swing.JFrame implements IView {
         headerPanel = new javax.swing.JPanel();
         subtitleLabel = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
-        exitLabel = new javax.swing.JLabel();
-        sheetLabel = new javax.swing.JLabel();
-        optionsLabel = new javax.swing.JLabel();
-        redoLabel = new javax.swing.JLabel();
-        undoLabel = new javax.swing.JLabel();
-        viewModeLabel = new javax.swing.JLabel();
+        exitButton = new javax.swing.JLabel();
+        sheetButton = new javax.swing.JLabel();
+        optionsButton = new javax.swing.JLabel();
+        redoButton = new javax.swing.JLabel();
+        undoButton = new javax.swing.JLabel();
         recordMacroButton = new javax.swing.JLabel();
         playMacroButton = new javax.swing.JLabel();
+        viewModeButton = new javax.swing.JLabel();
+        filterButton = new javax.swing.JLabel();
         homePanel = new javax.swing.JPanel();
         sheetPanel = new javax.swing.JPanel();
         tableScrollPane = new javax.swing.JScrollPane();
@@ -94,13 +98,13 @@ public class View extends javax.swing.JFrame implements IView {
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         headerPanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 77, -1, -1));
 
-        exitLabel.setBackground(new java.awt.Color(1, 198, 83));
-        exitLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        exitLabel.setForeground(new java.awt.Color(255, 255, 255));
-        exitLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        exitLabel.setText("X");
-        exitLabel.setOpaque(true);
-        exitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        exitButton.setBackground(new java.awt.Color(1, 198, 83));
+        exitButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        exitButton.setForeground(new java.awt.Color(255, 255, 255));
+        exitButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exitButton.setText("X");
+        exitButton.setOpaque(true);
+        exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onExitClicked(evt);
             }
@@ -111,46 +115,46 @@ public class View extends javax.swing.JFrame implements IView {
                 onExitReleased(evt);
             }
         });
-        headerPanel.add(exitLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 0, 37, -1));
+        headerPanel.add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 0, 37, -1));
 
-        sheetLabel.setBackground(new java.awt.Color(0, 150, 62));
-        sheetLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        sheetLabel.setForeground(new java.awt.Color(255, 255, 255));
-        sheetLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sheetLabel.setText("Sheet");
-        sheetLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        sheetLabel.setMaximumSize(new java.awt.Dimension(49, 20));
-        sheetLabel.setMinimumSize(new java.awt.Dimension(49, 20));
-        sheetLabel.setOpaque(true);
-        sheetLabel.setPreferredSize(new java.awt.Dimension(49, 20));
-        sheetLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        sheetButton.setBackground(new java.awt.Color(0, 150, 62));
+        sheetButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        sheetButton.setForeground(new java.awt.Color(255, 255, 255));
+        sheetButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sheetButton.setText("Sheet");
+        sheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sheetButton.setMaximumSize(new java.awt.Dimension(49, 20));
+        sheetButton.setMinimumSize(new java.awt.Dimension(49, 20));
+        sheetButton.setOpaque(true);
+        sheetButton.setPreferredSize(new java.awt.Dimension(49, 20));
+        sheetButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onSheetClicked(evt);
             }
         });
-        headerPanel.add(sheetLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 149, 140, 30));
+        headerPanel.add(sheetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 149, 140, 30));
 
-        optionsLabel.setBackground(new java.awt.Color(1, 198, 83));
-        optionsLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        optionsLabel.setForeground(new java.awt.Color(255, 255, 255));
-        optionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        optionsLabel.setText("Options");
-        optionsLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        optionsLabel.setOpaque(true);
-        optionsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        optionsButton.setBackground(new java.awt.Color(1, 198, 83));
+        optionsButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        optionsButton.setForeground(new java.awt.Color(255, 255, 255));
+        optionsButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        optionsButton.setText("Options");
+        optionsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        optionsButton.setOpaque(true);
+        optionsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onOptionsClicked(evt);
             }
         });
-        headerPanel.add(optionsLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 140, 30));
+        headerPanel.add(optionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 140, 30));
 
-        redoLabel.setBackground(new java.awt.Color(1, 198, 83));
-        redoLabel.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        redoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        redoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Redo_32px.png"))); // NOI18N
-        redoLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        redoLabel.setOpaque(true);
-        redoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        redoButton.setBackground(new java.awt.Color(1, 198, 83));
+        redoButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        redoButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Redo_32px.png"))); // NOI18N
+        redoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        redoButton.setOpaque(true);
+        redoButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onRedoClicked(evt);
             }
@@ -161,15 +165,15 @@ public class View extends javax.swing.JFrame implements IView {
                 onRedoReleased(evt);
             }
         });
-        headerPanel.add(redoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 150, 30, 30));
+        headerPanel.add(redoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 150, 30, 30));
 
-        undoLabel.setBackground(new java.awt.Color(1, 198, 83));
-        undoLabel.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        undoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        undoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Undo_32px.png"))); // NOI18N
-        undoLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        undoLabel.setOpaque(true);
-        undoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        undoButton.setBackground(new java.awt.Color(1, 198, 83));
+        undoButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        undoButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Undo_32px.png"))); // NOI18N
+        undoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        undoButton.setOpaque(true);
+        undoButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onUndoClicked(evt);
             }
@@ -180,20 +184,7 @@ public class View extends javax.swing.JFrame implements IView {
                 onUndoReleased(evt);
             }
         });
-        headerPanel.add(undoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 150, 30, 30));
-
-        viewModeLabel.setBackground(new java.awt.Color(1, 198, 83));
-        viewModeLabel.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        viewModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        viewModeLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Eye_32px.png"))); // NOI18N
-        viewModeLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        viewModeLabel.setOpaque(true);
-        viewModeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                onViewModeClicked(evt);
-            }
-        });
-        headerPanel.add(viewModeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 150, 30, 30));
+        headerPanel.add(undoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 150, 30, 30));
 
         recordMacroButton.setBackground(new java.awt.Color(1, 198, 83));
         recordMacroButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -220,6 +211,38 @@ public class View extends javax.swing.JFrame implements IView {
             }
         });
         headerPanel.add(playMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 150, 30, 30));
+
+        viewModeButton.setBackground(new java.awt.Color(1, 198, 83));
+        viewModeButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        viewModeButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        viewModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/Eye_32px.png"))); // NOI18N
+        viewModeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        viewModeButton.setOpaque(true);
+        viewModeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onViewModeClicked(evt);
+            }
+        });
+        headerPanel.add(viewModeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 150, 30, 30));
+
+        filterButton.setBackground(new java.awt.Color(1, 198, 83));
+        filterButton.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        filterButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        filterButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icons/filter _32px.png"))); // NOI18N
+        filterButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        filterButton.setOpaque(true);
+        filterButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onFilterClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                onFilterPressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                onFilterReleased(evt);
+            }
+        });
+        headerPanel.add(filterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 150, 30, 30));
 
         homePanel.setBackground(new java.awt.Color(255, 255, 255));
         homePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(1, 198, 83), 2));
@@ -273,51 +296,47 @@ public class View extends javax.swing.JFrame implements IView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void onExitClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExitClicked
-        presenter.onExitClicked();
+        mainPresenter.onExitClicked();
     }//GEN-LAST:event_onExitClicked
 
     private void onSheetClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onSheetClicked
-        presenter.onSheetClicked();
+        mainPresenter.onSheetClicked();
     }//GEN-LAST:event_onSheetClicked
 
     private void onOptionsClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOptionsClicked
-        presenter.onOptionsClicked();
+        mainPresenter.onOptionsClicked();
     }//GEN-LAST:event_onOptionsClicked
 
     private void onHeaderPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onHeaderPressed
-        presenter.onHeaderPressed(evt.getX(), evt.getY());
+        mainPresenter.onHeaderPressed(evt.getX(), evt.getY());
     }//GEN-LAST:event_onHeaderPressed
 
     private void onHeaderDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onHeaderDragged
-        presenter.onHeaderDragged(evt.getXOnScreen(), evt.getYOnScreen());
+        mainPresenter.onHeaderDragged(evt.getXOnScreen(), evt.getYOnScreen());
     }//GEN-LAST:event_onHeaderDragged
 
     private void onExitPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExitPressed
-        presenter.onExitPressed();
+        mainPresenter.onExitPressed();
     }//GEN-LAST:event_onExitPressed
 
     private void onExitReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExitReleased
-        presenter.onExitReleased();
+        mainPresenter.onExitReleased();
     }//GEN-LAST:event_onExitReleased
 
-    private void onViewModeClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onViewModeClicked
-        presenter.onViewModeClicked(viewMode);
-    }//GEN-LAST:event_onViewModeClicked
-
     private void onRedoPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onRedoPressed
-        presenter.onRedoPressed();
+        mainPresenter.onRedoPressed();
     }//GEN-LAST:event_onRedoPressed
 
     private void onRedoReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onRedoReleased
-        presenter.onRedoReleased();
+        mainPresenter.onRedoReleased();
     }//GEN-LAST:event_onRedoReleased
 
     private void onUndoPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onUndoPressed
-        presenter.onUndoPressed();
+        mainPresenter.onUndoPressed();
     }//GEN-LAST:event_onUndoPressed
 
     private void onUndoReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onUndoReleased
-        presenter.onUndoReleased();
+        mainPresenter.onUndoReleased();
     }//GEN-LAST:event_onUndoReleased
 
     private void onPlayMacroClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPlayMacroClicked
@@ -329,12 +348,29 @@ public class View extends javax.swing.JFrame implements IView {
     }//GEN-LAST:event_onRecordMacroClicked
 
     private void onUndoClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onUndoClicked
-        presenter.onUndoClicked();
+        mainPresenter.onUndoClicked();
     }//GEN-LAST:event_onUndoClicked
 
     private void onRedoClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onRedoClicked
-        presenter.onRedoClicked();
+        mainPresenter.onRedoClicked();
     }//GEN-LAST:event_onRedoClicked
+
+    private void onViewModeClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onViewModeClicked
+        mainPresenter.onViewModeClicked(viewMode);
+    }//GEN-LAST:event_onViewModeClicked
+
+    private void onFilterClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onFilterClicked
+        mainPresenter.onFilterClicked(table.getSelectedRow(), 
+                table.getSelectedColumn());
+    }//GEN-LAST:event_onFilterClicked
+
+    private void onFilterPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onFilterPressed
+        mainPresenter.onFilterPressed();
+    }//GEN-LAST:event_onFilterPressed
+
+    private void onFilterReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onFilterReleased
+        mainPresenter.onFilterReleased();
+    }//GEN-LAST:event_onFilterReleased
 
     @Override
     public void setTableModel(TableModel tableModel) {
@@ -348,12 +384,12 @@ public class View extends javax.swing.JFrame implements IView {
     
     @Override
     public void setViewModeColor() {
-        viewModeLabel.setBackground(new Color(0, 150, 62));
+        viewModeButton.setBackground(new Color(0, 150, 62));
     }
 
     @Override
     public void resetViewModeColor() {
-        viewModeLabel.setBackground(new Color(1, 198, 83));
+        viewModeButton.setBackground(new Color(1, 198, 83));
     }
     
     @Override
@@ -363,32 +399,32 @@ public class View extends javax.swing.JFrame implements IView {
 
     @Override
     public void setExitColor() {
-        exitLabel.setBackground(new Color(0, 150, 62));
+        exitButton.setBackground(new Color(0, 150, 62));
     }
 
     @Override
     public void resetExitColor() {
-        exitLabel.setBackground(new Color(1, 198, 83));
+        exitButton.setBackground(new Color(1, 198, 83));
     }
     
     @Override
     public void setRedoColor() {
-        redoLabel.setBackground(new Color(0, 150, 62));
+        redoButton.setBackground(new Color(0, 150, 62));
     }
 
     @Override
     public void resetRedoColor() {
-        redoLabel.setBackground(new Color(1, 198, 83));
+        redoButton.setBackground(new Color(1, 198, 83));
     }
 
     @Override
     public void setUndoColor() {
-        undoLabel.setBackground(new Color(0, 150, 62));
+        undoButton.setBackground(new Color(0, 150, 62));
     }
 
     @Override
     public void resetUndoColor() {
-        undoLabel.setBackground(new Color(1, 198, 83));
+        undoButton.setBackground(new Color(1, 198, 83));
     }
 
     @Override
@@ -403,12 +439,12 @@ public class View extends javax.swing.JFrame implements IView {
 
     @Override
     public void setSheetColor() {
-        sheetLabel.setBackground(new Color(0, 150, 62));
+        sheetButton.setBackground(new Color(0, 150, 62));
     }
 
     @Override
     public void resetSheetColor() {
-        sheetLabel.setBackground(new Color(1, 198, 83));
+        sheetButton.setBackground(new Color(1, 198, 83));
     }
 
     @Override
@@ -423,14 +459,29 @@ public class View extends javax.swing.JFrame implements IView {
 
     @Override
     public void setOptionsColor() {
-        optionsLabel.setBackground(new Color(0, 150, 62));
+        optionsButton.setBackground(new Color(0, 150, 62));
     }
 
     @Override
     public void resetOptionsColor() {
-        optionsLabel.setBackground(new Color(1, 198, 83));
+        optionsButton.setBackground(new Color(1, 198, 83));
     }
 
+    @Override
+    public void showFilterWindow(IFilterView filterView) {
+        ((JFrame) filterView).setVisible(true);
+    }
+    
+    @Override
+    public void setFilterColor() {
+        filterButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetFilterColor() {
+        filterButton.setBackground(new Color(1, 198, 83));
+    }
+    
     @Override
     public void setWindowPressedCoordinates(int x, int y) {
         xx = x;
@@ -466,6 +517,11 @@ public class View extends javax.swing.JFrame implements IView {
     @Override
     public int getY() {
         return y;
+    }
+    
+    @Override
+    public void showMessageDialog(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
     
     private void createRowHeader(){
@@ -510,41 +566,43 @@ public class View extends javax.swing.JFrame implements IView {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(View.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new View().setVisible(true);
+            new MainView().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel exitLabel;
+    private javax.swing.JLabel exitButton;
+    private javax.swing.JLabel filterButton;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JPanel homePanel;
-    private javax.swing.JLabel optionsLabel;
+    private javax.swing.JLabel optionsButton;
     private javax.swing.JPanel optionsPanel;
     private javax.swing.JLabel playMacroButton;
     private javax.swing.JLabel recordMacroButton;
-    private javax.swing.JLabel redoLabel;
-    private javax.swing.JLabel sheetLabel;
+    private javax.swing.JLabel redoButton;
+    private javax.swing.JLabel sheetButton;
     private javax.swing.JPanel sheetPanel;
     private javax.swing.JLabel subtitleLabel;
     private javax.swing.JTable table;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JLabel titleLabel;
-    private javax.swing.JLabel undoLabel;
-    private javax.swing.JLabel viewModeLabel;
+    private javax.swing.JLabel undoButton;
+    private javax.swing.JLabel viewModeButton;
     // End of variables declaration//GEN-END:variables
-
 
 }

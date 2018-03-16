@@ -21,6 +21,11 @@ public class Cell {
     private IViewModeStrategy viewMode;
     private Operation operation;
     private String value;
+    private boolean selected;
+
+    public Cell() { 
+    
+    }
 
     public Cell(Cell cell){
         this.row = cell.row;
@@ -98,6 +103,14 @@ public class Cell {
 
     public void setViewMode(IViewModeStrategy viewMode) {
         this.viewMode = viewMode;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
     
 }

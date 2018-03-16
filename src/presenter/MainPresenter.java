@@ -11,53 +11,89 @@ import model.IModel;
 import model.viewmode.FunctionalViewMode;
 import model.viewmode.NormalViewMode;
 import utils.ViewModeUtils;
-import view.IView;
+import view.FilterView;
+import view.IFilterView;
+import view.IMainView;
 
 //PRESENTER
-public class Presenter implements IPresenter {
+public class MainPresenter implements IMainPresenter {
 
-    private IView view;
+    private IMainView mainView;
     private IModel model;
     
-    public Presenter(IView view) {
-        this.view = view;
+    public MainPresenter(IMainView view) {
+        this.mainView = view;
         this.model = new Model(this);
     }
     
     @Override
     public void setTableModel() {
         try{
-            view.setTableModel((TableModel) model);
+            mainView.setTableModel((TableModel) model);
         }catch(NullPointerException ex){
             throw ex;
         }
     }
 
     @Override
-    public void onViewModeClicked(String viewMode) {
+    public void onFilterClicked(int selectedRow, int selectedColumn) {
+        try{
+            if(selectedRow == -1 || selectedColumn == -1){
+                mainView.showMessageDialog("You need to select a cell first!");
+                return;
+            }
 
+            model.setSelectedCellRowColumn(selectedRow, selectedColumn);
+            IFilterView filterView = new FilterView();
+            filterView.setPresenter(new FilterPresenter(filterView, model));
+            mainView.showFilterWindow(filterView);   
+            
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+    
+    @Override
+    public void onFilterPressed() {
+        try{
+            mainView.setFilterColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onFilterReleased() {
+        try{
+            mainView.resetFilterColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+    
+    @Override
+    public void onViewModeClicked(String viewMode) {
         //Switch view mode between NormaL and Functional
         try{
             if(viewMode.equals(ViewModeUtils.VIEW_MODE_NORMAL)){ //Set Functional mode
-                view.resetViewModeColor();
-                view.setViewMode(ViewModeUtils.VIEW_MODE_FUNCTIONAL);
+                mainView.resetViewModeColor();
+                mainView.setViewMode(ViewModeUtils.VIEW_MODE_FUNCTIONAL);
                 model.setCellsViewMode(new FunctionalViewMode());
             }else{ //Set Normal mode
-                view.setViewModeColor();
-                view.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
+                mainView.setViewModeColor();
+                mainView.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
                 model.setCellsViewMode(new NormalViewMode());
             }
             model.updateCells();
         }catch(NullPointerException ex){
             throw ex;
         }
-        
     }
 
     @Override
     public void onExitClicked() {
         try{
-            view.exitSystem();
+            mainView.exitSystem();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -66,7 +102,7 @@ public class Presenter implements IPresenter {
     @Override
     public void onExitPressed() {
         try{
-            view.setExitColor();
+            mainView.setExitColor();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -75,7 +111,7 @@ public class Presenter implements IPresenter {
     @Override
     public void onExitReleased() {
         try{
-            view.resetExitColor();
+            mainView.resetExitColor();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -94,7 +130,7 @@ public class Presenter implements IPresenter {
     @Override
     public void onRedoPressed() {
         try{
-            view.setRedoColor();
+            mainView.setRedoColor();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -103,7 +139,7 @@ public class Presenter implements IPresenter {
     @Override
     public void onRedoReleased() {
         try{
-            view.resetRedoColor();
+            mainView.resetRedoColor();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -122,7 +158,7 @@ public class Presenter implements IPresenter {
     @Override
     public void onUndoPressed() {
         try{
-            view.setUndoColor();
+            mainView.setUndoColor();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -131,7 +167,7 @@ public class Presenter implements IPresenter {
     @Override
     public void onUndoReleased() {
         try{
-            view.resetUndoColor();
+            mainView.resetUndoColor();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -140,10 +176,10 @@ public class Presenter implements IPresenter {
     @Override
     public void onSheetClicked() {
         try{
-            view.setSheetColor();
-            view.resetOptionsColor();
-            view.hideOptionsPanel();
-            view.ShowSheetPanel();
+            mainView.setSheetColor();
+            mainView.resetOptionsColor();
+            mainView.hideOptionsPanel();
+            mainView.ShowSheetPanel();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -152,10 +188,10 @@ public class Presenter implements IPresenter {
     @Override
     public void onOptionsClicked() {
         try{
-            view.setOptionsColor();
-            view.resetSheetColor();
-            view.hideSheetPanel();
-           view.ShowOptionsPanel();   
+            mainView.setOptionsColor();
+            mainView.resetSheetColor();
+            mainView.hideSheetPanel();
+           mainView.ShowOptionsPanel();   
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -164,7 +200,7 @@ public class Presenter implements IPresenter {
     @Override
     public void onHeaderPressed(int x, int y) {
         try{
-            view.setWindowPressedCoordinates(x, y);
+            mainView.setWindowPressedCoordinates(x, y);
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -173,13 +209,13 @@ public class Presenter implements IPresenter {
     @Override
     public void onHeaderDragged(int x, int y) {
         try{
-            view.setWindowDraggedCoordinates(x, y);
-            int xx = view.getXX();
-            int yy = view.getYY();
-            view.setWindowLocation(x - xx, y - yy);
+            mainView.setWindowDraggedCoordinates(x, y);
+            int xx = mainView.getXX();
+            int yy = mainView.getYY();
+            mainView.setWindowLocation(x - xx, y - yy);
         }catch(NullPointerException ex){
             throw ex;
         }
     }
-    
+ 
 }
