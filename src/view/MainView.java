@@ -6,6 +6,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.event.WindowEvent;
 import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -115,7 +116,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
                 onExitReleased(evt);
             }
         });
-        headerPanel.add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 0, 37, -1));
+        headerPanel.add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 0, 35, 30));
 
         sheetButton.setBackground(new java.awt.Color(0, 150, 62));
         sheetButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -394,7 +395,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     
     @Override
     public void exitSystem() {
-        System.exit(0);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 
     @Override

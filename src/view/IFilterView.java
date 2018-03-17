@@ -15,4 +15,16 @@ public interface IFilterView {
     
     void setPresenter(IFilterPresenter filterPresenter);
     
+    void closeWindow();
+    void setExitColor();
+    void resetExitColor();
+    
+    void setWindowPressedCoordinates(int x, int y);
+    void setWindowDraggedCoordinates(int x, int y);
+    void setWindowLocation(int x, int y);
+    int getXX();
+    int getYY();
+    int getX();
+    int getY();
+    
 }

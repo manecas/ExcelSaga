@@ -11,4 +11,11 @@ package presenter;
  */
 public interface IFilterPresenter {
     
+    void onExitClicked();
+    void onExitPressed();
+    void onExitReleased();
+    
+    void onHeaderPressed(int x, int y);
+    void onHeaderDragged(int x, int y);
+    
 }

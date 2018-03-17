@@ -22,4 +22,52 @@ public class FilterPresenter implements IFilterPresenter {
         this.model = model;
     }
     
+    @Override
+    public void onExitClicked() {
+        try{
+            filterView.closeWindow();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onExitPressed() {
+        try{
+            filterView.setExitColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onExitReleased() {
+        try{
+            filterView.resetExitColor();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+    
+    @Override
+    public void onHeaderPressed(int x, int y) {
+        try{
+            filterView.setWindowPressedCoordinates(x, y);
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void onHeaderDragged(int x, int y) {
+        try{
+            filterView.setWindowDraggedCoordinates(x, y);
+            int xx = filterView.getXX();
+            int yy = filterView.getYY();
+            filterView.setWindowLocation(x - xx, y - yy);
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+    }
+    
 }
