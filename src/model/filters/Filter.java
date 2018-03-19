@@ -13,6 +13,13 @@ import model.Cell;
  */
 public abstract class Filter extends Cell {
     
+    public final static String UPPER = "UPPER";
+    public final static String INFERIOR = "INFERIOR";
+    public final static String EQUAL = "EQUAL";
+    public final static String SUPERIOR = "SUPERIOR";
+    public final static String NEGATIVE = "NEGATIVE";
+    public final static String POSITIVE = "POSITIVE";
+    
     private Cell nextCell;
     
     public abstract String getFilteredValue();

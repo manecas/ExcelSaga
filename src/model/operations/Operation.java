@@ -17,6 +17,11 @@ import model.IModel;
 //Template
 public abstract class Operation {
 
+    public final static String SUM = "=SUM";
+    public final static String COPY = "=COPY";
+    public final static String NUMBER = "=NUMBER";
+    public final static String UPPER = "=UPPER";
+    
     private Cell myCell;
     private List<Cell> involvedCells;
     private boolean performedOperation;

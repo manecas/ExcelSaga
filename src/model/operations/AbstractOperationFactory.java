@@ -14,11 +14,6 @@ import model.IModel;
  */
 public abstract class AbstractOperationFactory {
     
-    private final static String OPERATION_SUM = "=SUM";
-    private final static String OPERATION_COPY = "=COPY";
-    private final static String OPERATION_NUMBER = "=NUMBER";
-    private final static String OPERATION_UPPER = "=UPPER";
-    
     public static AbstractOperationFactory getOperationFactory(String arg){
         
         if(!arg.startsWith("=")){
@@ -28,10 +23,10 @@ public abstract class AbstractOperationFactory {
         String type = arg.split(" ")[0];
         
         switch(type){
-            case OPERATION_SUM: return new SumOperationFactory();
-            case OPERATION_COPY: return new CopyOperationFactory();
-            case OPERATION_NUMBER: return new NumberOperationFactory();
-            case OPERATION_UPPER: return new UpperOperationFactory();
+            case Operation.SUM: return new SumOperationFactory();
+            case Operation.COPY: return new CopyOperationFactory();
+            case Operation.NUMBER: return new NumberOperationFactory();
+            case Operation.UPPER: return new UpperOperationFactory();
         }
         
         return null;
