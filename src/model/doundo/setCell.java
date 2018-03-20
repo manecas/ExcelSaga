@@ -24,14 +24,14 @@ public class setCell implements ICommand {
     
     @Override
     public void doIt(Model model) {
-        model.setCell(currentCell);
-        System.out.println(currentCell.getValue());
+        model.setCell(new Cell(currentCell));
+        System.out.println("doIt(): " + currentCell.getValue());
     }
 
     @Override
     public void undoIt(Model model) {
-        model.setCell(oldCell);
-        System.out.println(oldCell.getValue());
-    }
+        model.setCell(new Cell(oldCell));
+        System.out.println("undoIt(): " + oldCell.getValue());
+    } 
     
 }

@@ -14,7 +14,7 @@ import model.Cell;
 public class NegativeFilterDecorator extends Filter {
 
     public NegativeFilterDecorator(Cell nextCell) {
-        super(nextCell);
+        super(nextCell, Filter.NEGATIVE);
     }
 
     @Override

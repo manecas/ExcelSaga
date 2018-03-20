@@ -14,7 +14,7 @@ import model.Cell;
 public class UpperFilterDecotator extends Filter {
     
     public UpperFilterDecotator(Cell nextCell) {
-        super(nextCell);
+        super(nextCell, Filter.UPPER);
     }
 
     @Override

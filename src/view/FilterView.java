@@ -6,7 +6,9 @@
 package view;
 
 import java.awt.Color;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 import presenter.IFilterPresenter;
 
 /**
@@ -26,6 +28,54 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
     
     public FilterView() {
         initComponents();
+        
+        upperCheckbox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                filterPresenter.onUpperSelected();
+            }else{
+                filterPresenter.onUpperDeselected();
+            }
+        });
+        
+        positiveCheckbox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                filterPresenter.onPositiveSelected();
+            }else{
+                filterPresenter.onPositiveDeselected();
+            }
+        });
+        
+        negativeCheckbox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                filterPresenter.onNegativeSelected();
+            }else{
+                filterPresenter.onNegativeDeselected();
+            }
+        });
+        
+        superiorCheckbox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                filterPresenter.onSuperiorSelected();
+            }else{
+                filterPresenter.onSuperiorDeselected();
+            }
+        });
+        
+        equalCheckbox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                filterPresenter.onEqualSelected();
+            }else{
+                filterPresenter.onEqualDeselected();
+            }
+        });
+        
+        inferiorCheckbox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                filterPresenter.onInferiorSelected();
+            }else{
+                filterPresenter.onInferiorDeselected();
+            }
+        });
     }
 
     /**
@@ -37,21 +87,23 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        signalRadioButtonGroup = new javax.swing.ButtonGroup();
-        comparisonRadioButtonGroup = new javax.swing.ButtonGroup();
         headerPanel = new javax.swing.JPanel();
         exitButton = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         topPanel = new javax.swing.JPanel();
-        upperRadioButton = new javax.swing.JRadioButton();
+        upperCheckbox = new javax.swing.JCheckBox();
         midPanel = new javax.swing.JPanel();
-        positiveRadioButton = new javax.swing.JRadioButton();
-        negativeRadioButton = new javax.swing.JRadioButton();
+        positiveCheckbox = new javax.swing.JCheckBox();
+        negativeCheckbox = new javax.swing.JCheckBox();
         bottomPanel = new javax.swing.JPanel();
-        equalRadioButton = new javax.swing.JRadioButton();
-        superiorRadioButton = new javax.swing.JRadioButton();
-        inferiorRadioButton = new javax.swing.JRadioButton();
+        superiorCheckbox = new javax.swing.JCheckBox();
+        equalCheckbox = new javax.swing.JCheckBox();
+        inferiorCheckbox = new javax.swing.JCheckBox();
+        parameterText = new javax.swing.JTextField();
+        parameterLabel = new javax.swing.JLabel();
+        comparisonSeparator = new javax.swing.JSeparator();
+        confirmButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
@@ -102,11 +154,10 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         topPanel.setBackground(new java.awt.Color(250, 250, 250));
         topPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(1, 198, 83)));
 
-        upperRadioButton.setBackground(new java.awt.Color(250, 250, 250));
-        upperRadioButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        upperRadioButton.setText("Upper");
-        upperRadioButton.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        upperRadioButton.setIconTextGap(10);
+        upperCheckbox.setBackground(new java.awt.Color(250, 250, 250));
+        upperCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        upperCheckbox.setText("Upper");
+        upperCheckbox.setIconTextGap(10);
 
         javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
         topPanel.setLayout(topPanelLayout);
@@ -114,43 +165,29 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(upperRadioButton)
+                .addComponent(upperCheckbox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         topPanelLayout.setVerticalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(upperRadioButton)
+                .addComponent(upperCheckbox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         midPanel.setBackground(new java.awt.Color(250, 250, 250));
         midPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(1, 198, 83)));
 
-        positiveRadioButton.setBackground(new java.awt.Color(250, 250, 250));
-        signalRadioButtonGroup.add(positiveRadioButton);
-        positiveRadioButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        positiveRadioButton.setText("Positive");
-        positiveRadioButton.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        positiveRadioButton.setIconTextGap(10);
-        positiveRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                positiveRadioButtonActionPerformed(evt);
-            }
-        });
+        positiveCheckbox.setBackground(new java.awt.Color(250, 250, 250));
+        positiveCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        positiveCheckbox.setText("Positive");
+        positiveCheckbox.setIconTextGap(10);
 
-        negativeRadioButton.setBackground(new java.awt.Color(250, 250, 250));
-        signalRadioButtonGroup.add(negativeRadioButton);
-        negativeRadioButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        negativeRadioButton.setText("Negative");
-        negativeRadioButton.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        negativeRadioButton.setIconTextGap(10);
-        negativeRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                negativeRadioButtonActionPerformed(evt);
-            }
-        });
+        negativeCheckbox.setBackground(new java.awt.Color(250, 250, 250));
+        negativeCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        negativeCheckbox.setText("Negative");
+        negativeCheckbox.setIconTextGap(10);
 
         javax.swing.GroupLayout midPanelLayout = new javax.swing.GroupLayout(midPanel);
         midPanel.setLayout(midPanelLayout);
@@ -158,9 +195,9 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
             midPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(midPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(positiveRadioButton)
+                .addComponent(positiveCheckbox)
                 .addGap(10, 10, 10)
-                .addComponent(negativeRadioButton)
+                .addComponent(negativeCheckbox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         midPanelLayout.setVerticalGroup(
@@ -168,49 +205,35 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
             .addGroup(midPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(midPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(positiveRadioButton)
-                    .addComponent(negativeRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(positiveCheckbox)
+                    .addComponent(negativeCheckbox))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bottomPanel.setBackground(new java.awt.Color(250, 250, 250));
         bottomPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(1, 198, 83)));
 
-        equalRadioButton.setBackground(new java.awt.Color(250, 250, 250));
-        comparisonRadioButtonGroup.add(equalRadioButton);
-        equalRadioButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        equalRadioButton.setText("Equal");
-        equalRadioButton.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        equalRadioButton.setIconTextGap(10);
-        equalRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                equalRadioButtonActionPerformed(evt);
-            }
-        });
+        superiorCheckbox.setBackground(new java.awt.Color(250, 250, 250));
+        superiorCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        superiorCheckbox.setText("Superior");
+        superiorCheckbox.setIconTextGap(10);
 
-        superiorRadioButton.setBackground(new java.awt.Color(250, 250, 250));
-        comparisonRadioButtonGroup.add(superiorRadioButton);
-        superiorRadioButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        superiorRadioButton.setText("Superior");
-        superiorRadioButton.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        superiorRadioButton.setIconTextGap(10);
-        superiorRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                superiorRadioButtonActionPerformed(evt);
-            }
-        });
+        equalCheckbox.setBackground(new java.awt.Color(250, 250, 250));
+        equalCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        equalCheckbox.setText("Equal");
+        equalCheckbox.setIconTextGap(10);
 
-        inferiorRadioButton.setBackground(new java.awt.Color(250, 250, 250));
-        comparisonRadioButtonGroup.add(inferiorRadioButton);
-        inferiorRadioButton.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        inferiorRadioButton.setText("Inferior");
-        inferiorRadioButton.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        inferiorRadioButton.setIconTextGap(10);
-        inferiorRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inferiorRadioButtonActionPerformed(evt);
-            }
-        });
+        inferiorCheckbox.setBackground(new java.awt.Color(250, 250, 250));
+        inferiorCheckbox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        inferiorCheckbox.setText("Infeiror");
+        inferiorCheckbox.setIconTextGap(10);
+
+        parameterText.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+
+        parameterLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        parameterLabel.setText("Parameter");
+
+        comparisonSeparator.setForeground(new java.awt.Color(1, 198, 83));
 
         javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
         bottomPanel.setLayout(bottomPanelLayout);
@@ -218,34 +241,75 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bottomPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(superiorRadioButton)
+                .addGroup(bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bottomPanelLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(comparisonSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(bottomPanelLayout.createSequentialGroup()
+                        .addComponent(superiorCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(equalCheckbox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(inferiorCheckbox)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(bottomPanelLayout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(parameterLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(equalRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(inferiorRadioButton)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addComponent(parameterText, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         bottomPanelLayout.setVerticalGroup(
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bottomPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bottomPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(superiorRadioButton)
-                    .addComponent(equalRadioButton)
-                    .addComponent(inferiorRadioButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(superiorCheckbox)
+                    .addComponent(equalCheckbox)
+                    .addComponent(inferiorCheckbox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                .addComponent(comparisonSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(parameterText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(parameterLabel))
+                .addGap(7, 7, 7))
         );
+
+        confirmButton.setBackground(new java.awt.Color(1, 198, 83));
+        confirmButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        confirmButton.setForeground(new java.awt.Color(255, 255, 255));
+        confirmButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirmButton.setText("CONFIRM");
+        confirmButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        confirmButton.setOpaque(true);
+        confirmButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onConfirmClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                onConfirmPressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                onConfirmReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(bottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bottomPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(midPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
@@ -257,7 +321,9 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
                 .addComponent(midPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -272,31 +338,11 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void inferiorRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inferiorRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inferiorRadioButtonActionPerformed
-
-    private void positiveRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_positiveRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_positiveRadioButtonActionPerformed
-
-    private void negativeRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_negativeRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_negativeRadioButtonActionPerformed
-
-    private void superiorRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_superiorRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_superiorRadioButtonActionPerformed
-
-    private void equalRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equalRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_equalRadioButtonActionPerformed
 
     private void exitButtononExitClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtononExitClicked
         filterPresenter.onExitClicked();
@@ -318,11 +364,28 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         filterPresenter.onHeaderDragged(evt.getXOnScreen(), evt.getYOnScreen());
     }//GEN-LAST:event_onHeaderDragged
 
+    private void onConfirmClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onConfirmClicked
+        filterPresenter.onConfirmClicked();
+    }//GEN-LAST:event_onConfirmClicked
+
+    private void onConfirmPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onConfirmPressed
+        filterPresenter.onConfirmPressed();
+    }//GEN-LAST:event_onConfirmPressed
+
+    private void onConfirmReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onConfirmReleased
+        filterPresenter.onConfirmReleased();
+    }//GEN-LAST:event_onConfirmReleased
+
     @Override
     public void setPresenter(IFilterPresenter filterPresenter) {
         this.filterPresenter = filterPresenter;
     }
 
+    @Override
+    public void showMessageDialog(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+    
     @Override
     public void closeWindow() {
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -375,21 +438,94 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         return y;
     }
     
+    @Override
+    public void setConfirmColor() {
+        confirmButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetConfirmColor() {
+        confirmButton.setBackground(new Color(1, 198, 83));
+    }
+    
+    @Override
+    public boolean isNegativeSelected() {
+        return negativeCheckbox.isSelected();
+    }
+
+    @Override
+    public boolean isPositiveSelected() {
+        return positiveCheckbox.isSelected();
+    }
+
+    @Override
+    public boolean isSuperiorSelected() {
+        return superiorCheckbox.isSelected();
+    }
+
+    @Override
+    public boolean isEqualSelected() {
+        return equalCheckbox.isSelected();
+    }
+
+    @Override
+    public boolean isInferiorSelected() {
+        return inferiorCheckbox.isSelected();
+    }
+
+    @Override
+    public void deselectNegative() {
+        negativeCheckbox.setSelected(false);
+    }
+
+    @Override
+    public void deselectPositive() {
+        positiveCheckbox.setSelected(false);
+    }
+
+    @Override
+    public void deselectSuperior() {
+        superiorCheckbox.setSelected(false);
+    }
+
+    @Override
+    public void deselectEqual() {
+        equalCheckbox.setSelected(false);
+    }
+
+    @Override
+    public void deselectInferior() {
+        inferiorCheckbox.setSelected(false);
+    }
+    
+    @Override
+    public String getParameterText() {
+        return parameterText.getText();
+    }
+
+    @Override
+    public void SetParameterText(String text) {
+        parameterText.setText(text);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
-    private javax.swing.ButtonGroup comparisonRadioButtonGroup;
-    private javax.swing.JRadioButton equalRadioButton;
+    private javax.swing.JSeparator comparisonSeparator;
+    private javax.swing.JLabel confirmButton;
+    private javax.swing.JCheckBox equalCheckbox;
     private javax.swing.JLabel exitButton;
     private javax.swing.JPanel headerPanel;
-    private javax.swing.JRadioButton inferiorRadioButton;
+    private javax.swing.JCheckBox inferiorCheckbox;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel midPanel;
-    private javax.swing.JRadioButton negativeRadioButton;
-    private javax.swing.JRadioButton positiveRadioButton;
-    private javax.swing.ButtonGroup signalRadioButtonGroup;
-    private javax.swing.JRadioButton superiorRadioButton;
+    private javax.swing.JCheckBox negativeCheckbox;
+    private javax.swing.JLabel parameterLabel;
+    private javax.swing.JTextField parameterText;
+    private javax.swing.JCheckBox positiveCheckbox;
+    private javax.swing.JCheckBox superiorCheckbox;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel topPanel;
-    private javax.swing.JRadioButton upperRadioButton;
+    private javax.swing.JCheckBox upperCheckbox;
     // End of variables declaration//GEN-END:variables
+ 
 }

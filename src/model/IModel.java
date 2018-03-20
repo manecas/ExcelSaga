@@ -16,6 +16,8 @@ public interface IModel {
     
     void updateCells();
     
+    void updateSelectedCell();  
+    
     Cell findCellById(String id);
     
     List<Cell> getRangeOfCells(int row1, int column1, int row2, int column2);
@@ -33,5 +35,17 @@ public interface IModel {
     void setSelectedCellRowColumn(int selectedRow, int selectedColumn);
     
     Cell getSelectedCell();
+    
+    void setSelectedCell(Cell cell);
+    
+    void addFilter(String type);
+    
+    void removeFilter(String type);
+    
+    Cell getDecoratedCell(Cell originalCell, double x);
+    
+    void clearSelectedFilters();
+    
+    Cell getCellToDecorate();
     
 }

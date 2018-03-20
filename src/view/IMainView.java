@@ -6,8 +6,6 @@
 package view;
 
 import javax.swing.table.TableModel;
-import presenter.IFilterPresenter;
-import presenter.IMainPresenter;
 
 /**
  *

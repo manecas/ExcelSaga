@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import model.doundo.CommandManager;
 import model.doundo.setCell;
+import model.filters.Filter;
+import model.filters.FilterFactory;
 import model.operations.AbstractOperationFactory;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
@@ -29,10 +31,14 @@ public class Model extends AbstractTableModel implements IModel {
     private Cell[][] sheet;
     private int selectedRow;
     private int selectedColumn;
+    private List<String> selectedFilters;
     
     public Model(IMainPresenter presenter) {
         cmdManager = new CommandManager(this);
         this.presenter = presenter;
+        this.selectedRow = -1;
+        this.selectedColumn = -1;
+        this.selectedFilters = new ArrayList<>();
         initSheet();
     }
     
@@ -47,6 +53,16 @@ public class Model extends AbstractTableModel implements IModel {
             }
             System.out.println("");
         }
+    }
+    
+    private int findFilterIndex(String type){
+        for (int i = 0; i < selectedFilters.size(); i++) {
+            if(selectedFilters.get(i).equals(type)){
+                return i;
+            }
+        }
+        
+        return -1;
     }
 
     private String getCellId(int row, int column){
@@ -65,7 +81,13 @@ public class Model extends AbstractTableModel implements IModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return (String) sheet[rowIndex][columnIndex].getViewModeValue();
+        Cell cell = sheet[rowIndex][columnIndex];
+        
+        if(cell instanceof Filter){
+            return ((Filter) cell).getFilteredValue();
+        }
+        
+        return cell.getViewModeValue();
     }
 
     @Override
@@ -75,7 +97,13 @@ public class Model extends AbstractTableModel implements IModel {
         Cell oldCell = new Cell(currentCell);
         
         try{
-            currentCell.setValue((String) value);
+            
+            if(currentCell instanceof Filter){
+                ((Filter) currentCell).setValue((String) value);
+            }else{
+                currentCell.setValue((String) value);
+            }
+            
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -109,6 +137,11 @@ public class Model extends AbstractTableModel implements IModel {
     @Override
     public void updateCells() {
         fireTableDataChanged();
+    }
+    
+    @Override
+    public void updateSelectedCell() {
+        fireTableCellUpdated(selectedRow, selectedColumn);
     }
 
     @Override
@@ -151,7 +184,7 @@ public class Model extends AbstractTableModel implements IModel {
 
     @Override
     public void setCell(Cell cell) {
-        sheet[cell.getRow()][cell.getColumn()] = new Cell(cell);
+        sheet[cell.getRow()][cell.getColumn()] = cell;
     }
     
     @Override
@@ -183,5 +216,69 @@ public class Model extends AbstractTableModel implements IModel {
     public Cell getSelectedCell() {
         return sheet[selectedRow][selectedColumn];
     }
+
+    @Override
+    public void setSelectedCell(Cell cell) {
+        sheet[selectedRow][selectedColumn] = cell;
+    }
+    
+    @Override
+    public void addFilter(String type) {
+        if(selectedFilters.contains(type)){
+            System.out.println("Already exists! " + type);
+            return;
+        }
+        
+        System.out.println("Added: " + type);
+        selectedFilters.add(type);
+    }
+
+    @Override
+    public void removeFilter(String type) {
+        int filterIndex = findFilterIndex(type);
+        
+        if(filterIndex == -1){
+            System.out.println("Index = : " + filterIndex);
+            return;
+        }
+
+        System.out.println("Removed: " + type);
+        selectedFilters.remove(filterIndex);
+    }
+
+    @Override
+    public Cell getDecoratedCell(Cell originalCell, double x) {
+        
+        Cell cellToDecorate = new Cell(originalCell);
+        
+        for (String type : selectedFilters) {
+            Cell filter = (Cell) FilterFactory.getFilter(type, x, cellToDecorate);
+            cellToDecorate = filter;
+        }
+        
+        if(cellToDecorate instanceof Filter){
+            ((Filter) cellToDecorate).setOldCell(originalCell);
+        }
+        
+        return cellToDecorate;
+    }
+
+    @Override
+    public void clearSelectedFilters() {
+        selectedFilters.clear();
+    }
+
+    @Override
+    public Cell getCellToDecorate() {
+        Cell temp = getSelectedCell();
+        
+        while(temp instanceof Filter){
+            temp = ((Filter) temp).getNextCell();
+        }
+        
+        return temp;
+    }
+
+    
     
 }

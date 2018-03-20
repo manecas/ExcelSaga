@@ -13,7 +13,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.table.TableModel;
-import presenter.IFilterPresenter;
 import presenter.MainPresenter;
 import utils.ViewModeUtils;
 import presenter.IMainPresenter;

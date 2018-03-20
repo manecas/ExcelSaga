@@ -16,7 +16,7 @@ public class InferiorFilterDecorator extends Filter {
     private double x;
 
     public InferiorFilterDecorator(Cell nextCell, double x) {
-        super(nextCell);
+        super(nextCell, Filter.INFERIOR);
         this.x = x;
     }
 

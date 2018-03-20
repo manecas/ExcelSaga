@@ -14,7 +14,7 @@ import model.Cell;
 public class PositiveFilterDecotator extends Filter {
 
     public PositiveFilterDecotator(Cell nextCell) {
-        super(nextCell);
+        super(nextCell, Filter.POSITIVE);
     }
 
     @Override

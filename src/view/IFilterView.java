@@ -15,6 +15,8 @@ public interface IFilterView {
     
     void setPresenter(IFilterPresenter filterPresenter);
     
+    void showMessageDialog(String message);
+    
     void closeWindow();
     void setExitColor();
     void resetExitColor();
@@ -26,5 +28,25 @@ public interface IFilterView {
     int getYY();
     int getX();
     int getY();
+    
+    void setConfirmColor();
+    void resetConfirmColor();
+    
+    boolean isNegativeSelected();
+    boolean isPositiveSelected();
+    
+    boolean isSuperiorSelected();
+    boolean isEqualSelected();
+    boolean isInferiorSelected();
+    
+    void deselectNegative();
+    void deselectPositive();
+    
+    void deselectSuperior();
+    void deselectEqual();
+    void deselectInferior();
+    
+    String getParameterText();
+    void SetParameterText(String text);
     
 }

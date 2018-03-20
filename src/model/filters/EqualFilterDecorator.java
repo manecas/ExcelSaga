@@ -16,7 +16,7 @@ public class EqualFilterDecorator extends Filter {
     private double x;
     
     public EqualFilterDecorator(Cell nextCell, double x) {
-        super(nextCell);
+        super(nextCell, Filter.EQUAL);
         this.x = x;
     }
 

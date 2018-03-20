@@ -16,7 +16,7 @@ public class SuperiorFilterDecotator extends Filter {
     private double x;
 
     public SuperiorFilterDecotator(Cell nextCell, double x) {
-        super(nextCell);
+        super(nextCell, Filter.SUPERIOR);
         this.x = x;
     }
 

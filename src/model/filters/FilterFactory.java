@@ -17,12 +17,13 @@ public class FilterFactory {
     }
     
     public static Cell getFilter(String filterType, double x, Cell cell){
-        switch(filterType){
+        switch(filterType){ 
             case Filter.UPPER: return new UpperFilterDecotator(cell);
             case Filter.INFERIOR: return new InferiorFilterDecorator(cell, x);
             case Filter.EQUAL: return new EqualFilterDecorator(cell, x);
             case Filter.SUPERIOR: return new SuperiorFilterDecotator(cell, x);
-            c
+            case Filter.POSITIVE: return new PositiveFilterDecotator(cell);
+            case Filter.NEGATIVE: return new NegativeFilterDecorator(cell);
         }
         
         return null;
