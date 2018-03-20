@@ -5,8 +5,8 @@
  */
 package model.doundo;
 
-import model.Cell;
 import model.Model;
+import model.filters.Filter;
 
 /**
  *
@@ -14,23 +14,23 @@ import model.Model;
  */
 public class setCell implements ICommand {
 
-    private Cell currentCell;
-    private Cell oldCell;
+    private Filter currentCell;
+    private Filter oldCell;
 
-    public setCell(Cell currentCell, Cell oldCell) {
+    public setCell(Filter currentCell, Filter oldCell) {
         this.currentCell = currentCell;
         this.oldCell = oldCell;
     }
     
     @Override
     public void doIt(Model model) {
-        model.setCell(new Cell(currentCell));
+        model.setCell(currentCell.getCopy());
         System.out.println("doIt(): " + currentCell.getValue());
     }
 
     @Override
     public void undoIt(Model model) {
-        model.setCell(new Cell(oldCell));
+        model.setCell(oldCell.getCopy());
         System.out.println("undoIt(): " + oldCell.getValue());
     } 
     

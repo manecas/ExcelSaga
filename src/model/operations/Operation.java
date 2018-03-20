@@ -5,9 +5,11 @@
  */
 package model.operations;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.Cell;
 import model.IModel;
+import model.filters.Filter;
 
 /**
  *
@@ -15,21 +17,23 @@ import model.IModel;
  */
 
 //Template
-public abstract class Operation {
+public abstract class Operation implements InvolvedCellsChangeListener {
 
     public final static String SUM = "=SUM";
     public final static String COPY = "=COPY";
     public final static String NUMBER = "=NUMBER";
     public final static String UPPER = "=UPPER";
     
-    private Cell myCell;
-    private List<Cell> involvedCells;
-    private boolean performedOperation;
+    private Filter myCell;
+    private List<Filter> involvedCells;
+    private IModel model;
     
-    public Operation(Cell myCell, IModel model) {
+    public Operation(Filter myCell, IModel model) {
         this.myCell = myCell;
-        this.performedOperation = false;
+        this.involvedCells = new ArrayList<>();
+        this.model = model;
         init(model);
+
     }
     
     abstract void performOperation(String value);
@@ -37,22 +41,17 @@ public abstract class Operation {
     abstract String getValue();
     
     public String getOperationValue(){
-        if(!performedOperation){
-            performedOperation = true;
-            
-            for (Cell c : involvedCells) {
-                if(c.getOperation() !=  null){
-                    performOperation(c.getOperationValue());
-                }else{
-                    performOperation(c.getValue());
-                }
-            }
+        for (Filter cell : involvedCells) {
+            performOperation(cell.getOperationValue());
+            cell.addInvolvedCellsChangeListener(this);
         }
         
         return getValue();
     }
     
-    private void init(IModel model){
+    protected void init(IModel model){
+        clearInvolvedCellsListeners();
+        clearInvolvedCells();
         
         String []args = myCell.getValue().trim().split(" ", 2);
         
@@ -69,8 +68,8 @@ public abstract class Operation {
                 return;
             }
             
-            Cell c1 = model.findCellById(cellIds[0]);
-            Cell c2 = model.findCellById(cellIds[1]);
+            Filter c1 = model.findCellById(cellIds[0]);
+            Filter c2 = model.findCellById(cellIds[1]);
                     
             try {
                 
@@ -104,12 +103,28 @@ public abstract class Operation {
         return array;
     }
 
-    public Cell getMyCell() {
+    public void clearInvolvedCells(){
+        involvedCells.clear();
+    }
+    
+    public void clearInvolvedCellsListeners(){
+        myCell.removeInvolvedCellsListeners();
+    }
+    
+    public Filter getMyCell() {
         return myCell;
     }
 
-    public void setMyCell(Cell myCell) {
+    public void setMyCell(Filter myCell) {
         this.myCell = myCell;
+    }
+
+    public IModel getModel() {
+        return model;
+    }
+
+    public void setModel(IModel model) {
+        this.model = model;
     }
     
 }

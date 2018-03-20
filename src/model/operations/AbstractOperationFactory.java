@@ -7,6 +7,7 @@ package model.operations;
 
 import model.Cell;
 import model.IModel;
+import model.filters.Filter;
 
 /**
  *
@@ -32,6 +33,6 @@ public abstract class AbstractOperationFactory {
         return null;
     }
     
-    public abstract Operation getOperation(Cell myCell, IModel model);
+    public abstract Operation getOperation(Filter myCell, IModel model);
     
 }

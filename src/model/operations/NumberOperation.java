@@ -7,6 +7,7 @@ package model.operations;
 
 import model.Cell;
 import model.IModel;
+import model.filters.Filter;
 
 /**
  *
@@ -14,7 +15,7 @@ import model.IModel;
  */
 public class NumberOperation extends Operation {
 
-    public NumberOperation(Cell myCell, IModel model) {
+    public NumberOperation(Filter myCell, IModel model) {
         super(myCell, model);
     }
 
@@ -26,6 +27,11 @@ public class NumberOperation extends Operation {
     @Override
     String getValue() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateInvolvedCells() {
+        init(getModel());
     }
     
 }

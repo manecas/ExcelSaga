@@ -5,8 +5,8 @@
  */
 package model.operations;
 
-import model.Cell;
 import model.IModel;
+import model.filters.Filter;
 
 /**
  *
@@ -16,8 +16,9 @@ public class SumOperation extends Operation {
 
     private double value;
     
-    public SumOperation(Cell myCell, IModel model) {
+    public SumOperation(Filter myCell, IModel model) {
         super(myCell, model);
+        value = 0; 
     }
 
     @Override
@@ -35,7 +36,16 @@ public class SumOperation extends Operation {
 
     @Override
     String getValue() {
-        return String.valueOf(value);
+        double originalValue = value;
+        value = 0;
+        
+        return String.valueOf(originalValue);
+    }
+    
+    @Override
+    public void updateInvolvedCells() {
+        init(getModel());
+        value = 0;
     }
     
 }

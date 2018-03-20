@@ -87,7 +87,7 @@ public class FilterPresenter implements IFilterPresenter {
             return;
         }
         
-        Cell decoratedCell = 
+        Filter decoratedCell = 
                 model.getDecoratedCell(model.getCellToDecorate(), x);
         model.setSelectedCell(decoratedCell);
         model.updateSelectedCell();

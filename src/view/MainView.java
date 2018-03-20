@@ -24,7 +24,7 @@ import presenter.IMainPresenter;
 public class MainView extends javax.swing.JFrame implements IMainView {
 
     /**
-     * Creates new form MainFrame
+     * Creates new form MainFram    e
      */
     private int xx;
     private int yy;

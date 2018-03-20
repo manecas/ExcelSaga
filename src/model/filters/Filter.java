@@ -6,14 +6,16 @@
 package model.filters;
 
 import model.Cell;
+import model.operations.InvolvedCellsChangeListener;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
+
 
 /**
  *
  * @author Luis
  */
-public abstract class Filter extends Cell {
+public abstract class Filter {
     
     public final static String UPPER = "UPPER";
     public final static String INFERIOR = "INFERIOR";
@@ -22,69 +24,67 @@ public abstract class Filter extends Cell {
     public final static String NEGATIVE = "NEGATIVE";
     public final static String POSITIVE = "POSITIVE";
     
-    private Cell nextCell;
-    private Cell oldCell;
-    private String type;
+    private Filter nextCell;
+    private final String type;
+
+    public Filter(Filter toCopy){
+        this.nextCell = toCopy.nextCell;
+        this.type = toCopy.type;
+    }
+    
+    public Filter(Filter nextCell, String type) {
+        this.nextCell = nextCell;
+        this.type = null;
+    }
     
     public abstract String getFilteredValue();
-
-    public Filter(Cell nextCell, String type) {
-        this.nextCell = nextCell;
-        this.type = type;
-    }
-
-    @Override
-    public String getViewModeValue() {
-        return nextCell.getViewModeValue(); 
-    }
-
-    @Override
-    public String getOperationValue() {
-        return nextCell.getOperationValue();
-    }
-
-    @Override
-    public Operation getOperation() {
-        return nextCell.getOperation();
-    }
-
-    @Override
-    public void setValue(String value) {
-        nextCell.setValue(value);
-    }
-
-    @Override
-    public String getValue() {
-        return nextCell.getValue();
-    }
-
-    @Override
-    public void setViewMode(IViewModeStrategy viewMode) {
-        nextCell.setViewMode(viewMode);
-    }
     
-    public Cell getNextCell() {
+    public abstract String getViewModeValue();
+    
+    public abstract String getOperationValue();
+
+    public abstract int getRow();
+
+    public abstract void setRow(int row);
+
+    public abstract int getColumn();
+
+    public abstract void setColumn(int column);
+
+    public abstract String getId();
+
+    public abstract void setId(String id);
+
+    public abstract String getValue();
+   
+    public abstract void setValue(String value);
+    
+    public abstract Operation getOperation();
+
+    public abstract void setOperation(Operation operation);
+
+    public abstract IViewModeStrategy getViewMode();
+
+    public abstract void setViewMode(IViewModeStrategy viewMode);
+    
+    public abstract Cell getOriginalCell();
+    
+    public abstract Filter getCopy();
+    
+    public abstract void addInvolvedCellsChangeListener(InvolvedCellsChangeListener listener);
+    
+    public abstract void removeInvolvedCellsListeners();
+
+    public Filter getNextCell() {
         return nextCell;
     }
 
-    public void setNextCell(Cell nextCell) {
+    public void setNextCell(Filter nextCell) {
         this.nextCell = nextCell;
-    }
-
-    public Cell getOldCell() {
-        return oldCell;
-    }
-
-    public void setOldCell(Cell oldCell) {
-        this.oldCell = oldCell;
     }
 
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
     
 }

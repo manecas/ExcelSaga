@@ -6,6 +6,7 @@
 package model;
 
 import java.util.List;
+import model.filters.Filter;
 import model.viewmode.IViewModeStrategy;
 
 /**
@@ -18,13 +19,13 @@ public interface IModel {
     
     void updateSelectedCell();  
     
-    Cell findCellById(String id);
+    Filter findCellById(String id);
     
-    List<Cell> getRangeOfCells(int row1, int column1, int row2, int column2);
+    List<Filter> getRangeOfCells(int row1, int column1, int row2, int column2);
     
-    List<Cell> getRanfeOfCells(String []cellIds);
+    List<Filter> getRanfeOfCells(String []cellIds);
     
-    void setCell(Cell cell);
+    void setCell(Filter cell);
     
     void undo();
     
@@ -34,18 +35,18 @@ public interface IModel {
     
     void setSelectedCellRowColumn(int selectedRow, int selectedColumn);
     
-    Cell getSelectedCell();
+    Filter getSelectedCell();
     
-    void setSelectedCell(Cell cell);
+    void setSelectedCell(Filter cell);
     
     void addFilter(String type);
     
     void removeFilter(String type);
     
-    Cell getDecoratedCell(Cell originalCell, double x);
+    Filter getDecoratedCell(Filter originalCell, double x);
     
     void clearSelectedFilters();
     
-    Cell getCellToDecorate();
+    Filter getCellToDecorate();
     
 }

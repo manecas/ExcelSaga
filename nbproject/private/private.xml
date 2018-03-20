@@ -5,16 +5,17 @@
         <group>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/view/IMainView.java</file>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/view/IFilterView.java</file>
-            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/presenter/FilterPresenter.java</file>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/presenter/IMainPresenter.java</file>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/presenter/IFilterPresenter.java</file>
-            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/model/doundo/setCell.java</file>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/view/MainView.java</file>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/model/IModel.java</file>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/model/Model.java</file>
-            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/presenter/MainPresenter.java</file>
-            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/view/FilterView.java</file>
             <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/model/Cell.java</file>
+            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/model/filters/EqualFilterDecorator.java</file>
+            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/presenter/FilterPresenter.java</file>
+            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/model/doundo/setCell.java</file>
+            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/view/FilterView.java</file>
+            <file>file:/C:/Users/Luis/Documents/Design%20e%20Arquitecturas%20de%20Software/Prática/DAS-TrabalhoPratico/ExcelSaga/src/presenter/MainPresenter.java</file>
         </group>
     </open-files>
 </project-private>

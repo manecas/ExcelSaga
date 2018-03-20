@@ -5,8 +5,8 @@
  */
 package model.operations;
 
-import model.Cell;
 import model.IModel;
+import model.filters.Filter;
 
 /**
  *
@@ -16,8 +16,9 @@ public class CopyOperation extends Operation {
 
     private String value;
     
-    public CopyOperation(Cell myCell, IModel model){
+    public CopyOperation(Filter myCell, IModel model){
         super(myCell, model);
+        value = "";
     }
     
     @Override
@@ -27,7 +28,16 @@ public class CopyOperation extends Operation {
 
     @Override
     String getValue() {
-        return value;
+        String originalValue = value;
+        value = "";
+        
+        return originalValue;
+    }
+
+    @Override
+    public void updateInvolvedCells() {
+        init(getModel());
+        value = "";
     }
     
 }

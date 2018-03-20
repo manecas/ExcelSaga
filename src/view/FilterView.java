@@ -19,7 +19,7 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
 
     /**
      * Creates new form FilterView
-     */
+     */ 
     private int xx;
     private int yy;
     private int x;

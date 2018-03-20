@@ -7,6 +7,7 @@ package model.operations;
 
 import model.Cell;
 import model.IModel;
+import model.filters.Filter;
 
 /**
  *
@@ -15,7 +16,7 @@ import model.IModel;
 public class SumOperationFactory extends AbstractOperationFactory {
 
     @Override
-    public Operation getOperation(Cell myCell, IModel model) {
+    public Operation getOperation(Filter myCell, IModel model) {
         return new SumOperation(myCell, model);
     }
     

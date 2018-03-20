@@ -28,7 +28,7 @@ public class Model extends AbstractTableModel implements IModel {
     
     private CommandManager cmdManager;
     private IMainPresenter presenter;
-    private Cell[][] sheet;
+    private Filter[][] sheet;
     private int selectedRow;
     private int selectedColumn;
     private List<String> selectedFilters;
@@ -43,7 +43,7 @@ public class Model extends AbstractTableModel implements IModel {
     }
     
     private void initSheet(){
-        sheet = new Cell[TABLE_ROWS][TABLE_COLUMNS];
+        sheet = new Filter[TABLE_ROWS][TABLE_COLUMNS];
         
         for (int i = 0; i < TABLE_ROWS; i++) {
             for (int j = 0; j < TABLE_COLUMNS; j++) {
@@ -81,10 +81,10 @@ public class Model extends AbstractTableModel implements IModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Cell cell = sheet[rowIndex][columnIndex];
+        Filter cell = sheet[rowIndex][columnIndex];
         
-        if(cell instanceof Filter){
-            return ((Filter) cell).getFilteredValue();
+        if(!(cell instanceof Cell)){
+            return cell.getFilteredValue(); 
         }
         
         return cell.getViewModeValue();
@@ -92,18 +92,12 @@ public class Model extends AbstractTableModel implements IModel {
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        Cell currentCell = sheet[rowIndex][columnIndex];
+        Filter currentCell = sheet[rowIndex][columnIndex];
 
-        Cell oldCell = new Cell(currentCell);
-        
+        Filter oldCell = currentCell.getCopy();
+         
         try{
-            
-            if(currentCell instanceof Filter){
-                ((Filter) currentCell).setValue((String) value);
-            }else{
-                currentCell.setValue((String) value);
-            }
-            
+            currentCell.setValue((String) value);
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -119,7 +113,10 @@ public class Model extends AbstractTableModel implements IModel {
                 
         currentCell.setOperation(operation);
         
-        cmdManager.apply(new setCell(new Cell(currentCell), oldCell));
+        cmdManager.apply(new setCell(currentCell.getCopy(), 
+                oldCell));
+                
+        currentCell.getOriginalCell().updateListeners();
         
         fireTableCellUpdated(rowIndex, columnIndex);
     }
@@ -145,7 +142,7 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public Cell findCellById(String id) {
+    public Filter findCellById(String id) {
         for (int i = 0; i < TABLE_ROWS; i++) {
             for (int j = 0; j < TABLE_COLUMNS; j++) {
                 if(sheet[i][j].getId().equals(id)){
@@ -158,8 +155,8 @@ public class Model extends AbstractTableModel implements IModel {
     }
     
     @Override
-    public List<Cell> getRangeOfCells(int row1, int column1, int row2, int column2) {
-        List<Cell> involvedCells = new ArrayList<>();
+    public List<Filter> getRangeOfCells(int row1, int column1, int row2, int column2) {
+        List<Filter> involvedCells = new ArrayList<>();
         
         for (int i = row1; i <= row2; i++) {
             for (int j = column1; j <= column2; j++) {
@@ -171,11 +168,11 @@ public class Model extends AbstractTableModel implements IModel {
     }
     
     @Override
-    public List<Cell> getRanfeOfCells(String[] cellIds) {
-        List<Cell> involvedCells = new ArrayList<>();
+    public List<Filter> getRanfeOfCells(String[] cellIds) {
+        List<Filter> involvedCells = new ArrayList<>();
         
         for (String cellId : cellIds) {
-            Cell c = findCellById(cellId);
+            Filter c = findCellById(cellId);
             involvedCells.add(c);
         }
         
@@ -183,8 +180,13 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public void setCell(Cell cell) {
-        sheet[cell.getRow()][cell.getColumn()] = cell;
+    public void setCell(Filter cell) {
+        try{
+            sheet[cell.getRow()][cell.getColumn()] = null;
+            sheet[cell.getRow()][cell.getColumn()] = cell;
+        }catch(ArrayStoreException ex){
+            throw ex;
+        }
     }
     
     @Override
@@ -213,13 +215,18 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public Cell getSelectedCell() {
+    public Filter getSelectedCell() {
         return sheet[selectedRow][selectedColumn];
     }
 
     @Override
-    public void setSelectedCell(Cell cell) {
-        sheet[selectedRow][selectedColumn] = cell;
+    public void setSelectedCell(Filter cell) {
+        try{
+            sheet[selectedRow][selectedColumn] = null;
+            sheet[selectedRow][selectedColumn] = cell;
+        }catch(ArrayStoreException ex){
+            throw ex;
+        }
     }
     
     @Override
@@ -247,17 +254,13 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public Cell getDecoratedCell(Cell originalCell, double x) {
+    public Filter getDecoratedCell(Filter originalCell, double x) {
         
-        Cell cellToDecorate = new Cell(originalCell);
+        Filter cellToDecorate = originalCell.getCopy();
         
         for (String type : selectedFilters) {
-            Cell filter = (Cell) FilterFactory.getFilter(type, x, cellToDecorate);
+            Filter filter = FilterFactory.getFilter(type, x, cellToDecorate);
             cellToDecorate = filter;
-        }
-        
-        if(cellToDecorate instanceof Filter){
-            ((Filter) cellToDecorate).setOldCell(originalCell);
         }
         
         return cellToDecorate;
@@ -269,16 +272,8 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public Cell getCellToDecorate() {
-        Cell temp = getSelectedCell();
-        
-        while(temp instanceof Filter){
-            temp = ((Filter) temp).getNextCell();
-        }
-        
-        return temp;
+    public Filter getCellToDecorate() {
+        return getSelectedCell().getOriginalCell();
     }
-
-    
     
 }
