@@ -17,10 +17,51 @@ import model.viewmode.IViewModeStrategy;
 public class EqualFilterDecorator extends Filter {
 
     private double x;
+
+    public EqualFilterDecorator(String type) {
+        super(type);
+    }
     
-    public EqualFilterDecorator(Filter nextCell, double x) {
-        super(nextCell, Filter.EQUAL);
+    public EqualFilterDecorator(Filter toCopy, double x) {
+        super(toCopy);
         this.x = x;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EqualFilterDecorator other = (EqualFilterDecorator) obj;
+        if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(other.x)) {
+            return false;
+        }
+        return true;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+    
+    public String getXAsString() {
+        return String.valueOf(x);
     }
 
     @Override
@@ -116,7 +157,7 @@ public class EqualFilterDecorator extends Filter {
 
     @Override
     public Filter getCopy() {
-        return new EqualFilterDecorator(getNextCell(), x);
+        return new EqualFilterDecorator(this, x);
     }
 
     @Override

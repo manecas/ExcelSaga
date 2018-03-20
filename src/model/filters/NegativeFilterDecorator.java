@@ -15,14 +15,29 @@ import model.viewmode.IViewModeStrategy;
  * @author Luis
  */
 public class NegativeFilterDecorator extends Filter {
-    
-    public NegativeFilterDecorator(Filter nextCell) {
-        super(nextCell, Filter.NEGATIVE);
+        
+    public NegativeFilterDecorator(Filter toCopy) {
+        super(toCopy);
     }
 
+    public NegativeFilterDecorator(String type) {
+        super(type);
+    }
+    
     @Override
     public String getFilteredValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        double value = 0;
+        
+        try{
+            value = Double.parseDouble(getNextCell().getFilteredValue());
+        }catch(NumberFormatException ex){
+            System.out.println("getFilteredValue(): It's ok if it's not a number");
+            return "";
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+        
+        return value < 0 ? String.valueOf(value) :  "";
     }
 
     @Override

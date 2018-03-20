@@ -47,7 +47,6 @@ public class MainPresenter implements IMainPresenter {
             IFilterView filterView = new FilterView();
             filterView.setPresenter(new FilterPresenter(filterView, model));
             mainView.showFilterWindow(filterView);   
-            
         }catch(NullPointerException ex){
             throw ex;
         }

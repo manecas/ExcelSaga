@@ -22,16 +22,16 @@ public class setCell implements ICommand {
         this.oldCell = oldCell;
     }
     
-    @Override
+    @Override   
     public void doIt(Model model) {
         model.setCell(currentCell.getCopy());
-        System.out.println("doIt(): " + currentCell.getValue());
+        System.out.println("doIt(): " + currentCell.getFilteredValue());
     }
 
     @Override
     public void undoIt(Model model) {
         model.setCell(oldCell.getCopy());
-        System.out.println("undoIt(): " + oldCell.getValue());
+        System.out.println("undoIt(): " + oldCell.getFilteredValue());
     } 
     
 }

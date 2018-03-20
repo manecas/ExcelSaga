@@ -10,8 +10,11 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import model.doundo.CommandManager;
 import model.doundo.setCell;
+import model.filters.EqualFilterDecorator;
 import model.filters.Filter;
 import model.filters.FilterFactory;
+import model.filters.InferiorFilterDecorator;
+import model.filters.SuperiorFilterDecotator;
 import model.operations.AbstractOperationFactory;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
@@ -31,7 +34,7 @@ public class Model extends AbstractTableModel implements IModel {
     private Filter[][] sheet;
     private int selectedRow;
     private int selectedColumn;
-    private List<String> selectedFilters;
+    private List<Filter> selectedFilters;
     
     public Model(IMainPresenter presenter) {
         cmdManager = new CommandManager(this);
@@ -57,7 +60,7 @@ public class Model extends AbstractTableModel implements IModel {
     
     private int findFilterIndex(String type){
         for (int i = 0; i < selectedFilters.size(); i++) {
-            if(selectedFilters.get(i).equals(type)){
+            if(selectedFilters.get(i).getType().equals(type)){
                 return i;
             }
         }
@@ -89,11 +92,15 @@ public class Model extends AbstractTableModel implements IModel {
         
         return cell.getViewModeValue();
     }
-
+ 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         Filter currentCell = sheet[rowIndex][columnIndex];
 
+        if(currentCell.getValue().equals((String) value)){
+            return;
+        }
+        
         Filter oldCell = currentCell.getCopy();
          
         try{
@@ -180,10 +187,9 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public void setCell(Filter cell) {
+    public void setCell(Filter newCell) {
         try{
-            sheet[cell.getRow()][cell.getColumn()] = null;
-            sheet[cell.getRow()][cell.getColumn()] = cell;
+            sheet[newCell.getRow()][newCell.getColumn()] = newCell;
         }catch(ArrayStoreException ex){
             throw ex;
         }
@@ -220,24 +226,27 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public void setSelectedCell(Filter cell) {
+    public void setSelectedCell(Filter newCell) {
+        //Filters
         try{
-            sheet[selectedRow][selectedColumn] = null;
-            sheet[selectedRow][selectedColumn] = cell;
+            Filter oldCell = 
+                    sheet[selectedRow][selectedColumn].getCopy();
+            sheet[selectedRow][selectedColumn] = newCell;
+            cmdManager.apply(new setCell(newCell.getCopy(), oldCell));
         }catch(ArrayStoreException ex){
             throw ex;
         }
     }
     
     @Override
-    public void addFilter(String type) {
-        if(selectedFilters.contains(type)){
-            System.out.println("Already exists! " + type);
+    public void addFilter(Filter filter) {
+        if(selectedFilters.contains(filter)){
+            System.out.println("Already exists! " + filter.getType());
             return;
         }
         
-        System.out.println("Added: " + type);
-        selectedFilters.add(type);
+        System.out.println("Added: " + filter.getType());
+        selectedFilters.add(filter);
     }
 
     @Override
@@ -256,11 +265,20 @@ public class Model extends AbstractTableModel implements IModel {
     @Override
     public Filter getDecoratedCell(Filter originalCell, double x) {
         
-        Filter cellToDecorate = originalCell.getCopy();
+        Filter cellToDecorate = originalCell;
         
-        for (String type : selectedFilters) {
-            Filter filter = FilterFactory.getFilter(type, x, cellToDecorate);
-            cellToDecorate = filter;
+        for (Filter f : selectedFilters) {
+            f.setNextCell(cellToDecorate);
+            
+            if(f instanceof SuperiorFilterDecotator){
+                ((SuperiorFilterDecotator) f).setX(x);
+            }else if(f instanceof EqualFilterDecorator){
+                ((EqualFilterDecorator) f).setX(x);
+            }else if(f instanceof InferiorFilterDecorator){
+                ((InferiorFilterDecorator) f).setX(x);
+            }
+            
+            cellToDecorate = f;
         }
         
         return cellToDecorate;
@@ -274,6 +292,19 @@ public class Model extends AbstractTableModel implements IModel {
     @Override
     public Filter getCellToDecorate() {
         return getSelectedCell().getOriginalCell();
+    }
+
+    @Override
+    public List<Filter> getSelectedCellFilters() {
+        
+        Filter currentCell = sheet[selectedRow][selectedColumn];
+        
+        while(!(currentCell instanceof Cell)){
+            selectedFilters.add(currentCell);
+            currentCell = currentCell.getNextCell();
+        }
+        
+        return new ArrayList<>(selectedFilters);
     }
     
 }

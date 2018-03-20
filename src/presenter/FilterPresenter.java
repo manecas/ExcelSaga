@@ -5,12 +5,13 @@
  */
 package presenter;
 
-import model.Cell;
+import java.util.List;
 import model.IModel;
+import model.filters.EqualFilterDecorator;
 import model.filters.Filter;
-import model.filters.NegativeFilterDecorator;
-import model.filters.PositiveFilterDecotator;
-import model.filters.UpperFilterDecotator;
+import model.filters.FilterFactory;
+import model.filters.InferiorFilterDecorator;
+import model.filters.SuperiorFilterDecotator;
 import view.IFilterView;
 
 /**
@@ -31,6 +32,7 @@ public class FilterPresenter implements IFilterPresenter {
     public void onExitClicked() {
         try{
             filterView.closeWindow();
+            model.clearSelectedFilters();
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -83,8 +85,12 @@ public class FilterPresenter implements IFilterPresenter {
         try{
             x = Double.parseDouble(parameter);
         }catch(NumberFormatException ex){
-            filterView.showMessageDialog("Parameter value not valid!");
-            return;
+            if(filterView.isSuperiorSelected() 
+                    || filterView.isEqualSelected()
+                    || filterView.isInferiorSelected()){
+                filterView.showMessageDialog("Parameter value not valid!");
+                return;
+            }
         }
         
         Filter decoratedCell = 
@@ -108,7 +114,7 @@ public class FilterPresenter implements IFilterPresenter {
 
     @Override
     public void onUpperSelected() {
-        model.addFilter(Filter.UPPER);
+        model.addFilter(FilterFactory.getFilter(Filter.UPPER));
     }
 
     @Override
@@ -118,7 +124,7 @@ public class FilterPresenter implements IFilterPresenter {
 
     @Override
     public void onPositiveSelected() {
-        model.addFilter(Filter.POSITIVE);
+        model.addFilter(FilterFactory.getFilter(Filter.POSITIVE));
         
         if(filterView.isNegativeSelected()){
             filterView.deselectNegative();
@@ -132,7 +138,7 @@ public class FilterPresenter implements IFilterPresenter {
 
     @Override
     public void onNegativeSelected() {
-        model.addFilter(Filter.NEGATIVE);
+        model.addFilter(FilterFactory.getFilter(Filter.NEGATIVE));
         
         if(filterView.isPositiveSelected()){
             filterView.deselectPositive();
@@ -146,7 +152,7 @@ public class FilterPresenter implements IFilterPresenter {
 
     @Override
     public void onSuperiorSelected() {
-        model.addFilter(Filter.SUPERIOR);
+        model.addFilter(FilterFactory.getFilter(Filter.SUPERIOR));
         
         if(filterView.isEqualSelected()){
             filterView.deselectEqual();
@@ -155,16 +161,24 @@ public class FilterPresenter implements IFilterPresenter {
         if(filterView.isInferiorSelected()){
             filterView.deselectInferior();
         }
+        
+        filterView.setParamaterTextEditable();
     }
 
     @Override
     public void onSuperiorDeselected() {
         model.removeFilter(Filter.SUPERIOR);
+        
+        if(!filterView.isEqualSelected()
+                && !filterView.isInferiorSelected()){
+            filterView.setParamaterTextNotEditable();
+        }
+        
     }
 
     @Override
     public void onEqualSelected() {
-        model.addFilter(Filter.EQUAL);
+        model.addFilter(FilterFactory.getFilter(Filter.EQUAL));
         
         if(filterView.isSuperiorSelected()){
             filterView.deselectSuperior();
@@ -173,16 +187,23 @@ public class FilterPresenter implements IFilterPresenter {
         if(filterView.isInferiorSelected()){
             filterView.deselectInferior();
         }
+        
+        filterView.setParamaterTextEditable();
     }
 
     @Override
     public void onEqualDeselected() {
         model.removeFilter(Filter.EQUAL);
+        
+        if(!filterView.isSuperiorSelected()
+                && !filterView.isInferiorSelected()){
+            filterView.setParamaterTextNotEditable();
+        }
     }
 
     @Override
     public void onInferiorSelected() {
-        model.addFilter(Filter.INFERIOR);
+        model.addFilter(FilterFactory.getFilter(Filter.INFERIOR));
         
         if(filterView.isSuperiorSelected()){
             filterView.deselectSuperior();
@@ -191,11 +212,59 @@ public class FilterPresenter implements IFilterPresenter {
         if(filterView.isEqualSelected()){
             filterView.deselectEqual();
         }
+        
+        filterView.setParamaterTextEditable();
     }
 
     @Override
     public void onInferiorDeselected() {
         model.removeFilter(Filter.INFERIOR);
+        
+        if(!filterView.isEqualSelected()
+                && !filterView.isInferiorSelected()){
+            filterView.setParamaterTextNotEditable();
+        }
+    }
+ 
+    @Override
+    public void onWindowLoad() {
+        List<Filter> selectedFilters = model.getSelectedCellFilters();
+        
+        filterView.setWindowLoading(true);
+        
+        for (Filter f : selectedFilters) {
+            switch(f.getType()){
+                case Filter.UPPER: 
+                    filterView.selectUpper();
+                    break;
+                case Filter.POSITIVE: 
+                    filterView.selectPositive();
+                    break;
+                case Filter.NEGATIVE: 
+                    filterView.selectNegative();
+                    break;
+                case Filter.SUPERIOR: 
+                    filterView.selectSuperior();
+                    filterView.SetParameterText(((SuperiorFilterDecotator) f).getXAsString());
+                    break;
+                case Filter.EQUAL: 
+                    filterView.selectEqual();
+                    filterView.SetParameterText(((EqualFilterDecorator) f).getXAsString());
+                    break;
+                case Filter.INFERIOR: 
+                    filterView.selectInferior();
+                    filterView.SetParameterText(((InferiorFilterDecorator) f).getXAsString());
+                    break;
+            }
+        }
+        
+        filterView.setWindowLoading(false);
+        
+        if(!filterView.isSuperiorSelected()
+                && !filterView.isEqualSelected()
+                && !filterView.isInferiorSelected()){
+            filterView.setParamaterTextNotEditable();
+        }
     }
     
 }

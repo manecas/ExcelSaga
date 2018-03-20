@@ -24,12 +24,18 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
     private int yy;
     private int x;
     private int y;
+    private boolean windowLoading;
     private IFilterPresenter filterPresenter;
     
     public FilterView() {
         initComponents();
+        windowLoading = false;
         
         upperCheckbox.addItemListener((ItemEvent e) -> {
+            if(windowLoading){
+                return;
+            }
+            
             if(e.getStateChange() == ItemEvent.SELECTED){
                 filterPresenter.onUpperSelected();
             }else{
@@ -38,6 +44,10 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         });
         
         positiveCheckbox.addItemListener((ItemEvent e) -> {
+            if(windowLoading){
+                return;
+            }
+            
             if(e.getStateChange() == ItemEvent.SELECTED){
                 filterPresenter.onPositiveSelected();
             }else{
@@ -46,6 +56,10 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         });
         
         negativeCheckbox.addItemListener((ItemEvent e) -> {
+            if(windowLoading){
+                return;
+            }
+            
             if(e.getStateChange() == ItemEvent.SELECTED){
                 filterPresenter.onNegativeSelected();
             }else{
@@ -54,6 +68,10 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         });
         
         superiorCheckbox.addItemListener((ItemEvent e) -> {
+            if(windowLoading){
+                return;
+            }
+            
             if(e.getStateChange() == ItemEvent.SELECTED){
                 filterPresenter.onSuperiorSelected();
             }else{
@@ -62,6 +80,10 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         });
         
         equalCheckbox.addItemListener((ItemEvent e) -> {
+            if(windowLoading){
+                return;
+            }
+            
             if(e.getStateChange() == ItemEvent.SELECTED){
                 filterPresenter.onEqualSelected();
             }else{
@@ -70,12 +92,17 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         });
         
         inferiorCheckbox.addItemListener((ItemEvent e) -> {
+            if(windowLoading){
+                return;
+            }
+            
             if(e.getStateChange() == ItemEvent.SELECTED){
                 filterPresenter.onInferiorSelected();
             }else{
                 filterPresenter.onInferiorDeselected();
             }
         });
+        
     }
 
     /**
@@ -106,6 +133,7 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         confirmButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
         setLocationByPlatform(true);
         setUndecorated(true);
 
@@ -379,6 +407,7 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
     @Override
     public void setPresenter(IFilterPresenter filterPresenter) {
         this.filterPresenter = filterPresenter;
+        this.filterPresenter.onWindowLoad();
     }
 
     @Override
@@ -499,6 +528,36 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
     }
     
     @Override
+    public void selectUpper() {
+        upperCheckbox.setSelected(true);
+    }
+    
+    @Override
+    public void selectNegative() {
+        negativeCheckbox.setSelected(true);
+    }
+
+    @Override
+    public void selectPositive() {
+        positiveCheckbox.setSelected(true);
+    }
+
+    @Override
+    public void selectSuperior() {
+        superiorCheckbox.setSelected(true);
+    }
+
+    @Override
+    public void selectEqual() {
+        equalCheckbox.setSelected(true);
+    }
+
+    @Override
+    public void selectInferior() {
+        inferiorCheckbox.setSelected(true);
+    }
+    
+    @Override
     public String getParameterText() {
         return parameterText.getText();
     }
@@ -506,6 +565,21 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
     @Override
     public void SetParameterText(String text) {
         parameterText.setText(text);
+    }
+    
+    @Override
+    public void setParamaterTextEditable() {
+        parameterText.setEditable(true);
+    }
+
+    @Override
+    public void setParamaterTextNotEditable() {
+        parameterText.setEditable(false);
+    }
+    
+    @Override
+    public void setWindowLoading(boolean windowLoading) {
+        this.windowLoading = windowLoading;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -527,5 +601,5 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
     private javax.swing.JPanel topPanel;
     private javax.swing.JCheckBox upperCheckbox;
     // End of variables declaration//GEN-END:variables
- 
+
 }

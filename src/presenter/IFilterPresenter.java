@@ -40,4 +40,5 @@ public interface IFilterPresenter {
     void onInferiorSelected();
     void onInferiorDeselected();
     
+    void onWindowLoad();
 }

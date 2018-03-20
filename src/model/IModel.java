@@ -25,7 +25,7 @@ public interface IModel {
     
     List<Filter> getRanfeOfCells(String []cellIds);
     
-    void setCell(Filter cell);
+    void setCell(Filter newCell);
     
     void undo();
     
@@ -37,9 +37,9 @@ public interface IModel {
     
     Filter getSelectedCell();
     
-    void setSelectedCell(Filter cell);
+    void setSelectedCell(Filter newCell);
     
-    void addFilter(String type);
+    void addFilter(Filter filter);
     
     void removeFilter(String type);
     
@@ -48,5 +48,7 @@ public interface IModel {
     void clearSelectedFilters();
     
     Filter getCellToDecorate();
+    
+    List<Filter> getSelectedCellFilters();
     
 }

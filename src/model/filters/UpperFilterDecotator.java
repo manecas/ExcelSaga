@@ -16,13 +16,25 @@ import model.viewmode.IViewModeStrategy;
  */
 public class UpperFilterDecotator extends Filter {
     
-    public UpperFilterDecotator(Filter nextCell) {
-        super(nextCell, Filter.UPPER);
+    public UpperFilterDecotator(Filter toCopy) {
+        super(toCopy);
     }
 
+    public UpperFilterDecotator(String type) {
+        super(type);
+    }
+    
     @Override
     public String getFilteredValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String value = "";
+        
+        try{
+            value = getNextCell().getFilteredValue();
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+        
+        return value.toUpperCase();
     }
 
     @Override

@@ -18,14 +18,66 @@ public class SuperiorFilterDecotator extends Filter {
     
     private double x;
 
-    public SuperiorFilterDecotator(Filter nextCell, double x) {
-        super(nextCell, Filter.SUPERIOR);
+    public SuperiorFilterDecotator(String type) {
+        super(type);
+    }
+    
+    public SuperiorFilterDecotator(Filter toCopy, double x) {
+        super(toCopy);
         this.x = x;
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SuperiorFilterDecotator other = (SuperiorFilterDecotator) obj;
+        if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(other.x)) {
+            return false;
+        }
+        return true;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public String getXAsString() {
+        return String.valueOf(x);
+    }
+    
+    @Override
     public String getFilteredValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        double value = 0;
+        
+        try{
+            value = Double.parseDouble(getNextCell().getFilteredValue());
+        }catch(NumberFormatException ex){
+            System.out.println("getFilteredValue(): It's ok if it's not a number");
+            return "";
+        }catch(NullPointerException ex){
+            throw ex;
+        }
+        
+        return value > x ? String.valueOf(value) :  "";
     }
 
     @Override

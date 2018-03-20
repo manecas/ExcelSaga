@@ -16,14 +16,14 @@ public class FilterFactory {
     private FilterFactory() {
     }
     
-    public static Filter getFilter(String filterType, double x, Filter nextCell){
+    public static Filter getFilter(String filterType){
         switch(filterType){ 
-            case Filter.UPPER: return new UpperFilterDecotator(nextCell);
-            case Filter.INFERIOR: return new InferiorFilterDecorator(nextCell, x);
-            case Filter.EQUAL: return new EqualFilterDecorator(nextCell, x);
-            case Filter.SUPERIOR: return new SuperiorFilterDecotator(nextCell, x);
-            case Filter.POSITIVE: return new PositiveFilterDecotator(nextCell);
-            case Filter.NEGATIVE: return new NegativeFilterDecorator(nextCell);
+            case Filter.UPPER: return new UpperFilterDecotator(Filter.UPPER);
+            case Filter.INFERIOR: return new InferiorFilterDecorator(Filter.INFERIOR);
+            case Filter.EQUAL: return new EqualFilterDecorator(Filter.EQUAL);
+            case Filter.SUPERIOR: return new SuperiorFilterDecotator(Filter.SUPERIOR);
+            case Filter.POSITIVE: return new PositiveFilterDecotator(Filter.POSITIVE);
+            case Filter.NEGATIVE: return new NegativeFilterDecorator(Filter.NEGATIVE);
         }
         
         return null;

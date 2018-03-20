@@ -5,11 +5,11 @@
  */
 package model.filters;
 
+import java.util.Objects;
 import model.Cell;
 import model.operations.InvolvedCellsChangeListener;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
-
 
 /**
  *
@@ -27,14 +27,52 @@ public abstract class Filter {
     private Filter nextCell;
     private final String type;
 
-    public Filter(Filter toCopy){
-        this.nextCell = toCopy.nextCell;
-        this.type = toCopy.type;
+    public Filter(String type) {
+        this.type = type;
+    }
+
+    public Filter(Filter toCopy) {
+        if(toCopy != null){
+            this.nextCell = toCopy.nextCell.getCopy();
+        }else{
+            this.nextCell = null;
+        }
+        
+        if(toCopy.type != null){
+            this.type = toCopy.type;
+        }else{
+            this.type = null;
+        }
     }
     
     public Filter(Filter nextCell, String type) {
         this.nextCell = nextCell;
-        this.type = null;
+        this.type = type;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.type);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Filter other = (Filter) obj;
+        if (!Objects.equals(this.type, other.type)) {
+            return false;
+        }
+        return true;
     }
     
     public abstract String getFilteredValue();

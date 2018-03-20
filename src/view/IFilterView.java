@@ -46,7 +46,20 @@ public interface IFilterView {
     void deselectEqual();
     void deselectInferior();
     
+    void selectUpper();
+    
+    void selectNegative();
+    void selectPositive();
+    
+    void selectSuperior();
+    void selectEqual();
+    void selectInferior();
+    
     String getParameterText();
     void SetParameterText(String text);
+    void setParamaterTextEditable();
+    void setParamaterTextNotEditable();
+    
+    void setWindowLoading(boolean windowLoading);
     
 }
