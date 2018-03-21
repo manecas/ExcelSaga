@@ -30,11 +30,9 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private int yy;
     private int x;
     private int y;
-    private String viewMode;
     private IMainPresenter mainPresenter;
     
     public MainView() {
-        viewMode = ViewModeUtils.getDefaultViewMode();
         initComponents();
         createRowHeader();
         mainPresenter = new MainPresenter(this);
@@ -209,6 +207,12 @@ public class MainView extends javax.swing.JFrame implements IMainView {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onPlayMacroClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                onPlayMacroPressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                onPlayMacroReleased(evt);
+            }
         });
         headerPanel.add(playMacroButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 150, 30, 30));
 
@@ -340,11 +344,11 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     }//GEN-LAST:event_onUndoReleased
 
     private void onPlayMacroClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPlayMacroClicked
-        // TODO add your handling code here:
+        mainPresenter.onPlayMacroClicked();
     }//GEN-LAST:event_onPlayMacroClicked
 
     private void onRecordMacroClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onRecordMacroClicked
-        // TODO add your handling code here:
+        mainPresenter.onRecordMacroClicked();
     }//GEN-LAST:event_onRecordMacroClicked
 
     private void onUndoClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onUndoClicked
@@ -356,7 +360,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     }//GEN-LAST:event_onRedoClicked
 
     private void onViewModeClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onViewModeClicked
-        mainPresenter.onViewModeClicked(viewMode);
+        mainPresenter.onViewModeClicked();
     }//GEN-LAST:event_onViewModeClicked
 
     private void onFilterClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onFilterClicked
@@ -372,14 +376,17 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         mainPresenter.onFilterReleased();
     }//GEN-LAST:event_onFilterReleased
 
+    private void onPlayMacroPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPlayMacroPressed
+        mainPresenter.onPlayMacroPressed();
+    }//GEN-LAST:event_onPlayMacroPressed
+
+    private void onPlayMacroReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPlayMacroReleased
+        mainPresenter.onPlayMacroReleased();
+    }//GEN-LAST:event_onPlayMacroReleased
+
     @Override
     public void setTableModel(TableModel tableModel) {
         table.setModel(tableModel);
-    }
-    
-    @Override
-    public void setViewMode(String viewMode){
-        this.viewMode = viewMode;
     }
     
     @Override
@@ -480,6 +487,26 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     @Override
     public void resetFilterColor() {
         filterButton.setBackground(new Color(1, 198, 83));
+    }
+    
+    @Override
+    public void setRecordMacroColor() {
+        recordMacroButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetRecordMacroColor() {
+        recordMacroButton.setBackground(new Color(1, 198, 83));
+    }
+    
+    @Override
+    public void setPlayMacroColor() {
+        playMacroButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetPlayMacroColor() {
+        playMacroButton.setBackground(new Color(1, 198, 83));
     }
     
     @Override
@@ -604,5 +631,9 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private javax.swing.JLabel undoButton;
     private javax.swing.JLabel viewModeButton;
     // End of variables declaration//GEN-END:variables
+
+    
+
+    
 
 }

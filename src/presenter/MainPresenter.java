@@ -71,16 +71,18 @@ public class MainPresenter implements IMainPresenter {
     }
     
     @Override
-    public void onViewModeClicked(String viewMode) {
+    public void onViewModeClicked() {
         //Switch view mode between NormaL and Functional
+        String viewMode = model.getViewMode();
+        
         try{
             if(viewMode.equals(ViewModeUtils.VIEW_MODE_NORMAL)){ //Set Functional mode
                 mainView.resetViewModeColor();
-                mainView.setViewMode(ViewModeUtils.VIEW_MODE_FUNCTIONAL);
+                model.setViewMode(ViewModeUtils.VIEW_MODE_FUNCTIONAL);
                 model.setCellsViewMode(new FunctionalViewMode());
             }else{ //Set Normal mode
                 mainView.setViewModeColor();
-                mainView.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
+                model.setViewMode(ViewModeUtils.VIEW_MODE_NORMAL);
                 model.setCellsViewMode(new NormalViewMode());
             }
             model.updateCells();
@@ -214,6 +216,33 @@ public class MainPresenter implements IMainPresenter {
             mainView.setWindowLocation(x - xx, y - yy);
         }catch(NullPointerException ex){
             throw ex;
+        }
+    }
+
+    @Override
+    public void onPlayMacroClicked() {
+        model.playMacro();
+    }
+
+    @Override
+    public void onPlayMacroPressed() {
+        mainView.setPlayMacroColor();
+    }
+
+    @Override
+    public void onPlayMacroReleased() {
+        mainView.resetPlayMacroColor();
+    }
+
+    @Override
+    public void onRecordMacroClicked() {
+        if(model.isRecordingMacro()){
+            model.setRecordingMacro(false);
+            mainView.resetRecordMacroColor();
+        }else{
+            model.clearMacro();
+            model.setRecordingMacro(true);
+            mainView.setRecordMacroColor();
         }
     }
  

@@ -117,7 +117,7 @@ public class NegativeFilterDecorator extends Filter {
 
     @Override
     public Filter getCopy() {
-        return new NegativeFilterDecorator(getNextCell());
+        return new NegativeFilterDecorator(this);
     }
     
     @Override

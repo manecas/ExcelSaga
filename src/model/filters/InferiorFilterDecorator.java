@@ -157,7 +157,7 @@ public class InferiorFilterDecorator extends Filter {
 
     @Override
     public Filter getCopy() {
-        return new InferiorFilterDecorator(getNextCell(), x);
+        return new InferiorFilterDecorator(this, x);
     }
     
     @Override

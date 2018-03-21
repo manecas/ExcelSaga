@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.doundo;
+package model.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +25,21 @@ public class CommandManager {
         this.model = model;
     }
     
-    //do
+    public void apply(List<ICommand> commands){
+        for (ICommand command : commands) {
+            command.doIt(model);
+            undoList.add(command);
+        }
+        redoList.clear();
+    }
+    
     public void apply(ICommand command){
-        
         command.doIt(model);
         undoList.add(command);
         redoList.clear();
-        
     }
     
     public void undo(){
-        
         if(undoList.isEmpty()){
             System.out.println("Undo is empty...");
             return;
@@ -46,11 +50,9 @@ public class CommandManager {
         ICommand lastCommand = undoList.remove(lastCommandIndex);
         lastCommand.undoIt(model);
         redoList.add(lastCommand);
-        
     }
     
     public void redo(){
-        
         if(redoList.isEmpty()){
             System.out.println("Redo is empty...");
             return;
@@ -61,8 +63,6 @@ public class CommandManager {
         ICommand lastCommand = redoList.remove(lastCommandIndex);
         lastCommand.doIt(model);
         undoList.add(lastCommand);
-        
-        
     }
     
 }

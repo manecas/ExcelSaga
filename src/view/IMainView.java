@@ -15,7 +15,6 @@ public interface IMainView {
     
     void setTableModel(TableModel tableModel);
     
-    void setViewMode(String viewMode);
     void setViewModeColor();
     void resetViewModeColor();
     
@@ -42,6 +41,12 @@ public interface IMainView {
     void showFilterWindow(IFilterView filterView);
     void setFilterColor();
     void resetFilterColor();
+    
+    void setRecordMacroColor();
+    void resetRecordMacroColor();
+    
+    void setPlayMacroColor();
+    void resetPlayMacroColor();
     
     void setWindowPressedCoordinates(int x, int y);
     void setWindowDraggedCoordinates(int x, int y);

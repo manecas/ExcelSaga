@@ -133,7 +133,6 @@ public class FilterView extends javax.swing.JFrame implements IFilterView {
         confirmButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
         setLocationByPlatform(true);
         setUndecorated(true);
 

@@ -8,17 +8,18 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import model.doundo.CommandManager;
-import model.doundo.setCell;
+import model.command.CommandManager;
+import model.command.Macro;
+import model.command.setCell;
 import model.filters.EqualFilterDecorator;
 import model.filters.Filter;
-import model.filters.FilterFactory;
 import model.filters.InferiorFilterDecorator;
 import model.filters.SuperiorFilterDecotator;
 import model.operations.AbstractOperationFactory;
 import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
 import presenter.IMainPresenter;
+import utils.ViewModeUtils;
 
 /**
  *
@@ -30,18 +31,25 @@ public class Model extends AbstractTableModel implements IModel {
     public final static int TABLE_COLUMNS = 8;
     
     private CommandManager cmdManager;
+    private Macro macro;
     private IMainPresenter presenter;
-    private Filter[][] sheet;
-    private int selectedRow;
-    private int selectedColumn;
-    private List<Filter> selectedFilters;
+    private SheetManager sheetManager;
+//    private Filter[][] sheet;
+//    private int selectedRow;
+//    private int selectedColumn;
+//    private List<Filter> selectedFilters;
+//    private String viewMode;
+    
     
     public Model(IMainPresenter presenter) {
-        cmdManager = new CommandManager(this);
+        this.cmdManager = new CommandManager(this);
+        this.macro = new Macro();
         this.presenter = presenter;
-        this.selectedRow = -1;
-        this.selectedColumn = -1;
-        this.selectedFilters = new ArrayList<>();
+        this.sheetManager = new SheetManager();
+//        this.selectedRow = -1;
+//        this.selectedColumn = -1;
+//        this.selectedFilters = new ArrayList<>();
+//        this.viewMode = ViewModeUtils.getDefaultViewMode();
         initSheet();
     }
     
@@ -70,6 +78,36 @@ public class Model extends AbstractTableModel implements IModel {
 
     private String getCellId(int row, int column){
         return getColumnName(column) + (++row);
+    }
+    
+    @Override
+    public String getViewMode() {
+        return viewMode;
+    }
+
+    @Override
+    public void setViewMode(String viewMode) {
+        this.viewMode = viewMode;
+    }
+
+    @Override
+    public boolean isRecordingMacro() {
+        return macro.isRecordingMacro();
+    }
+
+    @Override
+    public void setRecordingMacro(boolean recordingMacro) {
+        macro.setRecordingMacro(recordingMacro);
+    }
+    
+    @Override
+    public void playMacro() {
+        cmdManager.apply(macro.getCommands());
+    }
+
+    @Override
+    public void clearMacro() {
+        macro.clearCommands();
     }
     
     @Override
@@ -120,8 +158,11 @@ public class Model extends AbstractTableModel implements IModel {
                 
         currentCell.setOperation(operation);
         
-        cmdManager.apply(new setCell(currentCell.getCopy(), 
-                oldCell));
+        if(macro.isRecordingMacro()){
+            macro.addCommand(new setCell(currentCell.getCopy(), oldCell.getCopy()));
+        }
+        
+        cmdManager.apply(new setCell(currentCell.getCopy(), oldCell.getCopy()));
                 
         currentCell.getOriginalCell().updateListeners();
         
@@ -231,7 +272,7 @@ public class Model extends AbstractTableModel implements IModel {
         try{
             Filter oldCell = 
                     sheet[selectedRow][selectedColumn].getCopy();
-            sheet[selectedRow][selectedColumn] = newCell;
+            sheet[selectedRow][selectedColumn] = newCell.getCopy();
             cmdManager.apply(new setCell(newCell.getCopy(), oldCell));
         }catch(ArrayStoreException ex){
             throw ex;
@@ -306,5 +347,5 @@ public class Model extends AbstractTableModel implements IModel {
         
         return new ArrayList<>(selectedFilters);
     }
-    
+
 }

@@ -15,6 +15,18 @@ import model.viewmode.IViewModeStrategy;
  */
 public interface IModel {
     
+    String getViewMode();
+    
+    void setViewMode(String viewMode);
+    
+    boolean isRecordingMacro();
+        
+    void setRecordingMacro(boolean recordingMacro);
+    
+    void playMacro();
+    
+    void clearMacro();
+    
     void updateCells();
     
     void updateSelectedCell();  

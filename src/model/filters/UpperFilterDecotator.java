@@ -114,7 +114,7 @@ public class UpperFilterDecotator extends Filter {
 
     @Override
     public Filter getCopy() {
-        return new UpperFilterDecotator(getNextCell());
+        return new UpperFilterDecotator(this);
     }
     
     @Override

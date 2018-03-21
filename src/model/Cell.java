@@ -18,7 +18,6 @@ import utils.ViewModeUtils;
  * @author Luis
  */
 public class Cell extends Filter {
-    
     private int row;
     private int column;
     private String id;

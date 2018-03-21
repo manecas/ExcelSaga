@@ -157,7 +157,7 @@ public class SuperiorFilterDecotator extends Filter {
 
     @Override
     public Filter getCopy() {
-        return new SuperiorFilterDecotator(getNextCell(), x);
+        return new SuperiorFilterDecotator(this, x);
     }
     
     @Override

@@ -17,7 +17,7 @@ public interface IMainPresenter {
     void onFilterPressed();
     void onFilterReleased();
     
-    void onViewModeClicked(String viewMode);
+    void onViewModeClicked();
     
     void onExitClicked();
     void onExitPressed();
@@ -37,5 +37,11 @@ public interface IMainPresenter {
     
     void onHeaderPressed(int x, int y);
     void onHeaderDragged(int x, int y);
+ 
+    void onPlayMacroClicked();
+    void onPlayMacroPressed();
+    void onPlayMacroReleased();
+    
+    void onRecordMacroClicked();
     
 }
