@@ -5,6 +5,7 @@
  */
 package model.filters;
 
+import java.io.Serializable;
 import java.util.Objects;
 import model.Cell;
 import model.operations.InvolvedCellsChangeListener;
@@ -15,14 +16,14 @@ import model.viewmode.IViewModeStrategy;
  *
  * @author Luis
  */
-public abstract class Filter {
+public abstract class Filter implements Serializable {
     
-    public final static String UPPER = "UPPER";
-    public final static String INFERIOR = "INFERIOR";
-    public final static String EQUAL = "EQUAL";
-    public final static String SUPERIOR = "SUPERIOR";
-    public final static String NEGATIVE = "NEGATIVE";
-    public final static String POSITIVE = "POSITIVE";
+    public transient final static String UPPER = "UPPER";
+    public transient final static String INFERIOR = "INFERIOR";
+    public transient final static String EQUAL = "EQUAL";
+    public transient final static String SUPERIOR = "SUPERIOR";
+    public transient final static String NEGATIVE = "NEGATIVE";
+    public transient final static String POSITIVE = "POSITIVE";
     
     private Filter nextCell;
     private final String type;

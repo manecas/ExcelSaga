@@ -5,13 +5,14 @@
  */
 package model.viewmode;
 
+import java.io.Serializable;
 import model.Cell;
 
 /**
  *
  * @author Luis
  */
-public interface IViewModeStrategy {
+public interface IViewModeStrategy extends Serializable {
     
     public String getCellModeValue(Cell c);
     

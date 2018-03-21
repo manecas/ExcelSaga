@@ -57,4 +57,38 @@ public interface IMainView {
     int getY();
     
     void showMessageDialog(String message);
+    
+    void showSaveFileChooser();
+    
+    void showOpenFileChooser();
+    
+    void setSaveColor();
+    void resetSaveColor();
+    
+    void setOpenColor();
+    void resetOpenColor();
+    
+    void setExportPanelSize();
+    void resetExportPanelSize();
+    
+    void setExportColor();
+    void resetExportColor();
+    
+    void setExportTextColor();
+    void resetExportTextColor();
+    
+    void setExportCsvColor();
+    void resetExportCsvColor();
+    
+    void setExportHtmlColor();
+    void resetExportHtmlColor();
+    
+    void setImportPanelSize();
+    void resetImportPanelSize();
+    
+    void setImportColor();
+    void resetImportColor();
+    
+    void setImportCsvColor();
+    void resetImportCsvColor();
 }

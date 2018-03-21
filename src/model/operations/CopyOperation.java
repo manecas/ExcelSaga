@@ -36,8 +36,8 @@ public class CopyOperation extends Operation {
 
     @Override
     public void updateInvolvedCells() {
-        init(getModel());
-        value = "";
+        findInvolvedCells();
+        getModel().updateCells();
     }
     
 }

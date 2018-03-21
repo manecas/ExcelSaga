@@ -6,7 +6,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 import model.filters.Filter;
 import model.operations.InvolvedCellsChangeListener;
 import model.operations.Operation;
@@ -24,7 +23,7 @@ public class Cell extends Filter {
     private IViewModeStrategy viewMode;
     private Operation operation;
     private String value;
-    private List<InvolvedCellsChangeListener> listeners;
+    private ArrayList<InvolvedCellsChangeListener> listeners;
 
     public Cell(Cell cell){
         super(null, null);

@@ -7,14 +7,15 @@ package view;
 
 import java.awt.Color;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import javax.swing.AbstractListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.table.TableModel;
 import presenter.MainPresenter;
-import utils.ViewModeUtils;
 import presenter.IMainPresenter;
 
 /**
@@ -65,6 +66,16 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         tableScrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         optionsPanel = new javax.swing.JPanel();
+        importButton = new javax.swing.JLabel();
+        saveButton = new javax.swing.JLabel();
+        openButton = new javax.swing.JLabel();
+        exportButton = new javax.swing.JLabel();
+        exportPanel = new javax.swing.JPanel();
+        exportTextButton = new javax.swing.JLabel();
+        exportCsvButton = new javax.swing.JLabel();
+        exportHtmlButton = new javax.swing.JLabel();
+        importPanel = new javax.swing.JPanel();
+        importCsvButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -116,7 +127,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         headerPanel.add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 0, 35, 30));
 
         sheetButton.setBackground(new java.awt.Color(0, 150, 62));
-        sheetButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        sheetButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         sheetButton.setForeground(new java.awt.Color(255, 255, 255));
         sheetButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sheetButton.setText("Sheet");
@@ -130,10 +141,10 @@ public class MainView extends javax.swing.JFrame implements IMainView {
                 onSheetClicked(evt);
             }
         });
-        headerPanel.add(sheetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 149, 140, 30));
+        headerPanel.add(sheetButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 140, 30));
 
         optionsButton.setBackground(new java.awt.Color(1, 198, 83));
-        optionsButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        optionsButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         optionsButton.setForeground(new java.awt.Color(255, 255, 255));
         optionsButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         optionsButton.setText("Options");
@@ -249,10 +260,12 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         headerPanel.add(filterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 150, 30, 30));
 
         homePanel.setBackground(new java.awt.Color(255, 255, 255));
-        homePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(1, 198, 83), 2));
+        homePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 150, 62), 3));
         homePanel.setLayout(new java.awt.CardLayout());
 
         sheetPanel.setLayout(new javax.swing.BoxLayout(sheetPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        tableScrollPane.setBorder(null);
 
         table.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         table.setForeground(new java.awt.Color(51, 51, 51));
@@ -267,16 +280,174 @@ public class MainView extends javax.swing.JFrame implements IMainView {
 
         homePanel.add(sheetPanel, "card2");
 
-        javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
-        optionsPanel.setLayout(optionsPanelLayout);
-        optionsPanelLayout.setHorizontalGroup(
-            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        optionsPanelLayout.setVerticalGroup(
-            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        optionsPanel.setBackground(new java.awt.Color(255, 255, 255));
+        optionsPanel.setForeground(new java.awt.Color(255, 255, 255));
+        optionsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        importButton.setBackground(new java.awt.Color(1, 198, 83));
+        importButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        importButton.setForeground(new java.awt.Color(255, 255, 255));
+        importButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        importButton.setText("Import");
+        importButton.setOpaque(true);
+        importButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        importButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onImportEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onImportExited(evt);
+            }
+        });
+        optionsPanel.add(importButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 50, -1, -1));
+
+        saveButton.setBackground(new java.awt.Color(1, 198, 83));
+        saveButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        saveButton.setForeground(new java.awt.Color(255, 255, 255));
+        saveButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        saveButton.setText("Save");
+        saveButton.setOpaque(true);
+        saveButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onSaveClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onSaveEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onSaveExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                onSavePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                onSaveReleased(evt);
+            }
+        });
+        optionsPanel.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
+
+        openButton.setBackground(new java.awt.Color(1, 198, 83));
+        openButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        openButton.setForeground(new java.awt.Color(255, 255, 255));
+        openButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        openButton.setText("Open");
+        openButton.setOpaque(true);
+        openButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        openButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onOpenClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onOpenEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onOpenExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                onOpenPressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                onOpenReleased(evt);
+            }
+        });
+        optionsPanel.add(openButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
+
+        exportButton.setBackground(new java.awt.Color(1, 198, 83));
+        exportButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        exportButton.setForeground(new java.awt.Color(255, 255, 255));
+        exportButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exportButton.setText("Export");
+        exportButton.setOpaque(true);
+        exportButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        exportButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onExportEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onExportExited(evt);
+            }
+        });
+        optionsPanel.add(exportButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, -1, -1));
+
+        exportPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 150, 62), 2));
+        exportPanel.setPreferredSize(new java.awt.Dimension(0, 0));
+        exportPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        exportTextButton.setBackground(new java.awt.Color(1, 198, 83));
+        exportTextButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        exportTextButton.setForeground(new java.awt.Color(255, 255, 255));
+        exportTextButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exportTextButton.setText("Text");
+        exportTextButton.setOpaque(true);
+        exportTextButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        exportTextButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onExportTextEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onExportTextExited(evt);
+            }
+        });
+        exportPanel.add(exportTextButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        exportCsvButton.setBackground(new java.awt.Color(1, 198, 83));
+        exportCsvButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        exportCsvButton.setForeground(new java.awt.Color(255, 255, 255));
+        exportCsvButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exportCsvButton.setText("CVS");
+        exportCsvButton.setOpaque(true);
+        exportCsvButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        exportCsvButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onExportCsvEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onExportCsvExited(evt);
+            }
+        });
+        exportPanel.add(exportCsvButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, -1, -1));
+
+        exportHtmlButton.setBackground(new java.awt.Color(1, 198, 83));
+        exportHtmlButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        exportHtmlButton.setForeground(new java.awt.Color(255, 255, 255));
+        exportHtmlButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exportHtmlButton.setText("HTML");
+        exportHtmlButton.setOpaque(true);
+        exportHtmlButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        exportHtmlButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onExportHtmlEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onExportHtmlExited(evt);
+            }
+        });
+        exportPanel.add(exportHtmlButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, -1, -1));
+
+        optionsPanel.add(exportPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, 150));
+
+        importPanel.setPreferredSize(new java.awt.Dimension(0, 0));
+        importPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        importCsvButton.setBackground(new java.awt.Color(1, 198, 83));
+        importCsvButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        importCsvButton.setForeground(new java.awt.Color(255, 255, 255));
+        importCsvButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        importCsvButton.setText("CVS");
+        importCsvButton.setOpaque(true);
+        importCsvButton.setPreferredSize(new java.awt.Dimension(100, 50));
+        importCsvButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onImportCsvEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                onImportCsvExited(evt);
+            }
+        });
+        importPanel.add(importCsvButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        optionsPanel.add(importPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 100, -1, 50));
 
         homePanel.add(optionsPanel, "card3");
 
@@ -284,7 +455,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(homePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(homePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -292,7 +463,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(homePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(homePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
 
@@ -309,6 +480,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
 
     private void onOptionsClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOptionsClicked
         mainPresenter.onOptionsClicked();
+        table.clearSelection();
     }//GEN-LAST:event_onOptionsClicked
 
     private void onHeaderPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onHeaderPressed
@@ -383,6 +555,94 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private void onPlayMacroReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPlayMacroReleased
         mainPresenter.onPlayMacroReleased();
     }//GEN-LAST:event_onPlayMacroReleased
+
+    private void onSaveClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onSaveClicked
+        mainPresenter.onSaveClicked();
+    }//GEN-LAST:event_onSaveClicked
+
+    private void onSavePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onSavePressed
+        mainPresenter.onSavePressed();
+    }//GEN-LAST:event_onSavePressed
+
+    private void onSaveReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onSaveReleased
+        mainPresenter.onSaveReleased();
+    }//GEN-LAST:event_onSaveReleased
+
+    private void onOpenClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOpenClicked
+        mainPresenter.onOpenClicked();
+    }//GEN-LAST:event_onOpenClicked
+
+    private void onOpenPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOpenPressed
+        mainPresenter.onOpenPressed();
+    }//GEN-LAST:event_onOpenPressed
+
+    private void onOpenReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOpenReleased
+        mainPresenter.onOpenReleased();
+    }//GEN-LAST:event_onOpenReleased
+
+    private void onExportEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportEntered
+        mainPresenter.onExportEntered();
+    }//GEN-LAST:event_onExportEntered
+
+    private void onExportExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportExited
+        mainPresenter.onExportExited();
+    }//GEN-LAST:event_onExportExited
+
+    private void onExportTextEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportTextEntered
+        mainPresenter.onExportTextEntered();
+    }//GEN-LAST:event_onExportTextEntered
+
+    private void onExportTextExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportTextExited
+        mainPresenter.onExportTextExited();
+    }//GEN-LAST:event_onExportTextExited
+
+    private void onExportCsvEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportCsvEntered
+        mainPresenter.onExportCsvEntered();
+    }//GEN-LAST:event_onExportCsvEntered
+
+    private void onExportCsvExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportCsvExited
+        mainPresenter.onExportCsvExited();
+    }//GEN-LAST:event_onExportCsvExited
+
+    private void onExportHtmlEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportHtmlEntered
+        mainPresenter.onExportHtmlEntered();
+    }//GEN-LAST:event_onExportHtmlEntered
+
+    private void onExportHtmlExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportHtmlExited
+        mainPresenter.onExportHtmlExited();
+    }//GEN-LAST:event_onExportHtmlExited
+
+    private void onImportEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onImportEntered
+        mainPresenter.onImportEntered();
+    }//GEN-LAST:event_onImportEntered
+
+    private void onImportExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onImportExited
+        mainPresenter.onImportExited();
+    }//GEN-LAST:event_onImportExited
+
+    private void onImportCsvEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onImportCsvEntered
+        mainPresenter.onImportCsvEntered();
+    }//GEN-LAST:event_onImportCsvEntered
+
+    private void onImportCsvExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onImportCsvExited
+        mainPresenter.onImportCsvExited();
+    }//GEN-LAST:event_onImportCsvExited
+
+    private void onSaveEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onSaveEntered
+        mainPresenter.onSaveEntered();
+    }//GEN-LAST:event_onSaveEntered
+
+    private void onSaveExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onSaveExited
+        mainPresenter.onSaveExited();
+    }//GEN-LAST:event_onSaveExited
+
+    private void onOpenEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOpenEntered
+        mainPresenter.onOpenEntered();
+    }//GEN-LAST:event_onOpenEntered
+
+    private void onOpenExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOpenExited
+        mainPresenter.onOpenExited();
+    }//GEN-LAST:event_onOpenExited
 
     @Override
     public void setTableModel(TableModel tableModel) {
@@ -551,6 +811,133 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         JOptionPane.showMessageDialog(this, message);
     }
     
+    @Override
+    public void showSaveFileChooser() {
+        JFileChooser fc = new JFileChooser("./data");
+        fc.setSelectedFile(new File("MySheet.dat"));
+        int returnVal = fc.showSaveDialog(MainView.this);
+
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            mainPresenter.saveSheet(file);
+        } else{
+            System.out.println("showSaveFileChooser(): Operation canceled!");
+        }
+    }
+
+    @Override
+    public void showOpenFileChooser() {
+        JFileChooser fc = new JFileChooser("./data");
+        int returnVal = fc.showOpenDialog(MainView.this);
+        
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+//            j.setJ(Ficheiros.carregaJogoDeFicheiroBinario(file));
+        } else{
+            System.out.println("showOpenFileChooser(): Operation canceled!");
+        }
+    }
+    
+    @Override
+    public void setSaveColor() {
+        saveButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetSaveColor() {
+        saveButton.setBackground(new Color(1, 198, 83));
+    }
+
+    @Override
+    public void setOpenColor() {
+        openButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetOpenColor() {
+        openButton.setBackground(new Color(1, 198, 83));
+    }
+    
+    @Override
+    public void setExportPanelSize() {
+        exportPanel.setSize(100, 150);
+    }
+
+    @Override
+    public void resetExportPanelSize() {
+        exportPanel.setSize(0, 0);
+    }
+    
+    @Override
+    public void setExportColor() {
+        exportButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetExportColor() {
+        exportButton.setBackground(new Color(1, 198, 83));
+    }
+
+    @Override
+    public void setExportTextColor() {
+        exportTextButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetExportTextColor() {
+        exportTextButton.setBackground(new Color(1, 198, 83));
+    }
+
+    @Override
+    public void setExportCsvColor() {
+        exportCsvButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetExportCsvColor() {
+        exportCsvButton.setBackground(new Color(1, 198, 83));
+    }
+
+    @Override
+    public void setExportHtmlColor() {
+        exportHtmlButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetExportHtmlColor() {
+        exportHtmlButton.setBackground(new Color(1, 198, 83));
+    }
+
+    @Override
+    public void setImportPanelSize() {
+        importPanel.setSize(100, 50);
+    }
+
+    @Override
+    public void resetImportPanelSize() {
+        importPanel.setSize(0, 0);
+    }
+    
+    @Override
+    public void setImportColor() {
+        importButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetImportColor() {
+        importButton.setBackground(new Color(1, 198, 83));
+    }
+
+    @Override
+    public void setImportCsvColor() {
+        importCsvButton.setBackground(new Color(0, 150, 62));
+    }
+
+    @Override
+    public void resetImportCsvColor() {
+        importCsvButton.setBackground(new Color(1, 198, 83));
+    }
+    
     private void createRowHeader(){
         
         ListModel lm = new AbstractListModel() {
@@ -614,14 +1001,24 @@ public class MainView extends javax.swing.JFrame implements IMainView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel exitButton;
+    private javax.swing.JLabel exportButton;
+    private javax.swing.JLabel exportCsvButton;
+    private javax.swing.JLabel exportHtmlButton;
+    private javax.swing.JPanel exportPanel;
+    private javax.swing.JLabel exportTextButton;
     private javax.swing.JLabel filterButton;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JPanel homePanel;
+    private javax.swing.JLabel importButton;
+    private javax.swing.JLabel importCsvButton;
+    private javax.swing.JPanel importPanel;
+    private javax.swing.JLabel openButton;
     private javax.swing.JLabel optionsButton;
     private javax.swing.JPanel optionsPanel;
     private javax.swing.JLabel playMacroButton;
     private javax.swing.JLabel recordMacroButton;
     private javax.swing.JLabel redoButton;
+    private javax.swing.JLabel saveButton;
     private javax.swing.JLabel sheetButton;
     private javax.swing.JPanel sheetPanel;
     private javax.swing.JLabel subtitleLabel;
@@ -631,9 +1028,5 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private javax.swing.JLabel undoButton;
     private javax.swing.JLabel viewModeButton;
     // End of variables declaration//GEN-END:variables
-
-    
-
-    
 
 }

@@ -5,27 +5,28 @@
  */
 package model.command;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import model.Model;
+import model.IModel;
 
 /**
  *
  * @author Luis
  */
-public class CommandManager {
+public class CommandManager implements Serializable {
     
-    private List<ICommand> undoList;
-    private List<ICommand> redoList;
-    private Model model;
+    private ArrayList<ICommand> undoList;
+    private ArrayList<ICommand> redoList;
+    private IModel model;
 
-    public CommandManager(Model model) {
+    public CommandManager(IModel model) {
         undoList = new ArrayList<>();
         redoList = new ArrayList<>();
         this.model = model;
     }
     
-    public void apply(List<ICommand> commands){
+    public void apply(ArrayList<ICommand> commands){
         for (ICommand command : commands) {
             command.doIt(model);
             undoList.add(command);

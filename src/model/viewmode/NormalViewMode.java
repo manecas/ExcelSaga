@@ -5,6 +5,7 @@
  */
 package model.viewmode;
 
+import java.io.Serializable;
 import model.Cell;
 
 /**

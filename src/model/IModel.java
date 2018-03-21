@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import model.filters.Filter;
 import model.viewmode.IViewModeStrategy;
@@ -13,7 +15,7 @@ import model.viewmode.IViewModeStrategy;
  *
  * @author Luis
  */
-public interface IModel {
+public interface IModel extends Serializable {
     
     String getViewMode();
     
@@ -33,9 +35,9 @@ public interface IModel {
     
     Filter findCellById(String id);
     
-    List<Filter> getRangeOfCells(int row1, int column1, int row2, int column2);
+    ArrayList<Filter> getRangeOfCells(int row1, int column1, int row2, int column2);
     
-    List<Filter> getRanfeOfCells(String []cellIds);
+    ArrayList<Filter> getRanfeOfCells(String []cellIds);
     
     void setCell(Filter newCell);
     
@@ -61,6 +63,6 @@ public interface IModel {
     
     Filter getCellToDecorate();
     
-    List<Filter> getSelectedCellFilters();
+    ArrayList<Filter> getSelectedCellFilters();
     
 }

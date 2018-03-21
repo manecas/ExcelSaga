@@ -5,6 +5,7 @@
  */
 package presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.IModel;
 import model.filters.EqualFilterDecorator;
@@ -228,7 +229,7 @@ public class FilterPresenter implements IFilterPresenter {
  
     @Override
     public void onWindowLoad() {
-        List<Filter> selectedFilters = model.getSelectedCellFilters();
+        ArrayList<Filter> selectedFilters = model.getSelectedCellFilters();
         
         filterView.setWindowLoading(true);
         

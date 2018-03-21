@@ -5,6 +5,8 @@
  */
 package presenter;
 
+import java.io.File;
+
 /**
  *
  * @author Luis
@@ -43,5 +45,37 @@ public interface IMainPresenter {
     void onPlayMacroReleased();
     
     void onRecordMacroClicked();
+    
+    void onSaveClicked();
+    void onSavePressed();
+    void onSaveReleased();
+    void onSaveEntered();
+    void onSaveExited();
+    
+    void saveSheet(File file);
+    
+    void onOpenClicked();
+    void onOpenPressed();
+    void onOpenReleased();
+    void onOpenEntered();
+    void onOpenExited();
+    
+    void onExportEntered();
+    void onExportExited();
+    
+    void onExportTextEntered();
+    void onExportTextExited();
+    
+    void onExportCsvEntered();
+    void onExportCsvExited();
+    
+    void onExportHtmlEntered();
+    void onExportHtmlExited();
+    
+    void onImportEntered();
+    void onImportExited();
+    
+    void onImportCsvEntered();
+    void onImportCsvExited();
     
 }

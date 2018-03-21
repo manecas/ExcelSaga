@@ -5,6 +5,7 @@
  */
 package model.operations;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cell;
@@ -17,23 +18,21 @@ import model.filters.Filter;
  */
 
 //Template
-public abstract class Operation implements InvolvedCellsChangeListener {
+public abstract class Operation implements InvolvedCellsChangeListener, Serializable {
 
-    public final static String SUM = "=SUM";
-    public final static String COPY = "=COPY";
-    public final static String NUMBER = "=NUMBER";
-    public final static String UPPER = "=UPPER";
+    public transient final static String SUM = "=SUM";
+    public transient final static String COPY = "=COPY";
+    public transient final static String NUMBER = "=NUMBER";
+    public transient final static String UPPER = "=UPPER";
     
     private Filter myCell;
-    private List<Filter> involvedCells;
     private IModel model;
+    private ArrayList<Filter> involvedCells;
     
     public Operation(Filter myCell, IModel model) {
         this.myCell = myCell;
-        this.involvedCells = new ArrayList<>();
         this.model = model;
-        init(model);
-
+        this.involvedCells = new ArrayList<>();
     }
     
     abstract void performOperation(String value);
@@ -43,13 +42,12 @@ public abstract class Operation implements InvolvedCellsChangeListener {
     public String getOperationValue(){
         for (Filter cell : involvedCells) {
             performOperation(cell.getOperationValue());
-            cell.addInvolvedCellsChangeListener(this);
         }
         
         return getValue();
     }
     
-    protected void init(IModel model){
+    public void findInvolvedCells(){
         clearInvolvedCellsListeners();
         clearInvolvedCells();
         
@@ -60,7 +58,6 @@ public abstract class Operation implements InvolvedCellsChangeListener {
         }
         
         if(args[1].contains(":")){
-            
             String []cellIds = args[1].split(":");
             cellIds = trimArraySpaces(cellIds);
             
@@ -79,9 +76,7 @@ public abstract class Operation implements InvolvedCellsChangeListener {
             } catch (NullPointerException ex) {
                 throw ex;
             }
-            
         }else{
-            
             String []cellIds = args[1].split(" ");
             cellIds = trimArraySpaces(cellIds);
             
@@ -90,9 +85,11 @@ public abstract class Operation implements InvolvedCellsChangeListener {
             }
             
             involvedCells = model.getRanfeOfCells(cellIds);
-            
         }
         
+        for (Filter cell : involvedCells) {
+            cell.addInvolvedCellsChangeListener(this);
+        }
     }
     
     private String[] trimArraySpaces(String []array){

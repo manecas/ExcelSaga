@@ -31,7 +31,7 @@ public class NumberOperation extends Operation {
 
     @Override
     public void updateInvolvedCells() {
-        init(getModel());
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

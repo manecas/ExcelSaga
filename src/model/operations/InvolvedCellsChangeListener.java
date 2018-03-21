@@ -5,11 +5,13 @@
  */
 package model.operations;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Luis
  */
-public interface InvolvedCellsChangeListener {
+public interface InvolvedCellsChangeListener extends Serializable {
     
     public void updateInvolvedCells();
     

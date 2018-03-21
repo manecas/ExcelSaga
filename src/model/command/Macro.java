@@ -5,6 +5,7 @@
  */
 package model.command;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
  *
  * @author Luis
  */
-public class Macro {
+public class Macro implements Serializable {
 
-    private List<ICommand> commands;
+    private ArrayList<ICommand> commands;
     private boolean recordingMacro;
 
     public Macro() {
@@ -30,7 +31,7 @@ public class Macro {
         commands.clear();
     }
 
-    public List<ICommand> getCommands() {
+    public ArrayList<ICommand> getCommands() {
         return commands;
     }
 

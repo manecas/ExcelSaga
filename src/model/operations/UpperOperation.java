@@ -5,7 +5,6 @@
  */
 package model.operations;
 
-import model.Cell;
 import model.IModel;
 import model.filters.Filter;
 
@@ -37,8 +36,8 @@ public class UpperOperation extends Operation {
     
     @Override
     public void updateInvolvedCells() {
-        init(getModel());
-        value = "";
+        findInvolvedCells();
+        getModel().updateCells();
     }
     
 }

@@ -5,11 +5,16 @@
  */
 package presenter;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.TableModel;
 import model.Model;
 import model.IModel;
 import model.viewmode.FunctionalViewMode;
 import model.viewmode.NormalViewMode;
+import utils.FileUtils;
 import utils.ViewModeUtils;
 import view.FilterView;
 import view.IFilterView;
@@ -51,7 +56,7 @@ public class MainPresenter implements IMainPresenter {
             throw ex;
         }
     }
-    
+        
     @Override
     public void onFilterPressed() {
         try{
@@ -192,7 +197,7 @@ public class MainPresenter implements IMainPresenter {
             mainView.setOptionsColor();
             mainView.resetSheetColor();
             mainView.hideSheetPanel();
-           mainView.ShowOptionsPanel();   
+            mainView.ShowOptionsPanel();               
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -222,6 +227,7 @@ public class MainPresenter implements IMainPresenter {
     @Override
     public void onPlayMacroClicked() {
         model.playMacro();
+        model.updateCells();
     }
 
     @Override
@@ -245,5 +251,144 @@ public class MainPresenter implements IMainPresenter {
             mainView.setRecordMacroColor();
         }
     }
- 
+
+    @Override
+    public void onSaveClicked() {
+        mainView.showSaveFileChooser();
+    }
+
+    @Override
+    public void onSavePressed() {
+        
+    }
+
+    @Override
+    public void onSaveReleased() {
+        
+    }
+
+    @Override
+    public void onSaveEntered() {
+        mainView.setSaveColor();
+    }
+
+    @Override
+    public void onSaveExited() {
+        mainView.resetSaveColor();
+    }
+
+    @Override
+    public void saveSheet(File file) {
+        try {
+            FileUtils.saveSheet(file, model);
+        } catch (IOException ex) {
+            Logger.getLogger(MainPresenter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void onOpenClicked() {
+        mainView.showOpenFileChooser();
+    }
+
+    @Override
+    public void onOpenPressed() {
+        
+    }
+
+    @Override
+    public void onOpenReleased() {
+        
+    }
+    
+    @Override
+    public void onOpenEntered() {
+        mainView.setOpenColor();
+    }
+
+    @Override
+    public void onOpenExited() {
+        mainView.resetOpenColor();
+    }
+    
+    @Override
+    public void onExportEntered() {
+        mainView.setExportPanelSize();
+        mainView.setExportColor();
+    }
+
+    @Override
+    public void onExportExited() {
+        mainView.resetExportPanelSize();
+        mainView.resetExportColor();
+    }
+
+    @Override
+    public void onExportTextEntered() {
+        mainView.setExportPanelSize();
+        mainView.setExportTextColor();
+        mainView.setExportColor();
+    }
+
+    @Override
+    public void onExportTextExited() {
+        mainView.resetExportPanelSize();
+        mainView.resetExportTextColor();
+        mainView.resetExportColor();
+    }
+
+    @Override
+    public void onExportCsvEntered() {
+        mainView.setExportPanelSize();
+        mainView.setExportCsvColor();
+        mainView.setExportColor();
+    }
+
+    @Override
+    public void onExportCsvExited() {
+        mainView.resetExportPanelSize();
+        mainView.resetExportCsvColor();
+        mainView.resetExportColor();
+    }
+
+    @Override
+    public void onExportHtmlEntered() {
+        mainView.setExportPanelSize();
+        mainView.setExportHtmlColor();
+        mainView.setExportColor();
+    }
+
+    @Override
+    public void onExportHtmlExited() {
+        mainView.resetExportPanelSize();
+        mainView.resetExportHtmlColor();
+        mainView.setExportColor();
+    }
+
+    @Override
+    public void onImportEntered() {
+        mainView.setImportPanelSize();
+        mainView.setImportColor();
+    }
+
+    @Override
+    public void onImportExited() {
+        mainView.resetImportPanelSize();
+        mainView.resetImportColor();
+    }
+
+    @Override
+    public void onImportCsvEntered() {
+        mainView.setImportPanelSize();
+        mainView.setImportCsvColor();
+        mainView.setImportColor();
+    }
+
+    @Override
+    public void onImportCsvExited() {
+        mainView.resetImportPanelSize();
+        mainView.resetImportCsvColor();
+        mainView.resetImportColor();
+    }
+
 }

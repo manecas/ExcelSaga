@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -25,31 +26,30 @@ import utils.ViewModeUtils;
  *
  * @author Luis
  */
-public class Model extends AbstractTableModel implements IModel {
+public class Model extends AbstractTableModel implements IModel, Serializable {
     
-    public final static int TABLE_ROWS = 10;
-    public final static int TABLE_COLUMNS = 8;
+    private static final long serialVersionUID = 1L;
+    
+    public transient final static int TABLE_ROWS = 10;
+    public transient final static int TABLE_COLUMNS = 8;
     
     private CommandManager cmdManager;
     private Macro macro;
-    private IMainPresenter presenter;
-    private SheetManager sheetManager;
-//    private Filter[][] sheet;
-//    private int selectedRow;
-//    private int selectedColumn;
-//    private List<Filter> selectedFilters;
-//    private String viewMode;
-    
+    private transient IMainPresenter presenter; //transient
+    private Filter[][] sheet;
+    private int selectedRow;
+    private int selectedColumn;
+    private ArrayList<Filter> selectedFilters;
+    private String viewMode;
     
     public Model(IMainPresenter presenter) {
         this.cmdManager = new CommandManager(this);
         this.macro = new Macro();
         this.presenter = presenter;
-        this.sheetManager = new SheetManager();
-//        this.selectedRow = -1;
-//        this.selectedColumn = -1;
-//        this.selectedFilters = new ArrayList<>();
-//        this.viewMode = ViewModeUtils.getDefaultViewMode();
+        this.selectedRow = -1;
+        this.selectedColumn = -1;
+        this.selectedFilters = new ArrayList<>();
+        this.viewMode = ViewModeUtils.getDefaultViewMode();
         initSheet();
     }
     
@@ -155,15 +155,18 @@ public class Model extends AbstractTableModel implements IModel {
         if(factory != null){
             operation = factory.getOperation(currentCell, this);
         }
-                
-        currentCell.setOperation(operation);
+
+        if(operation != null){
+            currentCell.setOperation(operation);
+            currentCell.getOperation().findInvolvedCells();
+        }
         
         if(macro.isRecordingMacro()){
             macro.addCommand(new setCell(currentCell.getCopy(), oldCell.getCopy()));
         }
         
         cmdManager.apply(new setCell(currentCell.getCopy(), oldCell.getCopy()));
-                
+        
         currentCell.getOriginalCell().updateListeners();
         
         fireTableCellUpdated(rowIndex, columnIndex);
@@ -203,8 +206,8 @@ public class Model extends AbstractTableModel implements IModel {
     }
     
     @Override
-    public List<Filter> getRangeOfCells(int row1, int column1, int row2, int column2) {
-        List<Filter> involvedCells = new ArrayList<>();
+    public ArrayList<Filter> getRangeOfCells(int row1, int column1, int row2, int column2) {
+        ArrayList<Filter> involvedCells = new ArrayList<>();
         
         for (int i = row1; i <= row2; i++) {
             for (int j = column1; j <= column2; j++) {
@@ -216,8 +219,8 @@ public class Model extends AbstractTableModel implements IModel {
     }
     
     @Override
-    public List<Filter> getRanfeOfCells(String[] cellIds) {
-        List<Filter> involvedCells = new ArrayList<>();
+    public ArrayList<Filter> getRanfeOfCells(String[] cellIds) {
+        ArrayList<Filter> involvedCells = new ArrayList<>();
         
         for (String cellId : cellIds) {
             Filter c = findCellById(cellId);
@@ -270,10 +273,17 @@ public class Model extends AbstractTableModel implements IModel {
     public void setSelectedCell(Filter newCell) {
         //Filters
         try{
+            
             Filter oldCell = 
                     sheet[selectedRow][selectedColumn].getCopy();
             sheet[selectedRow][selectedColumn] = newCell.getCopy();
-            cmdManager.apply(new setCell(newCell.getCopy(), oldCell));
+            
+            if(macro.isRecordingMacro()){
+                macro.addCommand(new setCell(newCell.getCopy(), oldCell.getCopy()));
+            }
+            
+            cmdManager.apply(new setCell(newCell.getCopy(), oldCell.getCopy()));
+            
         }catch(ArrayStoreException ex){
             throw ex;
         }
@@ -336,7 +346,7 @@ public class Model extends AbstractTableModel implements IModel {
     }
 
     @Override
-    public List<Filter> getSelectedCellFilters() {
+    public ArrayList<Filter> getSelectedCellFilters() {
         
         Filter currentCell = sheet[selectedRow][selectedColumn];
         

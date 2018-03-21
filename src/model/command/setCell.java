@@ -5,7 +5,7 @@
  */
 package model.command;
 
-import model.Model;
+import model.IModel;
 import model.filters.Filter;
 
 /**
@@ -23,13 +23,13 @@ public class setCell implements ICommand {
     }
     
     @Override   
-    public void doIt(Model model) {
+    public void doIt(IModel model) {
         model.setCell(currentCell.getCopy());
         System.out.println("doIt(): " + currentCell.getFilteredValue());
     }
 
     @Override
-    public void undoIt(Model model) {
+    public void undoIt(IModel model) {
         model.setCell(oldCell.getCopy());
         System.out.println("undoIt(): " + oldCell.getFilteredValue());
     } 

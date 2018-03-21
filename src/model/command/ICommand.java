@@ -5,16 +5,17 @@
  */
 package model.command;
     
-import model.Model;
+import java.io.Serializable;
+import model.IModel;
 
 /**
  *
  * @author Luis
  */
-public interface ICommand {
+public interface ICommand extends Serializable {
     
-    public void doIt(Model model);
+    public void doIt(IModel model);
 
-    public void undoIt(Model model);
+    public void undoIt(IModel model);
     
 }
