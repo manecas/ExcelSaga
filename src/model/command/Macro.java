@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Luis
  */
-public class Macro implements Serializable {
+public class Macro {
 
     private ArrayList<ICommand> commands;
     private boolean recordingMacro;

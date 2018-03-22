@@ -7,8 +7,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import javax.swing.table.AbstractTableModel;
 import model.command.CommandManager;
 import model.command.Macro;
 import model.command.setCell;
@@ -16,36 +14,33 @@ import model.filters.EqualFilterDecorator;
 import model.filters.Filter;
 import model.filters.InferiorFilterDecorator;
 import model.filters.SuperiorFilterDecotator;
-import model.operations.AbstractOperationFactory;
-import model.operations.Operation;
 import model.viewmode.IViewModeStrategy;
-import presenter.IMainPresenter;
 import utils.ViewModeUtils;
 
 /**
  *
  * @author Luis
  */
-public class Model extends AbstractTableModel implements IModel, Serializable {
+public class Model implements IModel, Serializable {
     
     private static final long serialVersionUID = 1L;
     
     public transient final static int TABLE_ROWS = 10;
     public transient final static int TABLE_COLUMNS = 8;
     
-    private CommandManager cmdManager;
-    private Macro macro;
-    private transient IMainPresenter presenter; //transient
+    private transient CommandManager cmdManager;
+    private transient Macro macro;
+    private transient AbsTableModel tableModel;
     private Filter[][] sheet;
     private int selectedRow;
     private int selectedColumn;
     private ArrayList<Filter> selectedFilters;
-    private String viewMode;
+    private transient String viewMode;
     
-    public Model(IMainPresenter presenter) {
+    public Model() {
         this.cmdManager = new CommandManager(this);
         this.macro = new Macro();
-        this.presenter = presenter;
+        this.tableModel = new AbsTableModel(this);
         this.selectedRow = -1;
         this.selectedColumn = -1;
         this.selectedFilters = new ArrayList<>();
@@ -77,7 +72,7 @@ public class Model extends AbstractTableModel implements IModel, Serializable {
     }
 
     private String getCellId(int row, int column){
-        return getColumnName(column) + (++row);
+        return tableModel.getCellId(row, column);
     }
     
     @Override
@@ -111,85 +106,13 @@ public class Model extends AbstractTableModel implements IModel, Serializable {
     }
     
     @Override
-    public int getRowCount() {
-        return TABLE_ROWS;                                                                  
-    }
-
-    @Override
-    public int getColumnCount() {
-        return TABLE_COLUMNS;
-    }
-
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        Filter cell = sheet[rowIndex][columnIndex];
-        
-        if(!(cell instanceof Cell)){
-            return cell.getFilteredValue(); 
-        }
-        
-        return cell.getViewModeValue();
-    }
- 
-    @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        Filter currentCell = sheet[rowIndex][columnIndex];
-
-        if(currentCell.getValue().equals((String) value)){
-            return;
-        }
-        
-        Filter oldCell = currentCell.getCopy();
-         
-        try{
-            currentCell.setValue((String) value);
-        }catch(NullPointerException ex){
-            throw ex;
-        }
-        
-        AbstractOperationFactory factory = AbstractOperationFactory
-                .getOperationFactory((String) value);
-        
-        Operation operation = null;
-        
-        if(factory != null){
-            operation = factory.getOperation(currentCell, this);
-        }
-
-        if(operation != null){
-            currentCell.setOperation(operation);
-            currentCell.getOperation().findInvolvedCells();
-        }
-        
-        if(macro.isRecordingMacro()){
-            macro.addCommand(new setCell(currentCell.getCopy(), oldCell.getCopy()));
-        }
-        
-        cmdManager.apply(new setCell(currentCell.getCopy(), oldCell.getCopy()));
-        
-        currentCell.getOriginalCell().updateListeners();
-        
-        fireTableCellUpdated(rowIndex, columnIndex);
-    }
-
-    @Override
-    public String getColumnName(int column) {
-        return super.getColumnName(column); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
-    }
-
-    @Override
     public void updateCells() {
-        fireTableDataChanged();
+        tableModel.updateCells();
     }
     
     @Override
     public void updateSelectedCell() {
-        fireTableCellUpdated(selectedRow, selectedColumn);
+        tableModel.updateSelectedCell(selectedRow, selectedColumn);
     }
 
     @Override
@@ -208,6 +131,13 @@ public class Model extends AbstractTableModel implements IModel, Serializable {
     @Override
     public ArrayList<Filter> getRangeOfCells(int row1, int column1, int row2, int column2) {
         ArrayList<Filter> involvedCells = new ArrayList<>();
+        
+        if(row1 > TABLE_ROWS 
+                || row2 > TABLE_ROWS 
+                || column1 > TABLE_COLUMNS
+                || column2 > TABLE_COLUMNS){
+            return involvedCells;
+        }
         
         for (int i = row1; i <= row2; i++) {
             for (int j = column1; j <= column2; j++) {
@@ -358,4 +288,33 @@ public class Model extends AbstractTableModel implements IModel, Serializable {
         return new ArrayList<>(selectedFilters);
     }
 
+    @Override
+    public CommandManager getCmdManager() {
+        return cmdManager;
+    }
+
+    @Override
+    public Macro getMacro() {
+        return macro;
+    }
+
+    @Override
+    public Filter[][] getSheet() {
+        return sheet;
+    }
+
+    @Override
+    public AbsTableModel getTableModel() {
+        return tableModel;
+    }
+
+    @Override
+    public void setVariablesAfterOpeningSavedSheet() {
+        this.cmdManager = new CommandManager(this);
+        this.macro = new Macro();
+        this.tableModel = new AbsTableModel(this);
+        this.viewMode = ViewModeUtils.getDefaultViewMode();
+        this.setCellsViewMode(ViewModeUtils.getDefaultViewModeStrategy());
+    }
+    
 }

@@ -6,15 +6,15 @@
 package presenter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
 import model.Model;
 import model.IModel;
+import model.exports.FileExportBuilder;
+import model.imports.BinImportAdapter;
 import model.viewmode.FunctionalViewMode;
 import model.viewmode.NormalViewMode;
-import utils.FileUtils;
 import utils.ViewModeUtils;
 import view.FilterView;
 import view.IFilterView;
@@ -28,13 +28,13 @@ public class MainPresenter implements IMainPresenter {
     
     public MainPresenter(IMainView view) {
         this.mainView = view;
-        this.model = new Model(this);
+        this.model = new Model();
     }
     
     @Override
     public void setTableModel() {
         try{
-            mainView.setTableModel((TableModel) model);
+            mainView.setTableModel((TableModel) model.getTableModel());
         }catch(NullPointerException ex){
             throw ex;
         }
@@ -278,12 +278,31 @@ public class MainPresenter implements IMainPresenter {
     }
 
     @Override
-    public void saveSheet(File file) {
-        try {
-            FileUtils.saveSheet(file, model);
-        } catch (IOException ex) {
+    public void saveSheetToFile(File file) {
+        FileExportBuilder.getBuilder(FileExportBuilder.EXPORT_BIN)
+                .setFile(file)
+                .setModel(model)
+                .exportModel();
+    }
+    
+    @Override
+    public void openSheetFromFile(File file) {
+        try{
+            model = new BinImportAdapter(file).importModel();
+        }catch(NullPointerException ex){
             Logger.getLogger(MainPresenter.class.getName()).log(Level.SEVERE, null, ex);
         }
+        model.setVariablesAfterOpeningSavedSheet();
+        mainView.setTableModel(model.getTableModel());
+        model.updateCells();
+    }
+    
+    @Override
+    public void exportSheetToTextFile(File file) {
+        FileExportBuilder.getBuilder(FileExportBuilder.EXPORT_TEXT)
+                .setFile(file)
+                .setModel(model)
+                .exportModel();
     }
     
     @Override
@@ -390,5 +409,7 @@ public class MainPresenter implements IMainPresenter {
         mainView.resetImportCsvColor();
         mainView.resetImportColor();
     }
+
+    
 
 }

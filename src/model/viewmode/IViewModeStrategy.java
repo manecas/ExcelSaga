@@ -12,7 +12,7 @@ import model.Cell;
  *
  * @author Luis
  */
-public interface IViewModeStrategy extends Serializable {
+public interface IViewModeStrategy {
     
     public String getCellModeValue(Cell c);
     

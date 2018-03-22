@@ -3,19 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.command;
-    
-import java.io.Serializable;
+package model.imports;
+
+import java.io.File;
 import model.IModel;
 
 /**
  *
  * @author Luis
  */
-public interface ICommand {
+public abstract class FileImportAdapter {
     
-    public void doIt(IModel model);
+    protected File file;
 
-    public void undoIt(IModel model);
+    public FileImportAdapter(File file) {
+        this.file = file;
+    }
+    
+    public abstract IModel importModel();
     
 }

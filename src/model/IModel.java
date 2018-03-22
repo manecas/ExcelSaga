@@ -7,7 +7,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import model.command.CommandManager;
+import model.command.Macro;
 import model.filters.Filter;
 import model.viewmode.IViewModeStrategy;
 
@@ -64,5 +65,15 @@ public interface IModel extends Serializable {
     Filter getCellToDecorate();
     
     ArrayList<Filter> getSelectedCellFilters();
+    
+    public CommandManager getCmdManager();
+
+    public Macro getMacro();
+
+    public Filter[][] getSheet();
+    
+    public AbsTableModel getTableModel();
+    
+    public void setVariablesAfterOpeningSavedSheet();
     
 }

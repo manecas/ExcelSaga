@@ -28,6 +28,10 @@ public class CopyOperation extends Operation {
 
     @Override
     String getValue() {
+        if(getInvolvedCellsSize() > 1){
+            return "Not multi cell!";
+        }
+        
         String originalValue = value;
         value = "";
         

@@ -20,7 +20,7 @@ public class Cell extends Filter {
     private int row;
     private int column;
     private String id;
-    private IViewModeStrategy viewMode;
+    private transient IViewModeStrategy viewMode;
     private Operation operation;
     private String value;
     private ArrayList<InvolvedCellsChangeListener> listeners;

@@ -6,15 +6,30 @@
 package view;
 
 import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
+import model.database.DatabaseHelper;
+import model.database.User;
+import model.database.MyFile;
+import model.database.Session;
+import model.exports.FileExportBuilder;
+import org.apache.commons.io.FilenameUtils;
 import presenter.MainPresenter;
 import presenter.IMainPresenter;
 
@@ -34,10 +49,60 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private IMainPresenter mainPresenter;
     
     public MainView() {
+//        DatabaseHelper.createTables();
+        
+//        User user = new User();
+//        user.setName("Luis");
+//        user.create();
+//        System.out.println("USER CREATE:");
+//        System.out.println(User.read("Luis").toString() + "\n");
+//        
+//        MyFile file1 = new MyFile();
+//        file1.setPath("c:olateste");
+//        file1.setOpenedDate(new Timestamp(GregorianCalendar.getInstance().getTime().getTime()));
+//        
+//        MyFile file2 = new MyFile();
+//        file2.setPath("d:olateste");
+//        file2.setOpenedDate(new Timestamp(GregorianCalendar.getInstance().getTime().getTime()));
+//        
+//        file1.create();
+//        file2.create();
+//        System.out.println("FILES CREATE:");
+//        System.out.println(MyFile.readAllFiles().get(0).toString() + "\n");
+//        System.out.println(MyFile.readAllFiles().get(1).toString() + "\n\n");
+//        
+//        MyFile.createUses(user.getId(), file1.getId());
+//        MyFile.createUses(user.getId(), file2.getId());
+//        System.out.println("USES CREATE:");
+//        System.out.println(User.readWithFiles("Luis").toString() + "\n");
+        
         initComponents();
         createRowHeader();
         mainPresenter = new MainPresenter(this);
         mainPresenter.setTableModel();
+        
+        List<User> users = User.readAllUsers();
+        
+        for (User user : users) {
+            usersComboBox.addItem(user.getName());
+        }
+
+        usersComboBox.addItemListener((ItemEvent e) -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                String selectedItem = (String)e.getItem();
+                
+                if(selectedItem.equals("Users")){
+                    recentFilesTextArea.setText("");
+                    return;
+                }
+                
+                Session.getInstance().setUser(User.readWithFiles(selectedItem));
+                
+                recentFilesTextArea.setText("");
+                recentFilesTextArea.setText(Session.getInstance().getUser().toStringFiles());
+            }
+        });
+        
     }
 
     /**
@@ -76,6 +141,14 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         exportHtmlButton = new javax.swing.JLabel();
         importPanel = new javax.swing.JPanel();
         importCsvButton = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        recentFilesTextArea = new javax.swing.JTextArea();
+        usersComboBox = new javax.swing.JComboBox<>();
+        recentFilesLabel = new javax.swing.JLabel();
+        nameText = new javax.swing.JTextField();
+        addButton = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        nameLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -299,7 +372,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
                 onImportExited(evt);
             }
         });
-        optionsPanel.add(importButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 50, -1, -1));
+        optionsPanel.add(importButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 20, -1, -1));
 
         saveButton.setBackground(new java.awt.Color(1, 198, 83));
         saveButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
@@ -325,7 +398,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
                 onSaveReleased(evt);
             }
         });
-        optionsPanel.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
+        optionsPanel.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, -1, -1));
 
         openButton.setBackground(new java.awt.Color(1, 198, 83));
         openButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
@@ -351,7 +424,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
                 onOpenReleased(evt);
             }
         });
-        optionsPanel.add(openButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
+        optionsPanel.add(openButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, -1, -1));
 
         exportButton.setBackground(new java.awt.Color(1, 198, 83));
         exportButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
@@ -368,7 +441,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
                 onExportExited(evt);
             }
         });
-        optionsPanel.add(exportButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, -1, -1));
+        optionsPanel.add(exportButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
 
         exportPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 150, 62), 2));
         exportPanel.setPreferredSize(new java.awt.Dimension(0, 0));
@@ -382,6 +455,9 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         exportTextButton.setOpaque(true);
         exportTextButton.setPreferredSize(new java.awt.Dimension(100, 50));
         exportTextButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onExportTextClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 onExportTextEntered(evt);
             }
@@ -425,7 +501,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         });
         exportPanel.add(exportHtmlButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, -1, -1));
 
-        optionsPanel.add(exportPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, -1, 150));
+        optionsPanel.add(exportPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 70, -1, 150));
 
         importPanel.setPreferredSize(new java.awt.Dimension(0, 0));
         importPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -447,7 +523,52 @@ public class MainView extends javax.swing.JFrame implements IMainView {
         });
         importPanel.add(importCsvButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        optionsPanel.add(importPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 100, -1, 50));
+        optionsPanel.add(importPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 70, -1, 50));
+
+        recentFilesTextArea.setEditable(false);
+        recentFilesTextArea.setColumns(20);
+        recentFilesTextArea.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        recentFilesTextArea.setRows(5);
+        recentFilesTextArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane1.setViewportView(recentFilesTextArea);
+
+        optionsPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 550, 140));
+
+        usersComboBox.setBackground(new java.awt.Color(250, 250, 250));
+        usersComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        usersComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Users" }));
+        usersComboBox.setBorder(null);
+        optionsPanel.add(usersComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 170, 90, -1));
+
+        recentFilesLabel.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        recentFilesLabel.setText("Recent files:");
+        optionsPanel.add(recentFilesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, -1, -1));
+
+        nameText.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        nameText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        optionsPanel.add(nameText, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 250, 80, 30));
+
+        addButton.setBackground(new java.awt.Color(1, 198, 83));
+        addButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        addButton.setForeground(new java.awt.Color(255, 255, 255));
+        addButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        addButton.setText("Add");
+        addButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        addButton.setOpaque(true);
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onAddClicked(evt);
+            }
+        });
+        optionsPanel.add(addButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 250, 40, 30));
+
+        nameLabel.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        nameLabel.setText("Profile:");
+        optionsPanel.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 140, -1, -1));
+
+        nameLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        nameLabel1.setText("Name:");
+        optionsPanel.add(nameLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 220, -1, -1));
 
         homePanel.add(optionsPanel, "card3");
 
@@ -480,7 +601,6 @@ public class MainView extends javax.swing.JFrame implements IMainView {
 
     private void onOptionsClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOptionsClicked
         mainPresenter.onOptionsClicked();
-        table.clearSelection();
     }//GEN-LAST:event_onOptionsClicked
 
     private void onHeaderPressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onHeaderPressed
@@ -643,6 +763,47 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private void onOpenExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onOpenExited
         mainPresenter.onOpenExited();
     }//GEN-LAST:event_onOpenExited
+
+    private void onAddClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onAddClicked
+        if(nameText.getText().equals("")){
+            showMessageDialog("Empty names are now allowed!");
+            return;
+        }
+        
+        usersComboBox.addItem(nameText.getText());
+        User user = new User();
+        user.setName(nameText.getText());
+        user.create();
+        Session.getInstance().setUser(user);
+        nameText.setText("");
+    }//GEN-LAST:event_onAddClicked
+
+    private void onExportTextClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onExportTextClicked
+        JFileChooser fc = new JFileChooser("./data");
+        fc.setSelectedFile(new File("MyTextSheet"));
+        FileNameExtensionFilter textFilter = 
+                new FileNameExtensionFilter("Text Files", "txt");
+        fc.addChoosableFileFilter(textFilter);
+        fc.setAcceptAllFileFilterUsed(false);
+        
+        int returnVal = fc.showSaveDialog(MainView.this);
+
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            
+            if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
+                //it's ok
+            } else {
+                file = new File(file.toString() + ".txt");
+                file = new File(file.getParentFile(), 
+                        FilenameUtils.getBaseName(file.getName())+".txt");
+            }
+            
+            mainPresenter.exportSheetToTextFile(file);
+        } else{
+            System.out.println("showSaveFileChooser(): Operation canceled!");
+        }
+    }//GEN-LAST:event_onExportTextClicked
 
     @Override
     public void setTableModel(TableModel tableModel) {
@@ -814,12 +975,29 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     @Override
     public void showSaveFileChooser() {
         JFileChooser fc = new JFileChooser("./data");
-        fc.setSelectedFile(new File("MySheet.dat"));
+        fc.setSelectedFile(new File("MySheet"));
+        FileNameExtensionFilter binFilter = 
+                new FileNameExtensionFilter("Binary Files", "bin", "dat");
+//        FileNameExtensionFilter csvFilter = 
+//                new FileNameExtensionFilter("CSV Files", "csv");
+        fc.addChoosableFileFilter(binFilter);
+//        fc.addChoosableFileFilter(csvFilter);
+        fc.setAcceptAllFileFilterUsed(false);
+        
         int returnVal = fc.showSaveDialog(MainView.this);
 
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            mainPresenter.saveSheet(file);
+            
+            if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("bin")) {
+                //it's ok
+            } else {
+                file = new File(file.toString() + ".bin");
+                file = new File(file.getParentFile(), 
+                        FilenameUtils.getBaseName(file.getName())+".bin");
+            }
+            
+            mainPresenter.saveSheetToFile(file);
         } else{
             System.out.println("showSaveFileChooser(): Operation canceled!");
         }
@@ -828,11 +1006,35 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     @Override
     public void showOpenFileChooser() {
         JFileChooser fc = new JFileChooser("./data");
+        FileNameExtensionFilter binFilter = 
+                new FileNameExtensionFilter("Binary Files", "bin");
+        fc.addChoosableFileFilter(binFilter);
+        fc.setAcceptAllFileFilterUsed(false);
+            
         int returnVal = fc.showOpenDialog(MainView.this);
         
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-//            j.setJ(Ficheiros.carregaJogoDeFicheiroBinario(file));
+            mainPresenter.openSheetFromFile(file);
+            
+            if(((String)usersComboBox.getSelectedItem()).equals("Users")){
+                return;
+            }
+            
+            User user = User.read((String)usersComboBox.getSelectedItem());
+            MyFile myFile = new MyFile();
+            try {
+                myFile.setPath(file.getCanonicalPath());
+            } catch (IOException ex) {
+                Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            myFile.setOpenedDate(new Timestamp(GregorianCalendar.getInstance().getTime().getTime()));
+            myFile.create();
+            MyFile.createUses(user.getId(), myFile.getId());
+            
+            Session.getInstance().setUser(User.readWithFiles((String) usersComboBox.getSelectedItem()));
+            recentFilesTextArea.setText("");
+            recentFilesTextArea.setText(Session.getInstance().getUser().toStringFiles());
         } else{
             System.out.println("showOpenFileChooser(): Operation canceled!");
         }
@@ -1000,6 +1202,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel addButton;
     private javax.swing.JLabel exitButton;
     private javax.swing.JLabel exportButton;
     private javax.swing.JLabel exportCsvButton;
@@ -1012,10 +1215,16 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private javax.swing.JLabel importButton;
     private javax.swing.JLabel importCsvButton;
     private javax.swing.JPanel importPanel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JLabel nameLabel1;
+    private javax.swing.JTextField nameText;
     private javax.swing.JLabel openButton;
     private javax.swing.JLabel optionsButton;
     private javax.swing.JPanel optionsPanel;
     private javax.swing.JLabel playMacroButton;
+    private javax.swing.JLabel recentFilesLabel;
+    private javax.swing.JTextArea recentFilesTextArea;
     private javax.swing.JLabel recordMacroButton;
     private javax.swing.JLabel redoButton;
     private javax.swing.JLabel saveButton;
@@ -1026,6 +1235,7 @@ public class MainView extends javax.swing.JFrame implements IMainView {
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel undoButton;
+    private javax.swing.JComboBox<String> usersComboBox;
     private javax.swing.JLabel viewModeButton;
     // End of variables declaration//GEN-END:variables
 

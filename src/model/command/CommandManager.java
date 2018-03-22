@@ -14,7 +14,7 @@ import model.IModel;
  *
  * @author Luis
  */
-public class CommandManager implements Serializable {
+public class CommandManager {
     
     private ArrayList<ICommand> undoList;
     private ArrayList<ICommand> redoList;
@@ -64,6 +64,10 @@ public class CommandManager implements Serializable {
         ICommand lastCommand = redoList.remove(lastCommandIndex);
         lastCommand.doIt(model);
         undoList.add(lastCommand);
+    }
+
+    public void setModel(IModel model) {
+        this.model = model;
     }
     
 }

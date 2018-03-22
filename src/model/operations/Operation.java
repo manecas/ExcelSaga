@@ -7,8 +7,6 @@ package model.operations;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import model.Cell;
 import model.IModel;
 import model.filters.Filter;
 
@@ -122,6 +120,10 @@ public abstract class Operation implements InvolvedCellsChangeListener, Serializ
 
     public void setModel(IModel model) {
         this.model = model;
+    }
+    
+    protected int getInvolvedCellsSize(){
+        return involvedCells.size();
     }
     
 }

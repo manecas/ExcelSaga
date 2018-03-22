@@ -23,11 +23,19 @@ public class UpperOperation extends Operation {
 
     @Override
     void performOperation(String value) {
+        if("".equals(value)){
+            return;
+        }
+        
         this.value = value.toUpperCase();
     }
 
     @Override
     String getValue() {
+        if(getInvolvedCellsSize() > 1){
+            return "Not multi cell!";
+        }
+        
         String originalValue = value;
         value = "";
         

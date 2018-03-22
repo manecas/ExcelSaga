@@ -52,7 +52,11 @@ public interface IMainPresenter {
     void onSaveEntered();
     void onSaveExited();
     
-    void saveSheet(File file);
+    void saveSheetToFile(File file);
+    
+    void openSheetFromFile(File file);
+    
+    void exportSheetToTextFile(File file);
     
     void onOpenClicked();
     void onOpenPressed();

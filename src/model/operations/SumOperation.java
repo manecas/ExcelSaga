@@ -23,10 +23,12 @@ public class SumOperation extends Operation {
 
     @Override
     void performOperation(String value) {
+        if("".equals(value)){
+            return;
+        }
+        
         try{
-            if(!"".equals(value)){
-               this.value += Double.parseDouble(value);    
-            }
+            this.value += Double.parseDouble(value);    
         }catch(NullPointerException | NumberFormatException ex){
             System.out.println("It's not a float value, but it's ok. "
                     + "Nothing happens then");
@@ -34,7 +36,7 @@ public class SumOperation extends Operation {
     }
 
     @Override
-    String getValue() {
+    String getValue() {        
         double originalValue = value;
         value = 0;
         
